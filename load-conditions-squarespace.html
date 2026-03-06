@@ -1,0 +1,457 @@
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+#lcr-wrap input[type=range]{-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;}
+#lcr-wrap input[type=range]::-webkit-slider-runnable-track{height:8px;background:rgba(255,255,255,0.08);border-radius:4px;}
+#lcr-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#e8a83a;border:3px solid #1a1814;box-shadow:0 0 10px rgba(232,168,58,0.6);margin-top:-7px;cursor:grab;}
+#lcr-wrap input[type=range]::-moz-range-track{height:8px;background:rgba(255,255,255,0.08);border-radius:4px;border:none;}
+#lcr-wrap input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#e8a83a;border:3px solid #1a1814;cursor:grab;}
+#lcr-wrap *{box-sizing:border-box;}
+@keyframes lcr-pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@media(max-width:600px){
+  #lcr-wrap .lcr-grid{grid-template-columns:1fr!important;}
+  #lcr-wrap .lcr-three{grid-template-columns:1fr!important;}
+  #lcr-wrap .lcr-main{padding:16px!important;}
+  #lcr-wrap .lcr-btnrow{flex-direction:column!important;}
+}
+
+</style>
+
+<div id="lcr-wrap" style="font-family:'Outfit',sans-serif;background:#1a1814;border-radius:12px;overflow:hidden;max-width:900px;margin:0 auto;border:1px solid rgba(232,168,58,0.2);box-shadow:0 0 60px rgba(232,168,58,0.08);">
+
+<div style="background:#23201a;border-bottom:1px solid rgba(232,168,58,0.2);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;">
+  <div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:3px;color:#e8a83a;text-transform:uppercase;margin-bottom:4px;">Load Conditions</div>
+    <div style="font-size:11px;color:#8a7d68;letter-spacing:1px;">Your nervous system &middot; today &middot; right now</div>
+  </div>
+  <div style="width:10px;height:10px;border-radius:50%;background:#5cb87a;box-shadow:0 0 8px #5cb87a;animation:lcr-pulse 2s ease-in-out infinite;flex-shrink:0;"></div>
+</div>
+
+<div class="lcr-main" style="padding:24px 28px;display:flex;flex-direction:column;gap:20px;">
+
+<div class="lcr-hideprint">
+<div style="margin-bottom:0;">
+<div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:#a8721a;text-transform:uppercase;margin-bottom:14px;">The Aircraft — Your System Today</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;">
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Fuel Level<br><span style="font-weight:300;font-size:10px;">Capacity remaining</span></div>
+    <div id="lcr-v-fuel" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-fuel" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less fuel</span><span>More fuel</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">How much is actually left in the tank right now — not how much you think should be there.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Sleep Quality<br><span style="font-weight:300;font-size:10px;">Last night’s rest</span></div>
+    <div id="lcr-v-sleep" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-sleep" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less sleep</span><span>More sleep</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">Sleep has its own gauge because it affects everything else. A bad night changes every other reading on this dashboard.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Engine Health<br><span style="font-weight:300;font-size:10px;">Body baseline today</span></div>
+    <div id="lcr-v-engine" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-engine" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less strain</span><span>More strain</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">Pain, illness, hormones, chronic conditions — the physical reality of what you’re flying with today, separate from sleep.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Carryover Load<br><span style="font-weight:300;font-size:10px;">Yesterday’s unfinished weight</span></div>
+    <div id="lcr-v-carryover" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">3</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="3" id="lcr-carryover" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less carry</span><span>More carry</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">How much unresolved weight from previous days came with you into today. This flight launched already carrying something.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Recovery Rate<br><span style="font-weight:300;font-size:10px;">Bounce-back speed today</span></div>
+    <div id="lcr-v-recovery" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-recovery" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less recovery</span><span>More recovery</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">After turbulence, how long before you’re back at cruising altitude — today specifically, not on a good day.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Prior Wear<br><span style="font-weight:300;font-size:10px;">Accumulated damage</span></div>
+    <div id="lcr-v-damage" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">3</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="3" id="lcr-damage" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less wear</span><span>More wear</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">Burnout history, chronic depletion, accumulated wear that affects how the aircraft handles before the day even begins.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Spice / Signal<br><span style="font-weight:300;font-size:10px;">Instrument reliability</span></div>
+    <div id="lcr-v-spice" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-spice" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less signal</span><span>More signal</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">How clearly your internal signals are reading right now. Less signal means flying partially blind — affects how much to trust all other readings.</div>
+</div>
+</div></div>
+</div>
+
+<div style="height:1px;background:rgba(232,168,58,0.2);" class="lcr-hideprint"></div>
+
+<div class="lcr-hideprint">
+<div style="margin-bottom:0;">
+<div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:#a8721a;text-transform:uppercase;margin-bottom:14px;">Flight Conditions — The Environment</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;">
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Current Turbulence<br><span style="font-weight:300;font-size:10px;">Right now load</span></div>
+    <div id="lcr-v-turbulence" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">3</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="3" id="lcr-turbulence" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less turbulence</span><span>More turbulence</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">Sensory environment, emotional demands, cognitive load — the air you’re flying through right now.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Known Load Ahead<br><span style="font-weight:300;font-size:10px;">Predictable hard spots</span></div>
+    <div id="lcr-v-ahead" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">3</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="3" id="lcr-ahead" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less ahead</span><span>More ahead</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">What’s coming today that you already know will cost you. Not surprises — the scheduled hard parts.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Unexpected Hits<br><span style="font-weight:300;font-size:10px;">Already absorbed today</span></div>
+    <div id="lcr-v-hits" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">2</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="2" id="lcr-hits" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less hits</span><span>More hits</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">Surprise demands already absorbed before you planned for them. Unplanned turbulence costs more than the same load on the schedule.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Visibility<br><span style="font-weight:300;font-size:10px;">Mental clarity</span></div>
+    <div id="lcr-v-visibility" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-visibility" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less visibility</span><span>More visibility</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">Brain fog, processing speed, how clearly you can see what’s in front of you right now.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Obstacle Risk<br><span style="font-weight:300;font-size:10px;">Unplanned disruption potential</span></div>
+    <div id="lcr-v-obstacles" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">3</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="3" id="lcr-obstacles" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less risk</span><span>More risk</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">How likely today is to throw something unpredictable at you. More risk means you need reserve fuel before you know you need it.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">ADHD Tax<br><span style="font-weight:300;font-size:10px;">Unplanned route deviations</span></div>
+    <div id="lcr-v-tax" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">2</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="2" id="lcr-tax" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less tax</span><span>More tax</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">Forgotten things, extra trips, reroutes not in the plan. Each deviation costs more fuel than the same distance on the original route.</div>
+</div>
+</div></div>
+</div>
+
+<div style="height:1px;background:rgba(232,168,58,0.2);" class="lcr-hideprint"></div>
+
+<div class="lcr-hideprint">
+<div style="margin-bottom:0;">
+<div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:#a8721a;text-transform:uppercase;margin-bottom:14px;">The Cockpit — Support &amp; Crew</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;">
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Invisible Load<br><span style="font-weight:300;font-size:10px;">Background mental labor</span></div>
+    <div id="lcr-v-invisible" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">4</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="4" id="lcr-invisible" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less load</span><span>More load</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">The constant background tracking — appointments, medications, who needs what, what’s running low. Runs whether or not anything is actively being done.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Radio Signal<br><span style="font-weight:300;font-size:10px;">Communication capacity</span></div>
+    <div id="lcr-v-radio" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-radio" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less signal</span><span>More signal</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">How well you can express what’s happening right now. Less signal means asking for help gets harder even when help is available.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Co-Pilot Support<br><span style="font-weight:300;font-size:10px;">Support quality today</span></div>
+    <div id="lcr-v-copilot" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-copilot" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less support</span><span>More support</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">Flying solo or with someone whose help actually reduces your load. Not all co-pilots make the flight easier — some add to the work.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Passenger Load<br><span style="font-weight:300;font-size:10px;">Who depends on you today</span></div>
+    <div id="lcr-v-passengers" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">3</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="3" id="lcr-passengers" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less load</span><span>More load</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">How many people need you to hold it together today regardless of what’s happening in the cockpit. Passengers don’t see the instruments.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Error Margin<br><span style="font-weight:300;font-size:10px;">Runway available today</span></div>
+    <div id="lcr-v-margin" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-margin" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less margin</span><span>More margin</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">How much runway before a mistake becomes a crisis today. Some days one wrong move drops you out of the air. That’s conditions, not character.</div>
+</div>
+<div style="background:#23201a;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a7d68;text-transform:uppercase;line-height:1.4;flex:1;">Emergency Strips<br><span style="font-weight:300;font-size:10px;">Bail options known</span></div>
+    <div id="lcr-v-bail" style="font-family:'Share Tech Mono',monospace;font-size:26px;color:#e8a83a;min-width:32px;text-align:right;line-height:1;">5</div>
+  </div>
+  <div style="font-size:9px;color:#a8721a;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:8px;">&#9668; &#9658; drag to set</div>
+  <input type="range" min="1" max="10" value="5" id="lcr-bail" style="-webkit-appearance:none;width:100%;background:transparent;cursor:pointer;display:block;">
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:#8a7d68;font-family:'Share Tech Mono',monospace;margin-top:6px;"><span>Less clarity</span><span>More clarity</span></div>
+  <div style="font-size:11px;color:#8a7d68;margin-top:10px;line-height:1.6;font-style:italic;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">How clearly do you know where you can put this down if you have to. More clarity here changes how you fly the whole route.</div>
+</div>
+</div></div>
+</div>
+
+<div class="lcr-btnrow lcr-hideprint" style="display:flex;gap:12px;">
+  <button id="lcr-gen-btn" style="flex:1;padding:18px;background:transparent;border:1px solid #e8a83a;border-radius:8px;color:#e8a83a;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;">&#9654; &nbsp; Generate Report</button>
+</div>
+
+<div id="lcr-output" style="display:none;background:#23201a;border:1px solid rgba(232,168,58,0.5);border-radius:10px;padding:28px;">
+  <div id="lcr-printdate" style="display:none;font-size:10px;color:#aaa;text-align:right;padding:8px 0;font-family:monospace;"></div>
+  <div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid rgba(232,168,58,0.2);">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:4px;color:#a8721a;text-transform:uppercase;margin-bottom:10px;">Current Load Conditions</div>
+    <div id="lcr-status" style="font-size:30px;font-weight:700;margin:6px 0;"></div>
+    <div id="lcr-statusdesc" style="font-size:13px;color:#8a7d68;margin-top:6px;font-style:italic;"></div>
+  </div>
+  <div id="lcr-three" class="lcr-three" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;"></div>
+  <div id="lcr-warnings" style="display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;"></div>
+  <div id="lcr-insights" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;"></div>
+  <div style="font-size:10px;color:#8a7d68;font-style:italic;text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(232,168,58,0.2);line-height:1.6;">
+    This is not a diagnosis. It is a picture of your system in relation to your environment today.<br>The environment is part of the equation &mdash; not just you.
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+(function(){
+
+function lcrGenerate(){
+  var fuel=parseInt(document.getElementById('lcr-fuel').value);
+  var sleep=parseInt(document.getElementById('lcr-sleep').value);
+  var engine=parseInt(document.getElementById('lcr-engine').value);
+  var carryover=parseInt(document.getElementById('lcr-carryover').value);
+  var recovery=parseInt(document.getElementById('lcr-recovery').value);
+  var damage=parseInt(document.getElementById('lcr-damage').value);
+  var spice=parseInt(document.getElementById('lcr-spice').value);
+  var turbulence=parseInt(document.getElementById('lcr-turbulence').value);
+  var ahead=parseInt(document.getElementById('lcr-ahead').value);
+  var hits=parseInt(document.getElementById('lcr-hits').value);
+  var visibility=parseInt(document.getElementById('lcr-visibility').value);
+  var obstacles=parseInt(document.getElementById('lcr-obstacles').value);
+  var tax=parseInt(document.getElementById('lcr-tax').value);
+  var invisible=parseInt(document.getElementById('lcr-invisible').value);
+  var radio=parseInt(document.getElementById('lcr-radio').value);
+  var copilot=parseInt(document.getElementById('lcr-copilot').value);
+  var passengers=parseInt(document.getElementById('lcr-passengers').value);
+  var margin=parseInt(document.getElementById('lcr-margin').value);
+  var bail=parseInt(document.getElementById('lcr-bail').value);
+
+  var a=(fuel+sleep+(11-carryover)+(11-engine)+recovery+(11-damage)+spice)/7;
+  var e=((11-turbulence)+(11-ahead)+(11-hits)+visibility+(11-obstacles)+(11-tax))/6;
+  var s=((11-invisible)+radio+copilot+(11-passengers)+margin+bail)/6;
+  var ov=(a+e+s)/3;
+
+  var st,sc,sd;
+  if(ov>=7.5){st='Favorable Conditions';sc='#5cb87a';sd='Your aircraft and environment are well matched today.';}
+  else if(ov>=5.5){st='Manageable Conditions';sc='#e8a83a';sd='Load is present. Fly deliberately \u2014 protect fuel where you can.';}
+  else if(ov>=3.5){st='Elevated Load';sc='#e8843a';sd='This is a high-cost flight. Reduce what you can. Know your exits.';}
+  else{st='Critical Conditions';sc='#d4574a';sd='The mismatch today is real and significant. Stabilize first. Everything else waits.';}
+
+  var sEl=document.getElementById('lcr-status');
+  sEl.textContent=st; sEl.style.color=sc;
+  document.getElementById('lcr-statusdesc').textContent=sd;
+
+  function gc(v){ return v>=7.5?'#5cb87a':v>=5.5?'#e8a83a':v>=3.5?'#e8843a':'#d4574a'; }
+  function slbl(sec,v){
+    var t=v>=7.5?0:v>=5.5?1:v>=3.5?2:3;
+    return[['System holding well','Some strain present','Running low','System under significant stress'],
+           ['Conditions favorable','Some friction present','Rough conditions','Severe environmental mismatch'],
+           ['Well resourced','Some support gaps','Thin support today','Flying without a net']][sec][t];
+  }
+
+  var thHTML='';
+  [[a,0,'Aircraft'],[e,1,'Environment'],[s,2,'Support']].forEach(function(x){
+    var col=gc(x[0]);
+    var r=36,circ=2*Math.PI*r,dash=(x[0]/10)*circ;
+    thHTML+='<div style="background:#2d2920;border:1px solid rgba(232,168,58,0.2);border-radius:8px;padding:20px 12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;">'
+      +'<div style="font-family:Share Tech Mono,monospace;font-size:9px;letter-spacing:3px;color:#8a7d68;text-transform:uppercase;">'+x[2]+'</div>'
+      +'<div style="position:relative;width:90px;height:90px;">'
+      +'<svg width="90" height="90" viewBox="0 0 90 90" style="transform:rotate(-90deg)">'
+      +'<circle cx="45" cy="45" r="'+r+'" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>'
+      +'<circle cx="45" cy="45" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="8" stroke-dasharray="'+dash+' '+circ+'" stroke-linecap="round"/>'
+      +'</svg>'
+      +'<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:Share Tech Mono,monospace;font-size:22px;font-weight:700;color:'+col+';">'+x[0].toFixed(1)+'</div>'
+      +'</div>'
+      +'<div style="font-size:11px;color:#8a7d68;font-style:italic;text-align:center;line-height:1.4;">'+slbl(x[1],x[0])+'</div>'
+      +'</div>';
+  });
+  document.getElementById('lcr-three').innerHTML=thHTML;
+
+  var wc={alert:'rgba(212,87,74,0.15)|rgba(212,87,74,0.4)|#d4574a',caution:'rgba(232,168,58,0.1)|rgba(232,168,58,0.3)|#e8a83a',nominal:'rgba(92,184,122,0.1)|rgba(92,184,122,0.3)|#5cb87a'};
+  var warns=[];
+  if(fuel<=3)warns.push({t:'Low Fuel',c:'alert'});
+  if(sleep<=3)warns.push({t:'Poor Sleep',c:'alert'});
+  if(engine>=8)warns.push({t:'Engine Strain',c:'alert'});
+  if(turbulence>=8)warns.push({t:'Severe Turbulence',c:'alert'});
+  if(margin<=2)warns.push({t:'No Error Margin',c:'alert'});
+  if(spice<=2)warns.push({t:'Instruments Unreliable',c:'alert'});
+  if(carryover>=7)warns.push({t:'Heavy Carryover',c:'caution'});
+  if(damage>=7)warns.push({t:'High Prior Wear',c:'caution'});
+  if(invisible>=7)warns.push({t:'High Invisible Load',c:'caution'});
+  if(passengers>=7)warns.push({t:'Full Cabin',c:'caution'});
+  if(hits>=6)warns.push({t:'High Surprise Load',c:'caution'});
+  if(bail<=3)warns.push({t:'No Exit Plan',c:'caution'});
+  if(tax>=7)warns.push({t:'Heavy ADHD Tax',c:'caution'});
+  if(ahead>=7)warns.push({t:'Heavy Load Ahead',c:'caution'});
+  if(fuel>=7&&sleep>=7)warns.push({t:'Well Fueled',c:'nominal'});
+  if(visibility>=8)warns.push({t:'Clear Visibility',c:'nominal'});
+  if(copilot>=7)warns.push({t:'Solid Co-Pilot',c:'nominal'});
+  if(bail>=7)warns.push({t:'Exit Options Clear',c:'nominal'});
+  document.getElementById('lcr-warnings').innerHTML=warns.map(function(w){
+    var p=wc[w.c].split('|');
+    return '<span style="font-family:Share Tech Mono,monospace;font-size:9px;letter-spacing:1.5px;padding:4px 10px;border-radius:3px;text-transform:uppercase;background:'+p[0]+';border:1px solid '+p[1]+';color:'+p[2]+';">'+w.t+'</span>';
+  }).join('');
+
+  function act(txt){
+    return '<div style="margin-top:8px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:4px;font-size:11px;color:#8a7d68;display:flex;gap:8px;align-items:flex-start;line-height:1.6;"><span style="color:#e8a83a;flex-shrink:0;">&#8594;</span>'+txt+'</div>';
+  }
+
+  function insDiv(color, tag, text, actions){
+    return '<div style="border-left:3px solid '+color+';padding:14px 16px;background:rgba(255,255,255,0.02);border-radius:0 6px 6px 0;font-size:12px;line-height:1.8;color:#e8dcc8;">'
+      +'<span style="font-family:Share Tech Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#8a7d68;display:block;margin-bottom:6px;">'+tag+'</span>'
+      +text
+      +actions.map(act).join('')
+      +'</div>';
+  }
+
+  var ins='';
+
+  // Margin indicator
+  var marginScore=(fuel+recovery+bail+margin)/4;
+  var mLabel,mColor,mText;
+  if(marginScore>=7.5){mLabel='Adequate Margin';mColor='#5cb87a';mText='You have some runway today. Not unlimited, but enough to absorb unexpected demands without immediate system failure.';}
+  else if(marginScore>=5){mLabel='Thin Margin';mColor='#e8a83a';mText='Your margin is workable but narrow. One unexpected demand could close it quickly. Protect what you have.';}
+  else if(marginScore>=3){mLabel='Very Thin Margin';mColor='#e8843a';mText='The gap between current demands and your capacity limit is small. High-risk configuration for threshold crossing.';}
+  else{mLabel='No Margin';mColor='#d4574a';mText='You are at or near your capacity ceiling. Any additional demand risks a threshold event. Stabilize before anything else.';}
+  ins+=insDiv(mColor,'Margin Indicator \u2014 '+mLabel,mText,[]);
+
+  // Snapshot summary
+  var snap='';
+  if(ov>=7.5){snap='Today the load and your capacity are well-matched. The aircraft is equipped for the route.';}
+  else if(ov>=5.5){snap='Today is a workable but loaded day. There is real weight here \u2014 it just has not exceeded your current capacity yet.';}
+  else if(ov>=3.5){snap='Today the gap between what is being asked and what your system has available is significant. This is a conditions problem, not a personal failing.';}
+  else{snap='Today\u2019s configuration is one of the most demanding. The mismatch between your system and your current load is at its highest. This is what critical conditions look like on the instruments.';}
+  var aDiff=a-e;
+  if(aDiff>2){snap+=' Your system is in better shape than your environment today. The friction is coming from outside, not from you.';}
+  else if(aDiff<-2){snap+=' Your environment is actually cooperating better than your system today. The primary constraint is internal.';}
+  ins+=insDiv(gc(ov),'Snapshot Summary',snap,[]);
+
+  // Capacity vs environment
+  var cveColor,cveName,cveText,cveActs;
+  if(a>=6.5&&e>=6.5){cveName='Well-Matched \u2014 Both High';cveColor='#5cb87a';cveText='Your system and your environment are aligned today and both are reading well. This is the configuration where things that usually cost double actually cost what they should.';cveActs=['Use today to work on things that require cognitive runway \u2014 this is when that work is cheapest','Notice what structural conditions are producing this match \u2014 that information is replicable'];}
+  else if(a<=4.5&&e<=4.5){cveName='Compound Mismatch \u2014 Both Low';cveColor='#d4574a';cveText='Both your system and your environment are strained today. There is no counterbalance. The threshold effect is most dangerous in this configuration.';cveActs=['This is a demand reduction day \u2014 identify what can be dropped, delegated, or simplified','One structural change to the environment has more leverage than any amount of internal coping today'];}
+  else if(a>=6.5&&e<=4.5){cveName='Strong System, Rough Conditions';cveColor='#e8a83a';cveText='Your system is holding up well today but the environment is the source of friction. The mismatch is not in you \u2014 it is in what you are flying through.';cveActs=['Modify the environment first before reaching for internal strategies','What you are dealing with today is a conditions problem, not a capacity problem'];}
+  else if(a<=4.5&&e>=6.5){cveName='Depleted System, Favorable Conditions';cveColor='#e8843a';cveText='The environment is cooperating today but your system is running low. A good day externally does not erase what the aircraft is carrying.';cveActs=['Use the favorable conditions to recover, not to increase output \u2014 this is a refueling opportunity','Resist the narrative that a good external day means your capacity should be higher'];}
+  else{cveName='Mixed Conditions';cveColor='#e8a83a';cveText='Your system and environment are each showing some strain. Neither is in crisis but neither is fully resourced. This configuration requires deliberate allocation.';cveActs=['Identify the one gauge with the lowest reading and address that first \u2014 that is where today\u2019s leverage is'];}
+  ins+=insDiv(cveColor,'Capacity vs. Environment \u2014 '+cveName,cveText,cveActs);
+
+  // Feels like / helps / avoid
+  var feels=[],helps=[],avoid=[];
+  if(ov>=7.5){
+    feels=['Tasks take roughly as long as they should','Decisions feel accessible, not exhausting','Recovery happens at a normal rate after hard moments'];
+    helps=['Stay in the routine \u2014 consistency protects what is working','Use any extra capacity to build systems for harder days'];
+    avoid=['Spending all available capacity without leaving reserve','Interpreting today\u2019s ease as evidence that other days were not real'];
+  } else if(ov>=5.5){
+    feels=['Things are manageable but heavier than they look','Recovery takes longer than usual after demands','A sense that you are keeping up but not by much'];
+    helps=['Explicit pacing \u2014 build in transitions between demands','Externalizing anything that can leave working memory (lists, reminders)','Protecting the first and last hour of the day from high-demand tasks'];
+    avoid=['Adding new commitments today even if they seem small','Interpreting "I\u2019m fine" as the same as "I have margin"'];
+  } else if(ov>=3.5){
+    feels=['Tasks that are usually automatic now require deliberate effort','Emotional reactivity that feels out of proportion to what triggered it','Everything costs more than it should'];
+    helps=['Demand reduction \u2014 identify what can be dropped, delegated, or simplified before the day asks for it','Low-stimulus recovery windows even if brief','Operating from a written list rather than working memory'];
+    avoid=['High-stakes decisions or irreversible commitments today','Trying to push through with effort rather than modifying the conditions','Interpreting the difficulty as a character reading rather than a conditions reading'];
+  } else {
+    feels=['Basic tasks feel like significant undertakings','Decision-making feels genuinely impaired, not just hard','The gap between what is expected and what is possible feels vast'];
+    helps=['Survival mode protocol: identify what is non-negotiable and let everything else pause','Minimal sensory environment wherever possible','No performance \u2014 basic functioning is the only goal today'];
+    avoid=['Any decision that can wait','Any conversation that requires emotional labor','Interpreting today as predictive of all days'];
+  }
+  var liStyle='style="margin-bottom:6px;"';
+  var ulStyle='style="margin:8px 0 0 0;padding-left:18px;line-height:1.8;font-size:12px;color:#e8dcc8;"';
+  ins+=insDiv(gc(ov),'What This Usually Feels Like','<ul '+ulStyle+'>'+feels.map(function(f){return '<li '+liStyle+'>'+f+'</li>';}).join('')+'</ul>',[]);
+  ins+=insDiv(gc(ov),'&#9658; What Helps Most In This Configuration','<ul '+ulStyle+'>'+helps.map(function(f){return '<li '+liStyle+'>'+f+'</li>';}).join('')+'</ul>',[]);
+  ins+=insDiv(gc(ov),'&#9658; What Not To Do Today','<ul '+ulStyle+'>'+avoid.map(function(f){return '<li '+liStyle+'>'+f+'</li>';}).join('')+'</ul>',[]);
+
+  // Conditional blocks
+  if(spice<=3)ins+=insDiv('#d4574a','Instrument Reliability','Your internal signal is low today. These readings may be underestimating the actual load \u2014 when interoception drops, you often do not feel how depleted you are until you have already crossed a threshold.',['Treat this report as a floor, not a ceiling \u2014 build in more margin than the numbers suggest','Check physical basics first: water, food, temperature']);
+  if(sleep<=4)ins+=insDiv('#d4574a','Sleep Deficit','Poor sleep has downstream effects on every other gauge. This is not a willpower problem \u2014 sleep debt creates measurable cognitive and regulatory impairment that compounds across the day.',['Front-load cognitively demanding tasks \u2014 the deficit compounds as the day progresses','Reduce decision-making today where possible']);
+  if(carryover>=6)ins+=insDiv('#e8843a','Carryover Load \u2014 Launched Behind','You started today already carrying weight from previous days. Your capacity floor is lower before this day has asked anything of you yet.',['Identify one thing from the carry that can be permanently dropped rather than postponed','Adjust today\u2019s output expectations before the day sets them for you']);
+  if(invisible>=6)ins+=insDiv('#e8843a','High Invisible Load','Background mental labor consumes real capacity even when nothing is actively being done. It runs constantly and almost never gets counted when people try to understand why they are depleted.',['Externalize what you can \u2014 written lists, shared calendars, reminders \u2014 to move tracking out of your head','Ask whether this load is distributed or entirely concentrated on you']);
+  if(damage>=7)ins+=insDiv('#d4574a','Prior Wear \u2014 Accumulated Damage','High prior wear means the aircraft has sustained real damage before today began. Burnout history and chronic depletion change how the system handles load in ways that do not simply reset.',['Burnout recovery requires reducing total load below what feels necessary, not just possible','Structural change is the appropriate intervention for high prior wear \u2014 not better coping']);
+  if(tax>=5)ins+=insDiv('#e8a83a','ADHD Tax \u2014 Route Deviations Compounding','Every deviation from the planned route costs more fuel than the same distance on the original plan. The compounding is real and the total depletion is genuine even when no single detour seemed significant.',['Do not add anything new to today\u2019s plan','For each recurring deviation, ask whether it can be built into the route in advance so it stops being a surprise cost']);
+  if(fuel<=4&&ahead>=5)ins+=insDiv('#d4574a','Low Fuel, Heavy Route Ahead','Low remaining capacity with significant known demands still ahead is a high-risk configuration. The route does not adjust for how much fuel you have left.',['Audit what is coming and identify which parts can be moved, simplified, or delegated before you reach them','If nothing can move, build in a recovery window before the hardest part \u2014 even a short one changes the threshold math']);
+  if(passengers>=6&&fuel<=6)ins+=insDiv('#e8843a','Full Cabin on Low Fuel','Maintaining performance for others while running low yourself is one of the highest-cost configurations. Performing regulated when the instruments are alarming does not appear on any gauge \u2014 but it has a real cost.',['Identify what the people depending on you actually need today versus what you assume they need','Use every transition between demands as micro-recovery \u2014 even three minutes of low stimulus changes the rate of depletion']);
+  if(margin<=3&&turbulence>=4)ins+=insDiv('#d4574a','No Margin in Rough Air','Low error margin in turbulent conditions is the configuration where threshold events are most likely. A small additional demand \u2014 one that would be trivial on a different day \u2014 can produce a disproportionate response.',['Defer any decision that can wait \u2014 this is accurate flight management, not avoidance','Do not schedule anything new today, and do not agree to anything that creates future obligation']);
+  if(bail<=4)ins+=insDiv('#e8a83a','Exit Options Not Mapped','Knowing your emergency options before you need them changes how you fly the whole route. When exit options are unclear, the nervous system treats the entire flight as high-stakes.',['Identify one concrete option for today: who you could call, what you could cancel, where you could go to decompress','A bad-day protocol built in advance is significantly easier to use than one designed mid-crisis']);
+  if(copilot<=4&&passengers>=5)ins+=insDiv('#e8a83a','Support Costing More Than It Returns','When the co-pilot dynamic requires more from you than it gives back \u2014 and the cabin is full \u2014 support stops being a resource and becomes another load item.',['Identify what kind of support you actually need today versus what is available \u2014 they may not match','If asking for help consistently costs more than not asking, that dynamic is worth examining in a lower-stakes moment']);
+
+  document.getElementById('lcr-insights').innerHTML=ins;
+
+  var out=document.getElementById('lcr-output');
+  out.style.display='block';
+  out.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('lcr-gen-btn').addEventListener('click', lcrGenerate);
+
+var IDS=['fuel','sleep','engine','carryover','recovery','damage','spice','turbulence','ahead','hits','visibility','obstacles','tax','invisible','radio','copilot','passengers','margin','bail'];
+IDS.forEach(function(id){
+  document.getElementById('lcr-'+id).addEventListener('input',function(){
+    document.getElementById('lcr-v-'+id).textContent=this.value;
+  });
+});
+
+})();
+</script>
