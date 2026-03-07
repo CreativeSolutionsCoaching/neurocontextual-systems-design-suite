@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="NFMS — Neurocontextual Fit Measurement System. A clinical assessment tool for NST practitioners.">
+<title>NFMS – Neurocontextual Fit Measurement System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --td:#1B5E5E;--tm:#2D7D7D;--tl:#E8F4F4;
+  --am:#B8722A;--al:#FBF0E4;
+  --cr:#F6F2ED;--wh:#FDFCFB;--sl:#1C2B2B;
+  --sm:#4A5E5E;--sg:#8A9E9E;--bd:#D8E4E4;
+  --sv:#8B2020;--svb:#FDF0F0;
+  --si:#7A4010;--sib:#FDF5EE;
+  --mo:#5A5A00;--mob:#FDFDE0;
+  --mi:#1A5A2A;--mib:#EFF8F2;
+  --go:#1B5E5E;--gob:#E8F4F4;
+  --sg2:#557070; /* darker teal-grey, distinct from --sg muted secondary #8A9E9E */
+  --ra:12px;--sh:0 2px 16px rgba(27,94,94,.08);--sl2:0 8px 40px rgba(27,94,94,.12);
+  --fs:1;--tp:44px;
+  --fb:'Atkinson Hyperlegible',sans-serif;--fd:'Fraunces',serif;
+}
+body.flg{--fs:1.15}body.flx{--fs:1.3}
+body.hc{--td:#003838;--tm:#005050;--tl:#CCE8E8;--cr:#FFFFF0;--wh:#fff;--sl:#000;--sm:#111;--sg:#224444;--bd:#000;--am:#7A3A00;--al:#FFF3CC;--sv:#6B0000;--svb:#FFE8E8;--si:#5A2500;--sib:#FFF0E0;--mo:#3A3A00;--mob:#FFFFE0;--mi:#003A00;--mib:#E8FFE8;--go:#003838;--gob:#CCE8E8}
+body.rm *{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto!important}
+}
+body.lt{--tp:56px}
+body.dy{letter-spacing:.04em;word-spacing:.08em;line-height:1.9}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cr);color:var(--sl);min-height:100vh;font-size:calc(16px * var(--fs));line-height:1.65}
+.skip{position:absolute;top:-100px;left:8px;background:var(--td);color:#fff;padding:10px 18px;border-radius:6px;z-index:9999;font-weight:700;text-decoration:none;font-size:14px;transition:top .15s}.skip:focus{top:8px}
+/* A11Y toolbar */
+.a11y{background:var(--sl);padding:6px 14px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:calc(12px * var(--fs))}
+.a11y span{color:#bbb;margin-right:3px}
+.ab{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:6px;padding:5px 11px;font-size:calc(12px * var(--fs));cursor:pointer;font-family:var(--fb);min-height:var(--tp);display:inline-flex;align-items:center;gap:4px;transition:background .15s}
+.ab:hover,.ab:focus{background:rgba(255,255,255,.25);outline:2px solid #fff;outline-offset:2px}
+.ab.on{background:var(--tm)}
+/* HEADER */
+.hdr{background:var(--td);padding:15px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.logo{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);color:#fff;font-size:16px;font-weight:700;flex-shrink:0}
+.htx h1{font-family:var(--fd);color:#fff;font-size:calc(15px * var(--fs));font-weight:500}
+.htx p{color:rgba(255,255,255,.82);font-size:calc(11px * var(--fs));letter-spacing:.4px;text-transform:uppercase}
+.hbg{margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-size:calc(11px * var(--fs));padding:3px 10px;border-radius:20px}
+/* LAYOUT */
+main{max-width:800px;margin:0 auto;padding:32px 16px 80px}
+.view{display:none}.view.active{display:block}
+/* TABS */
+.tabs{display:flex;border-bottom:2px solid var(--bd);margin-bottom:20px}
+.tb{background:none;border:none;padding:10px 20px;font-family:var(--fb);font-size:calc(14px * var(--fs));color:var(--sm);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;min-height:var(--tp)}
+.tb:hover{color:var(--td)}.tb.on{color:var(--td);border-bottom-color:var(--td);font-weight:700}
+.tb:focus-visible{outline:2px solid var(--tm);outline-offset:2px}
+.pane{display:none}.pane.active{display:block}
+/* CARD */
+.card{background:var(--wh);border-radius:var(--ra);padding:24px;box-shadow:var(--sh);margin-bottom:16px}
+.card h2{font-family:var(--fd);font-size:calc(24px * var(--fs));font-weight:300;color:var(--td);margin-bottom:10px}
+.card h2 em{font-style:italic}
+.card h3{font-family:var(--fd);font-size:calc(16px * var(--fs));color:var(--td);margin-bottom:7px}
+.card p{font-size:calc(14px * var(--fs));color:var(--sm);line-height:1.65;margin-bottom:8px}
+/* MODES */
+.mgr{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mc{background:var(--cr);border:2px solid var(--bd);border-radius:var(--ra);padding:18px 15px;cursor:pointer;transition:all .2s;text-align:left;min-height:var(--tp)}
+.mc:hover,.mc:focus{border-color:var(--tm);background:var(--tl);transform:translateY(-2px);box-shadow:var(--sh);outline:none}
+.mc:focus-visible{outline:3px solid var(--td);outline-offset:2px}
+.mc .ico{font-size:22px;margin-bottom:7px}
+.mc h3{font-family:var(--fd);font-size:calc(14px * var(--fs));color:var(--td);margin-bottom:4px}
+.mc p{font-size:calc(13px * var(--fs));color:var(--sm);margin:0}
+.mtg{display:inline-block;background:var(--td);color:#fff;font-size:calc(10px * var(--fs));padding:2px 9px;border-radius:10px;margin-top:7px;letter-spacing:.5px;text-transform:uppercase}
+/* PHI */
+.phi{background:var(--tl);border-left:3px solid var(--tm);padding:12px 15px;border-radius:0 8px 8px 0;font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:16px}
+.phi strong{color:var(--td)}
+/* GUIDANCE */
+.gs{margin-bottom:18px}
+.gs h3{font-family:var(--fd);font-size:calc(15px * var(--fs));color:var(--td);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--bd)}
+.gs h4{font-family:var(--fd);font-size:calc(13px * var(--fs));color:var(--sl);margin:11px 0 4px}
+.gs p,.gs li{font-size:calc(13px * var(--fs));color:var(--sm);line-height:1.65;margin-bottom:5px}
+.gs ul,.gs ol{padding-left:16px}
+.dr{display:grid;grid-template-columns:22px 1fr;gap:9px;padding:9px 11px;border-radius:8px;margin-bottom:7px;align-items:start}
+.dr.g{background:var(--mib)}.dr.y{background:var(--mob)}.dr.r{background:var(--svb)}
+.dr .di{font-size:16px;padding-top:1px}
+.dr strong{font-size:calc(13px * var(--fs));color:var(--sl);display:block;margin-bottom:2px}
+.dr p{font-size:calc(12px * var(--fs));color:var(--sm);margin:0}
+.itbl{width:100%;border-collapse:collapse;font-size:calc(12px * var(--fs));margin-top:7px}
+.itbl th{background:var(--td);color:#fff;padding:7px 10px;text-align:left}
+.itbl td{padding:7px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+.itbl tr:nth-child(even) td{background:var(--cr)}
+.sl2{counter-reset:s;list-style:none;padding:0}.gs .sl2{padding:0}
+.sl2 li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:9px;margin-bottom:9px;align-items:start;font-size:calc(13px * var(--fs));color:var(--sm)}
+.sl2 li::before{content:counter(s);background:var(--td);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:calc(12px * var(--fs));font-weight:700;flex-shrink:0}
+.bgr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:9px}
+.bc{background:var(--cr);border-radius:8px;padding:11px;text-align:center;border:1px solid var(--bd)}
+.bc .bt{font-size:calc(11px * var(--fs));color:var(--sm);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.bc .bv{font-family:var(--fd);font-size:calc(18px * var(--fs));color:var(--td)}
+.bc .bd2{font-size:calc(11px * var(--fs));color:var(--sm);margin-top:3px}
+/* FORM */
+.instr{background:var(--wh);border-radius:var(--ra);padding:20px 24px;box-shadow:var(--sh);margin-bottom:16px}
+.instr h3{font-family:var(--fd);font-size:calc(16px * var(--fs));color:var(--td);margin-bottom:7px}
+.instr p{font-size:calc(14px * var(--fs));color:var(--sm);margin-bottom:7px}
+.slg{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.sp{background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:calc(12px * var(--fs));color:var(--sm);min-height:var(--tp);display:flex;flex-direction:column;justify-content:center}
+.sp strong{color:var(--sl);display:block;font-size:calc(15px * var(--fs))}
+/* PROGRESS */
+.prg{background:var(--wh);border-radius:8px;padding:10px 16px;margin-bottom:14px;box-shadow:var(--sh);display:flex;align-items:center;gap:11px}
+.ptr{flex:1;height:8px;background:var(--bd);border-radius:4px;overflow:hidden}
+.pfl{height:100%;background:var(--tm);border-radius:4px;transition:width .3s ease}
+.pll{font-size:calc(12px * var(--fs));color:var(--sm);white-space:nowrap}
+/* SUBSCALE */
+.sb{background:var(--wh);border-radius:var(--ra);padding:22px 20px 15px;margin-bottom:14px;box-shadow:var(--sh);border-top:4px solid var(--tm)}
+.sb h4{font-family:var(--fd);font-size:calc(15px * var(--fs));color:var(--td);margin-bottom:3px}
+.sdf{font-size:calc(12px * var(--fs));color:var(--sg);margin-bottom:14px;font-style:italic;line-height:1.5}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;border:0}
+/* ITEM */
+.item{margin-bottom:20px}
+.itx{font-size:calc(15px * var(--fs));color:var(--sl);margin-bottom:8px;line-height:1.55}
+.inu{color:var(--sg);font-size:calc(13px * var(--fs));margin-right:3px}
+.lk{display:flex;gap:5px;flex-wrap:wrap}
+.lk label{flex:1;min-width:50px;max-width:76px;cursor:pointer}
+.lk input{position:absolute;opacity:0;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap}
+.pip{display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--bd);border-radius:10px;padding:8px 4px 6px;transition:all .15s;background:var(--cr);text-align:center;min-height:var(--tp);cursor:pointer}
+.pip .n{font-size:calc(18px * var(--fs));font-weight:700;color:var(--sg);line-height:1;transition:color .15s}
+.pip .l{font-size:calc(10px * var(--fs));color:var(--sg);margin-top:2px;line-height:1.2;letter-spacing:.2px;text-transform:uppercase;transition:color .15s}
+.lk input:checked+.pip,.lk label:hover .pip{border-color:var(--tm);background:var(--tl)}
+.lk input:checked+.pip .n,.lk label:hover .pip .n{color:var(--td)}
+.lk input:checked+.pip .l,.lk label:hover .pip .l{color:var(--tm)}
+.lk input:focus-visible+.pip{outline:3px solid var(--td);outline-offset:2px;border-color:var(--td)}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;border-radius:8px;border:none;font-family:var(--fb);font-size:calc(14px * var(--fs));font-weight:700;cursor:pointer;transition:all .2s;min-height:var(--tp)}
+.btn:focus-visible{outline:3px solid var(--td);outline-offset:3px}
+.bp{background:var(--td);color:#fff}.bp:hover{background:var(--tm);transform:translateY(-1px);box-shadow:var(--sh)}
+.bs{background:var(--cr);color:var(--td);border:2px solid var(--bd)}.bs:hover{border-color:var(--tm);background:var(--tl)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.fa{display:flex;gap:9px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap;align-items:center}
+.vm{color:var(--sv);font-size:calc(13px * var(--fs));display:none;flex:1}
+body.client-mode .back{display:none!important}
+body.client-mode .hbg{display:none}
+.back{display:inline-flex;align-items:center;gap:5px;color:var(--sm);font-size:calc(13px * var(--fs));cursor:pointer;margin-bottom:14px;background:none;border:none;font-family:inherit;padding:4px 0;min-height:var(--tp)}
+.back:hover{color:var(--td)}.back:focus-visible{outline:2px solid var(--td);outline-offset:2px}
+/* ENCRYPTION / SETUP PANELS */
+.panel{background:var(--wh);border-radius:var(--ra);padding:30px;box-shadow:var(--sl2);margin-bottom:20px}
+.panel h3{font-family:var(--fd);font-size:calc(21px * var(--fs));color:var(--td);margin-bottom:10px}
+.panel p{color:var(--sm);font-size:calc(14px * var(--fs));margin-bottom:12px;line-height:1.65}
+.pin-display{font-family:monospace;font-size:calc(36px * var(--fs));letter-spacing:.25em;font-weight:700;color:var(--td);text-align:center;background:var(--tl);border:2px solid var(--tm);border-radius:10px;padding:16px 20px;margin:16px 0}
+.url-box{background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;font-size:calc(12px * var(--fs));color:var(--sm);word-break:break-all;font-family:monospace;margin:10px 0}
+.copy-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cbtn{background:var(--td);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:calc(13px * var(--fs));font-weight:700;cursor:pointer;font-family:var(--fb);min-height:var(--tp);transition:background .2s}
+.cbtn:hover{background:var(--tm)}.cbtn.cp{background:#1A5A2A}
+.cbtn:focus-visible{outline:3px solid var(--td);outline-offset:3px}
+.pin-input-wrap{display:flex;flex-direction:column;gap:8px;align-items:center;margin:16px 0}
+.pin-input{font-family:monospace;font-size:calc(30px * var(--fs));letter-spacing:.2em;text-align:center;border:2px solid var(--bd);border-radius:10px;padding:14px 18px;width:100%;max-width:280px;background:var(--cr);color:var(--sl);font-weight:700}
+.pin-input:focus{outline:3px solid var(--tm);border-color:var(--tm)}
+.pin-error{color:var(--sv);font-size:calc(13px * var(--fs));text-align:center;display:none}
+.step-badge{display:inline-flex;align-items:center;gap:6px;background:var(--td);color:#fff;border-radius:20px;padding:4px 12px;font-size:calc(12px * var(--fs));letter-spacing:.4px;margin-bottom:12px}
+/* Inline confirm / error UI (replaces native alert/confirm) */
+.inline-confirm{display:none;background:var(--svb);border:1.5px solid var(--sv);border-radius:8px;padding:12px 15px;margin-top:8px;font-size:calc(13px * var(--fs));color:var(--sv)}
+.inline-confirm p{margin-bottom:9px;font-weight:700;color:var(--sv)}
+.inline-confirm .ic-row{display:flex;gap:8px}
+.inline-err{display:none;background:var(--svb);border-left:3px solid var(--sv);border-radius:0 8px 8px 0;padding:10px 13px;margin-top:8px;font-size:calc(13px * var(--fs));color:var(--sv)}
+
+.warn-box{background:var(--al);border-left:3px solid var(--am);border-radius:0 8px 8px 0;padding:12px 14px;font-size:calc(13px * var(--fs));color:var(--sm);margin:12px 0;line-height:1.7}
+.warn-box strong{color:var(--am)}
+/* Cannot-save warning — more prominent, used on client screens */
+.warn-save{background:var(--al);border:1.5px solid var(--am);border-radius:10px;padding:16px 20px;margin:0 0 20px;font-size:calc(14px * var(--fs));color:var(--sm);line-height:1.75}
+.warn-save strong{color:var(--am);display:block;margin-bottom:4px}
+/* Instruction step list (client-facing) */
+.how-steps{list-style:none;padding:0;margin:0}
+.how-step{display:grid;grid-template-columns:36px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--bd);align-items:start}
+.how-step:last-child{border-bottom:none;padding-bottom:0}
+.how-num{width:32px;height:32px;border-radius:50%;background:var(--td);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:calc(14px * var(--fs));flex-shrink:0;margin-top:2px}
+.how-text{font-size:calc(14px * var(--fs));color:var(--sl);line-height:1.7}
+.how-text strong{color:var(--td);display:block;margin-bottom:3px;font-size:calc(15px * var(--fs))}
+/* Next-step send instructions */
+.next-steps{list-style:none;padding:0}
+.next-step{display:grid;grid-template-columns:32px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--bd);align-items:start}
+.next-step:last-child{border-bottom:none;padding-bottom:0}
+.next-badge{width:26px;height:26px;border-radius:50%;background:var(--tl);color:var(--td);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:calc(13px * var(--fs));flex-shrink:0;margin-top:2px;border:1.5px solid var(--tm)}
+.next-text{font-size:calc(14px * var(--fs));color:var(--sl);line-height:1.7}
+.next-text strong{color:var(--td);display:block;margin-bottom:3px}
+/* Clinician setup send-tips */
+.send-tips{background:var(--cr);border:1.5px solid var(--bd);border-radius:10px;padding:18px 20px;margin-top:20px}
+.send-tips h4{font-family:var(--fd);font-size:calc(14px * var(--fs));color:var(--td);margin-bottom:10px}
+.send-tips p{font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:8px;line-height:1.65}
+.send-tips p:last-child{margin-bottom:0}
+.a11-note{background:var(--al);border-left:3px solid var(--am);border-radius:0 8px 8px 0;padding:14px 16px;margin-top:16px}
+.a11-note h4{font-family:var(--fd);font-size:calc(13px * var(--fs));color:var(--am);margin-bottom:7px}
+.a11-note p{font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:6px;line-height:1.65}
+.a11-note p:last-child{margin-bottom:0}
+/* RESULTS */
+.rh{background:var(--td);color:#fff;border-radius:var(--ra);padding:28px;margin-bottom:18px;position:relative;overflow:hidden}
+.rh::before{content:'';position:absolute;top:-30px;right:-30px;width:170px;height:170px;background:rgba(255,255,255,.05);border-radius:50%}
+.pb{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 12px;font-size:calc(12px * var(--fs));letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+.rh h2{font-family:var(--fd);font-size:calc(24px * var(--fs));font-weight:300;margin-bottom:4px}
+.ts{font-family:var(--fd);font-size:calc(48px * var(--fs));font-weight:700;line-height:1;margin-bottom:4px}
+.sr2{font-size:calc(13px * var(--fs));opacity:.85}
+.ti2{margin-top:11px;background:rgba(255,255,255,.1);border-radius:8px;padding:10px 13px;font-size:calc(14px * var(--fs));line-height:1.55}
+.slbl{font-size:calc(11px * var(--fs));letter-spacing:1.5px;text-transform:uppercase;color:var(--sg);margin-bottom:10px;margin-top:24px;font-weight:700}
+.sres{background:var(--wh);border-radius:var(--ra);padding:16px 18px;margin-bottom:9px;box-shadow:var(--sh);display:grid;grid-template-columns:1fr auto;gap:9px;align-items:start}
+.srn{font-family:var(--fd);font-size:calc(14px * var(--fs));color:var(--td);margin-bottom:3px}
+.sbw{height:8px;background:var(--bd);border-radius:4px;overflow:hidden;margin:6px 0 5px}
+.sbf{height:100%;border-radius:4px}
+.scl{font-size:calc(12px * var(--fs));color:var(--sm);line-height:1.45;margin-top:4px}
+.ssc{text-align:right}
+.ssv{font-family:var(--fd);font-size:calc(24px * var(--fs));font-weight:700;line-height:1}
+.badge{display:inline-block;border-radius:6px;padding:3px 9px;font-size:calc(11px * var(--fs));font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-top:3px}
+.sv-severe .sbf{background:#C0392B}.sv-severe .ssv,.sv-severe .srn{color:var(--sv)}.sv-severe .badge{background:var(--svb);color:var(--sv)}
+.sv-significant .sbf{background:#E67E22}.sv-significant .ssv,.sv-significant .srn{color:var(--si)}.sv-significant .badge{background:var(--sib);color:var(--si)}
+.sv-moderate .sbf{background:#B5A200}.sv-moderate .ssv,.sv-moderate .srn{color:var(--mo)}.sv-moderate .badge{background:var(--mob);color:var(--mo)}
+.sv-mild .sbf{background:#27AE60}.sv-mild .ssv,.sv-mild .srn{color:var(--mi)}.sv-mild .badge{background:var(--mib);color:var(--mi)}
+.sv-good .sbf{background:var(--tm)}.sv-good .ssv,.sv-good .srn{color:var(--go)}.sv-good .badge{background:var(--gob);color:var(--go)}
+/* PRIORITY */
+.pc{background:var(--wh);border-radius:var(--ra);padding:18px 20px;box-shadow:var(--sh);margin-bottom:18px}
+.pc h4{font-family:var(--fd);font-size:calc(16px * var(--fs));color:var(--td);margin-bottom:5px}
+.pc p{font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:14px}
+.mr2{display:grid;grid-template-columns:1fr auto;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--bd)}
+.mr2:last-child{border-bottom:none}
+.mn2{font-size:calc(13px * var(--fs));color:var(--sl)}
+.msel{background:var(--cr);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;font-size:calc(13px * var(--fs));color:var(--sl);font-family:var(--fb);cursor:pointer;min-height:var(--tp)}
+.msel:focus{outline:2px solid var(--tm)}
+.pri{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--cr);border-radius:8px;margin-bottom:7px}
+.prk{width:25px;height:25px;background:var(--td);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:calc(12px * var(--fs));font-weight:700;flex-shrink:0}
+.prn{font-size:calc(13px * var(--fs));font-weight:700;color:var(--sl)}
+.prs2{font-size:calc(11px * var(--fs));color:var(--sm)}
+.prch{margin-left:auto;background:var(--tl);color:var(--td);font-size:calc(12px * var(--fs));font-weight:700;padding:3px 10px;border-radius:12px}
+/* COLLAB */
+.cc{background:var(--al);border-left:4px solid var(--am);border-radius:0 var(--ra) var(--ra) 0;padding:15px 18px;margin-bottom:14px}
+.cc h4{font-family:var(--fd);font-size:calc(14px * var(--fs));color:var(--am);margin-bottom:7px}
+.cc li{font-size:calc(13px * var(--fs));color:var(--sm);padding:4px 0 4px 15px;position:relative;line-height:1.5;list-style:none}
+.cc li::before{content:'→';color:var(--am);position:absolute;left:0}
+.alert{background:var(--svb);border-left:4px solid var(--sv);border-radius:0 8px 8px 0;padding:12px 15px;margin-bottom:14px;font-size:calc(13px * var(--fs));color:var(--sv)}
+.alert strong{display:block;margin-bottom:3px}
+.pa{display:flex;gap:9px;margin-bottom:16px;flex-wrap:wrap}
+@media(max-width:600px){
+  .mgr{grid-template-columns:1fr}
+  main{padding:16px 10px 60px}
+  .rh{padding:18px}
+  .sres{grid-template-columns:1fr}
+  .ssc{display:flex;align-items:center;gap:10px}
+  .bgr{grid-template-columns:1fr}
+  .a11y{justify-content:flex-start}
+  .pin-display{font-size:calc(28px * var(--fs))}
+  .how-step{grid-template-columns:30px 1fr;gap:10px}
+  .next-step{grid-template-columns:28px 1fr;gap:10px}
+}
+/* ══ RESULTS TABS ══ */
+.r-tabs{margin-bottom:0;border-bottom:2px solid var(--bd)}
+.r-panel{display:none}.r-panel.active{display:block}
+/* ══ DUAL MOVEMENT RATIO ══ */
+.dm-card{background:var(--wh);border-radius:var(--ra);padding:20px 22px;box-shadow:var(--sh);margin-bottom:16px}
+.dm-card h3{font-family:var(--fd);font-size:calc(15px * var(--fs));color:var(--td);margin-bottom:4px}
+.dm-card p{font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:14px}
+.dm-bars{display:grid;gap:10px}
+.dm-row{display:grid;grid-template-columns:160px 1fr 52px;align-items:center;gap:10px}
+.dm-lbl{font-size:calc(12px * var(--fs));color:var(--sl);font-weight:700}
+.dm-track{height:14px;background:var(--bd);border-radius:7px;overflow:hidden}
+.dm-fill-1{height:100%;background:var(--td);border-radius:7px;transition:width .5s ease}
+.dm-fill-2{height:100%;background:var(--am);border-radius:7px;transition:width .5s ease}
+.dm-pct{font-size:calc(12px * var(--fs));color:var(--sm);text-align:right;white-space:nowrap}
+.dm-note{background:var(--tl);border-left:3px solid var(--tm);border-radius:0 8px 8px 0;padding:10px 13px;margin-top:12px;font-size:calc(13px * var(--fs));color:var(--sm)}
+/* ══ NARRATIVE INJURY PANEL ══ */
+.ni-card{background:var(--wh);border-radius:var(--ra);padding:18px 20px;box-shadow:var(--sh);margin-bottom:16px;border-top:4px solid var(--sv)}
+.ni-card.ni-ok{border-top-color:var(--tm)}
+.ni-card.ni-mod{border-top-color:var(--am)}
+.ni-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ni-title{font-family:var(--fd);font-size:calc(15px * var(--fs));color:var(--sl)}
+.ni-m{font-family:var(--fd);font-size:calc(22px * var(--fs));font-weight:700}
+.ni-m.ni-high{color:var(--sv)}.ni-m.ni-mod{color:var(--si)}.ni-m.ni-low{color:var(--mi)}
+.ni-sub{font-size:calc(11px * var(--fs));color:var(--sm);margin-top:2px}
+.ni-body{font-size:calc(13px * var(--fs));color:var(--sm);margin-top:10px;line-height:1.65}
+/* ══ PLANNING — SESSION FOCUS ══ */
+.sf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:600px){.sf-grid{grid-template-columns:1fr}}
+.sf-card{background:var(--cr);border:1.5px solid var(--bd);border-radius:10px;padding:14px 16px}
+.sf-card h4{font-family:var(--fd);font-size:calc(13px * var(--fs));color:var(--td);margin-bottom:7px}
+.sf-card ul{list-style:none;padding:0}
+.sf-card li{font-size:calc(12px * var(--fs));color:var(--sm);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.sf-card li::before{content:'→';color:var(--tm);position:absolute;left:0}
+/* ══ DOCUMENTATION ══ */
+.doc-section{background:var(--wh);border-radius:var(--ra);padding:20px 22px;box-shadow:var(--sh);margin-bottom:16px}
+.doc-section h3{font-family:var(--fd);font-size:calc(16px * var(--fs));color:var(--td);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bd)}
+.doc-section h4{font-family:var(--fd);font-size:calc(13px * var(--fs));color:var(--sl);margin:14px 0 6px}
+.dx-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+@media(max-width:600px){.dx-grid{grid-template-columns:1fr}}
+.dx-chip{background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:9px 11px}
+.dx-code{font-family:monospace;font-size:calc(13px * var(--fs));font-weight:700;color:var(--td)}
+.dx-name{font-size:calc(12px * var(--fs));color:var(--sl);margin-top:2px}
+.dx-note{font-size:calc(11px * var(--fs));color:var(--sm);margin-top:2px;font-style:italic}
+.goal-block{background:var(--cr);border-left:3px solid var(--tm);border-radius:0 8px 8px 0;padding:11px 13px;margin-bottom:9px}
+.goal-block .gl{font-size:calc(11px * var(--fs));font-weight:700;color:var(--td);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.goal-block p{font-size:calc(13px * var(--fs));color:var(--sl);line-height:1.6;margin:0}
+.cpt-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.cpt-chip{background:var(--tl);border:1px solid var(--tm);border-radius:6px;padding:5px 11px;font-size:calc(12px * var(--fs));color:var(--td)}
+.cpt-chip strong{display:block;font-size:calc(13px * var(--fs))}
+.note-ta{width:100%;font-family:monospace;font-size:calc(12px * var(--fs));color:var(--sl);background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;line-height:1.7;resize:vertical;min-height:280px}
+.note-ta:focus{outline:2px solid var(--tm);border-color:var(--tm)}
+.ins-tbl{width:100%;border-collapse:collapse;font-size:calc(12px * var(--fs));margin-top:6px}
+.ins-tbl th{background:var(--td);color:#fff;padding:7px 10px;text-align:left;font-size:calc(11px * var(--fs));text-transform:uppercase;letter-spacing:.4px}
+.ins-tbl td{padding:7px 10px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.5}
+.ins-tbl tr:nth-child(even) td{background:var(--cr)}
+/* ══ TRACKING TAB ══ */
+.track-section{background:var(--wh);border-radius:var(--ra);padding:20px 22px;box-shadow:var(--sh);margin-bottom:16px}
+.track-section h3{font-family:var(--fd);font-size:calc(16px * var(--fs));color:var(--td);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bd)}
+.bench-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:600px){.bench-grid{grid-template-columns:1fr}}
+.bench-card{background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:12px 13px}
+.bench-tp{font-size:calc(11px * var(--fs));font-weight:700;color:var(--td);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.bench-metric{font-family:var(--fd);font-size:calc(18px * var(--fs));color:var(--sl);font-weight:700}
+.bench-desc{font-size:calc(11px * var(--fs));color:var(--sm);margin-top:3px;line-height:1.45}
+.long-tbl{width:100%;border-collapse:collapse;font-size:calc(12px * var(--fs))}
+.long-tbl th{background:var(--td);color:#fff;padding:8px 10px;text-align:left;font-size:calc(11px * var(--fs))}
+.long-tbl th:first-child{min-width:130px}
+.long-tbl td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.long-tbl tr:nth-child(even) td{background:var(--cr)}
+.long-tbl td.baseline{font-weight:700;color:var(--td)}
+.long-tbl input[type=text]{width:70px;font-family:var(--fb);font-size:calc(12px * var(--fs));border:1px solid var(--bd);border-radius:4px;padding:3px 6px;background:var(--wh);color:var(--sl);text-align:center}
+.long-tbl input[type=text]:focus{outline:2px solid var(--tm);border-color:var(--tm)}
+.stall-box{background:var(--mob);border:1.5px solid var(--mo);border-radius:10px;padding:14px 16px}
+.stall-box h4{font-family:var(--fd);font-size:calc(13px * var(--fs));color:var(--mo);margin-bottom:7px}
+.stall-box ul{list-style:none;padding:0}
+.stall-box li{font-size:calc(12px * var(--fs));color:var(--sm);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.stall-box li::before{content:'→';color:var(--mo);position:absolute;left:0}
+
+@media print{
+  .hdr,.a11y,.pa,.pc,.cc,.panel,.btn,.fa,.prg,.tabs,.back,.r-tabs{display:none!important}
+  body{background:#fff}
+  .rh{background:#1B5E5E!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sbf{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sres{box-shadow:none;border:1px solid #ddd}
+  .view{display:block!important}
+  #vl,#vf,#vs,#vp,#vd{display:none!important}
+}
+</style>
+</head>
+<body>
+<a href="#mc" class="skip">Skip to main content</a>
+<noscript>
+  <div style="background:#8B2020;color:#fff;padding:18px 20px;font-family:sans-serif;font-size:15px;line-height:1.6;text-align:center">
+    <strong>JavaScript is required to use the NFMS.</strong> Please enable JavaScript in your browser and reload this page.
+  </div>
+</noscript>
+
+<!-- ACCESSIBILITY TOOLBAR -->
+<div class="a11y" role="toolbar" aria-label="Accessibility options">
+  <span aria-hidden="true">Accessibility:</span>
+  <button class="ab" id="fn" onclick="sf('n')" aria-pressed="true">A Normal</button>
+  <button class="ab" id="fl" onclick="sf('l')" aria-pressed="false">A+ Larger</button>
+  <button class="ab" id="fx" onclick="sf('x')" aria-pressed="false">A++ Largest</button>
+  <button class="ab" id="hc" onclick="tg('hc','hc')" aria-pressed="false">◑ High Contrast</button>
+  <button class="ab" id="rm" onclick="tg('rm','rm')" aria-pressed="false">⏸ Reduce Motion</button>
+  <button class="ab" id="lt" onclick="tg('lt','lt')" aria-pressed="false">✋ Larger Buttons</button>
+  <button class="ab" id="dy" onclick="tg('dy','dy')" aria-pressed="false">Aa Dyslexia Mode</button>
+</div>
+
+<header class="hdr">
+  <div class="logo" aria-hidden="true">N</div>
+  <div class="htx">
+    <h1>Neurocontextual Fit Measurement System</h1>
+    <p>Neurocontextual Systems Therapy · Elizabeth Morrison, MS, LPC</p>
+  </div>
+  <span class="hbg" aria-hidden="true">NFMS · 39 Items</span>
+</header>
+
+<main id="mc">
+
+<!-- ══ LANDING ══ -->
+<div class="view active" id="vl" role="region" aria-label="Start">
+  <div role="tablist" class="tabs" aria-label="Sections">
+    <button role="tab" class="tb on" id="t-s" aria-selected="true" aria-controls="p-s" tabindex="0" onclick="stab('s')">Start Assessment</button>
+    <button role="tab" class="tb" id="t-g" aria-selected="false" aria-controls="p-g" tabindex="-1" onclick="stab('g')">Clinician Guidance</button>
+  </div>
+
+  <div role="tabpanel" class="pane active" id="p-s" aria-labelledby="t-s">
+    <div class="card">
+      <h2>Assess person–environment fit,<br><em>not person-level deficit.</em></h2>
+      <p>The NFMS measures alignment between neurocognitive patterns and environmental demands across 9 domains. Not diagnostic. Higher scores indicate better fit and more sustainable well-being.</p>
+      <p><strong>Select how the client will complete the form:</strong></p>
+      <div class="mgr">
+        <div class="mc" tabindex="0" role="button" aria-label="Mode A: Client completes on this device" onclick="goA()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goA()}">
+          <div class="ico" aria-hidden="true">🖥️</div>
+          <h3>Same Device</h3>
+          <p>Client completes here in session. Scores display immediately. No link or code required.</p>
+          <span class="mtg">Mode A · In-Office</span>
+        </div>
+        <div class="mc" tabindex="0" role="button" aria-label="Mode B: Client completes remotely on their own device" onclick="goSetup()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goSetup()}">
+          <div class="ico" aria-hidden="true">🔒</div>
+          <h3>Separate Devices</h3>
+          <p>Client completes remotely on their own device. Responses are AES-256 encrypted. No server involved.</p>
+          <span class="mtg">Mode B · Encrypted Remote</span>
+        </div>
+      </div>
+    </div>
+    <div class="phi" role="note">
+      <strong>No PHI stored or transmitted.</strong> All processing is local to the browser. Mode B uses AES-GCM encryption — the result URL contains only an encrypted blob, readable only with the clinician's PIN. No server is involved at any point.
+    </div>
+  </div>
+
+  <!-- CLINICIAN GUIDANCE TAB -->
+  <div role="tabpanel" class="pane" id="p-g" aria-labelledby="t-g">
+    <div class="card">
+      <div class="gs">
+        <h3>When to Use the NFMS</h3>
+        <p>The NFMS is NST's primary outcome measure. Administer at intake and at regular intervals. Always check capacity first — if below 3/10, consider postponing.</p>
+        <h4>Appropriate populations</h4>
+        <p>Autistic adults (diagnosed or self-identified) · Adults with ADHD · Multiple neurodevelopmental differences · Late-diagnosed individuals · Anyone experiencing autistic burnout or chronic overwhelm secondary to environmental mismatch</p>
+        <h4>Scope decision guide</h4>
+        <div class="dr g"><div class="di">🟢</div><div><strong>Proceed with NST</strong><p>Clear person–environment mismatch · Capacity chronically depleted despite adequate sleep/basic self-care · Symptoms secondary to overload · Client has some control over environment · No active safety crisis · Client open to or neutral about the mismatch frame</p></div></div>
+        <div class="dr y"><div class="di">🟡</div><div><strong>Proceed with consultation</strong><p>Complex trauma alongside mismatch · PDA profile · Multiple diagnoses with unclear primary driver · Progress stalled and cause unclear · Client resistant to neurodiversity framing · Systems changes would require major life restructuring</p></div></div>
+        <div class="dr r"><div class="di">🔴</div><div><strong>Refer or coordinate first</strong><p>Active SI with plan and intent · Psychosis · Eating disorder with medical instability · Substance use requiring detox · Active mania · IPV with safety concerns · Acute housing instability. NST can be adjunctive once crisis is stabilised — pause interventions, not the relationship.</p></div></div>
+      </div>
+      <div class="gs">
+        <h3>Administration Protocol</h3>
+        <ol class="sl2" role="list">
+          <li><strong>Check capacity.</strong> Ask client for a capacity rating (0–10). Below 3, postpone or shorten. Capacity variability is expected — never interpret it as resistance.</li>
+          <li><strong>Provide client instructions</strong> — read aloud or in writing. Key phrase: "based on your typical experience over the past two weeks."</li>
+          <li><strong>Allow 10–20 minutes</strong> for completion. Client may complete independently or with support. No right or wrong answers.</li>
+          <li><strong>Submit and score.</strong> The tool handles all reverse-scoring and subscale calculation automatically.</li>
+          <li><strong>Review collaboratively.</strong> Use the prompts in the results view. Client experience takes precedence over numeric interpretation.</li>
+          <li><strong>Apply the Priority Formula.</strong> Rate environmental modifiability (ε) for each domain. Severity alone does not determine priority.</li>
+          <li><strong>Document and target</strong> 1–2 subscales scoring ≤ 3.0 as initial intervention targets.</li>
+        </ol>
+        <div style="background:var(--tl);border-radius:8px;padding:11px 13px;margin-top:10px;font-size:calc(13px * var(--fs));color:var(--sm)"><strong style="color:var(--td)">Timing:</strong> Baseline (Session 1) · Every 4–6 sessions · Mid-treatment (~Sessions 10–12) · Post-treatment · 3-month follow-up</div>
+      </div>
+      <div class="gs">
+        <h3>Score Interpretation — Quick Reference</h3>
+        <h4>Subscale means (1.0–5.0)</h4>
+        <p><strong style="color:var(--sv)">1.0–2.0 Severe Mismatch</strong> — Immediate, intensive intervention. May indicate crisis.</p>
+        <p><strong style="color:var(--si)">2.1–3.0 Significant Mismatch</strong> — Primary treatment target. Substantial environmental changes needed.</p>
+        <p><strong style="color:var(--mo)">3.1–3.5 Moderate Mismatch</strong> — Active treatment target. Secondary priority after severe/significant.</p>
+        <p><strong style="color:var(--mi)">3.6–4.0 Mild Mismatch</strong> — Fine-tuning. Later phases or maintenance.</p>
+        <p><strong style="color:var(--go)">4.1–5.0 Good Fit</strong> — Preserve and protect. Leverage as resource for other areas.</p>
+        <h4>Total score (39–195)</h4>
+        <p><strong>39–78</strong> Severe · Phase 1 Survival &nbsp;|&nbsp; <strong>79–117</strong> Significant · Phase 2 Stabilisation &nbsp;|&nbsp; <strong>118–137</strong> Moderate · Phase 3 &nbsp;|&nbsp; <strong>138–156</strong> Mild &nbsp;|&nbsp; <strong>157–195</strong> Good Fit · Phase 4 Thriving</p>
+        <h4>Priority Formula</h4>
+        <p>Priority(i) = (5.0 − subscale mean) × ε (environmental modifiability, 0–1). Calculated interactively in the results view.</p>
+        <h4>Stall rule</h4>
+        <p>No ≥0.5 improvement after 4–6 focused sessions → audit: capacity (overestimated?), mismatch domain (correct?), narrative injury (blocking implementation?), scope (needs resources beyond therapy?).</p>
+      </div>
+      <div class="gs">
+        <h3>Progress Benchmarks</h3>
+        <div class="bgr">
+          <div class="bc"><div class="bt">Mid-treatment (~12 sessions)</div><div class="bv">≥ 0.5</div><div class="bd2">point improvement on targeted subscales</div></div>
+          <div class="bc"><div class="bt">Post-treatment (~16–24 sessions)</div><div class="bv">≥ 1.0 / +20</div><div class="bd2">subscale / total score for clinically significant change</div></div>
+          <div class="bc"><div class="bt">3-month follow-up</div><div class="bv">≤ 0.3</div><div class="bd2">subscale decline acceptable</div></div>
+        </div>
+      </div>
+      <div class="gs">
+        <h3>Insurance &amp; Documentation Translation</h3>
+        <table class="itbl" aria-label="NST to insurance language">
+          <thead><tr><th>NST language</th><th>Insurance-compatible language</th></tr></thead>
+          <tbody>
+            <tr><td>Environmental mismatch</td><td>Environmental stressors impacting functioning</td></tr>
+            <tr><td>Capacity depletion</td><td>Decreased stress tolerance and coping resources</td></tr>
+            <tr><td>Systems alignment (Track 1)</td><td>Environmental modifications and adaptive coping strategy development</td></tr>
+            <tr><td>Narrative repair (Track 2)</td><td>Cognitive restructuring and self-concept work</td></tr>
+            <tr><td>NFMS administration</td><td>CPT 96127 — Brief emotional/behavioural assessment</td></tr>
+            <tr><td>MOD Cycle</td><td>Chronic psychosocial stressors contributing to anxiety/depression</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:7px;font-size:calc(12px * var(--fs))">Common codes: F41.1 GAD · F32.9/F33.x MDD · F90.x ADHD · F43.10 PTSD · F43.25 Adjustment Disorder · F84.0 ASD. Document functional impairment (WSAS, WHODAS) alongside NFMS to support medical necessity.</p>
+      </div>
+      <div class="gs">
+        <h3>Core NST Concepts</h3>
+        <h4>MOD Cycle</h4>
+        <p><strong>Mismatch</strong> → <strong>Overload</strong> → <strong>Distress</strong> → <strong>Narrative Injury</strong> (amplifies effective demand) → more Mismatch. Self-amplifying. Both environment and narrative must be addressed.</p>
+        <h4>Dual Movement</h4>
+        <p><strong>Track 1 — Systems Alignment:</strong> Modify the environment. <strong>Track 2 — Narrative Repair:</strong> Address harmful self-narratives. Both tracks must be active. Ratio by phase: Phase 1 (80/20 Systems/Narrative) · Phase 2 (50/50) · Phase 3 (40/60) · Phase 4 (20/80).</p>
+        <h4>Capacity</h4>
+        <p>Dynamic — fluctuates with sleep, nutrition, sensory load, emotion, recovery. Check every session (0–10). Low capacity and lack of progress are clinical data, not resistance.</p>
+        <h4>Narrative Injury as Phantom Demand</h4>
+        <p>Harmful self-narratives ("I'm broken," "I should cope") add real physiological demand. High Narrative Injury scores explain why environmental changes alone often haven't helped.</p>
+      </div>
+    </div>
+  </div>
+</div><!-- /landing -->
+
+<!-- ══ CLINICIAN SETUP (Mode B) ══ -->
+<div class="view" id="vs" role="region" aria-label="Mode B clinician setup">
+  <button class="back" onclick="home()" aria-label="Back to start">← Back</button>
+  <div class="panel">
+    <div class="step-badge">Step 1 of 3 — Clinician Setup</div>
+    <h3>Generate Client Link</h3>
+    <p>A unique 6-digit PIN has been generated for this session. <strong>Write down or securely save your PIN before proceeding</strong> — you will need it to view the client's results. It is not stored anywhere.</p>
+
+    <div class="warn-box" role="note">
+      <strong>⚠ Do not lose your PIN.</strong> If it is lost, the client's responses cannot be decrypted. Generate a new one and ask the client to complete the form again.
+    </div>
+
+    <p style="margin-bottom:6px;font-weight:700;color:var(--td)">Your PIN (clinician only — do not share with client):</p>
+    <div class="pin-display" id="pin-display" aria-live="polite" aria-label="Your session PIN">——————</div>
+
+    <p style="margin-bottom:6px;font-weight:700;color:var(--td)">Client link — send this via your secure channel:</p>
+    <textarea class="url-box" id="client-url" readonly aria-label="Client link — copy and send via your secure channel" rows="2" style="resize:none;cursor:text;font-family:monospace">Generating…</textarea>
+    <div class="copy-row">
+      <button class="cbtn" id="copy-client-url" onclick="copyClientUrl()">Copy Client Link</button>
+      <button class="btn bp" onclick="goForm()" style="margin-left:4px">Client is here — open form on this device →</button>
+    </div>
+    <div class="warn-box" role="note" style="margin-top:10px"><strong>If the client completes the form on this device:</strong> After they submit, a result link will appear. You'll then return here and use your PIN above to decrypt and view the scores. Keep this PIN visible until decryption is complete.</div>
+
+    <!-- Suggested message and send tips -->
+    <div class="send-tips">
+      <h4>Suggested message to send your client</h4>
+      <p><em>"Hi [name], I'm sending you a short questionnaire to complete before our next session. Here's what you'll need to do:</em></p>
+      <p style="padding-left:12px;border-left:2px solid var(--bd);margin:8px 0"><em>
+        1. Click the link below to open the form.<br>
+        2. Read all the instructions carefully before starting — they explain every step.<br>
+        3. Set aside 15–20 uninterrupted minutes. The form cannot be saved partway through — you need to finish in one sitting.<br>
+        4. Answer all 39 questions.<br>
+        5. At the end, click 'Encrypt &amp; Generate Link', then click 'Copy Result Link'.<br>
+        6. Come back to this message and reply with the link pasted in.<br><br>
+        If anything is unclear or you run into any trouble, just reply and I'll help you."
+      </em></p>
+      <p><strong>Link:</strong> [paste the client link above]</p>
+      <p style="font-size:calc(12px * var(--fs));color:var(--sg)">Customize tone as needed. The form has detailed step-by-step instructions built in — including instructions for mobile devices — but giving clients the overview in your message helps reduce confusion before they open the link.</p>
+    </div>
+
+    <!-- Accessibility note for clinicians -->
+    <div class="a11-note" role="note">
+      <h4>Accessibility note for clients who may need additional support</h4>
+      <p>The form includes a built-in accessibility toolbar (font size, high contrast, reduce motion, dyslexia mode, larger buttons). However, some clients — particularly those with significant executive function challenges, high fatigue, low digital literacy, or fine motor difficulties — may still need support.</p>
+      <p><strong>Consider these options:</strong> Walk through the form together via screen share during session · Send a follow-up message offering help if they get stuck · For clients who struggle with copy/paste, they can take a screenshot of the result link or read it aloud · If a client cannot complete it independently, you can administer it verbally and enter responses using Mode A.</p>
+    </div>
+
+    <p style="margin-top:14px;font-size:calc(12px * var(--fs));color:var(--sg)">The client link contains your session PIN in its URL fragment. The fragment is never sent to any server, but you should still send this link via your secure clinical messaging channel — not unencrypted email or text. When the client completes the form, the result URL they send back contains only an encrypted blob, unreadable without your PIN.</p>
+  </div>
+</div>
+
+<!-- ══ FORM (Mode A & B) ══ -->
+<div class="view" id="vf" role="region" aria-label="NFMS questionnaire">
+  <button class="back" onclick="home()" aria-label="Back to start">← Back</button>
+
+  <!-- Client welcome / cannot-save warning (shown only in Mode B) -->
+  <div id="client-welcome" style="display:none">
+    <div class="warn-save" role="alert" aria-label="Important: read before starting">
+      <strong>⚠ Important — please read before you begin</strong>
+      This form cannot be saved. Once you start, you need to complete all 39 questions and send your results in one sitting. If you close this page or lose internet access before finishing, you will need to start over.<br><br>
+      Before you click Start, make sure you: <strong>have 15–20 uninterrupted minutes</strong> · <strong>are in a low-distraction space if possible</strong> · <strong>have a way to send a message to your clinician ready</strong> (the same app or email they used to send you this link).
+    </div>
+    <div class="panel" style="padding:24px 28px;margin-bottom:16px">
+      <h3 style="font-size:calc(20px * var(--fs));margin-bottom:14px">How this works — 4 steps</h3>
+      <ol class="how-steps" role="list" aria-label="Steps to complete this questionnaire">
+        <li class="how-step">
+          <div class="how-num" aria-hidden="true">1</div>
+          <div class="how-text"><strong>Use the accessibility options if helpful</strong> The dark toolbar at the very top of this page lets you increase font size, turn on high contrast, reduce motion, and more. Adjust those now before you start if any would help.</div>
+        </li>
+        <li class="how-step">
+          <div class="how-num" aria-hidden="true">2</div>
+          <div class="how-text"><strong>Answer all 39 questions</strong> Each question asks how well your daily life matches your needs. You answer on a scale of 1 to 5. There are no right or wrong answers — just your honest experience over the past two weeks. You can scroll up and down freely to review or change answers before you finish. If you need a short break, leave this page open and step away — just do not close or reload it.</div>
+        </li>
+        <li class="how-step">
+          <div class="how-num" aria-hidden="true">3</div>
+          <div class="how-text"><strong>Click "Encrypt &amp; Generate Link" when done</strong> Once all 39 questions are answered, click the button at the bottom of the page. The page will create an encrypted link containing your responses — only your clinician can open it.</div>
+        </li>
+        <li class="how-step">
+          <div class="how-num" aria-hidden="true">4</div>
+          <div class="how-text"><strong>Copy the link and send it to your clinician</strong> A "Copy Result Link" button will appear. Click it to copy. Then go to the same app or email your clinician used to contact you, open a reply, paste the link in, and send. That's it — you're done.</div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Instructions card (shown for both modes) -->
+  <div class="instr">
+    <h3>Instructions</h3>
+    <p>This questionnaire asks about how well your daily environments match your needs and preferences. <strong>There are no right or wrong answers.</strong> Please respond based on your typical experience <strong>over the past two weeks</strong> — not just today, and not your best or worst day.</p>
+    <p>For each statement, choose the number that best represents your experience. You can scroll up and down to change answers before submitting.</p>
+    <div class="slg" role="list" aria-label="Response scale">
+      <div class="sp" role="listitem"><strong>1</strong>Strongly Disagree / Never</div>
+      <div class="sp" role="listitem"><strong>2</strong>Disagree / Rarely</div>
+      <div class="sp" role="listitem"><strong>3</strong>Neutral / Sometimes</div>
+      <div class="sp" role="listitem"><strong>4</strong>Agree / Often</div>
+      <div class="sp" role="listitem"><strong>5</strong>Strongly Agree / Almost Always</div>
+    </div>
+  </div>
+
+  <div class="prg">
+    <div class="ptr" role="progressbar" aria-valuemin="0" aria-valuemax="39" aria-valuenow="0" aria-label="Questions answered" id="pbar">
+      <div class="pfl" id="pfl" style="width:0%"></div>
+    </div>
+    <div class="pll" id="pll" aria-live="polite" aria-atomic="true">0 of 39 answered</div>
+  </div>
+
+  <div id="fb"></div>
+
+  <div class="inline-confirm" id="clr-confirm" role="alertdialog" aria-labelledby="clr-msg">
+    <p id="clr-msg"></p>
+    <div class="ic-row">
+      <button class="btn bp" style="font-size:calc(13px * var(--fs));padding:8px 16px;background:var(--sv)" onclick="confirmClear()">Yes, clear all</button>
+      <button class="btn bs" style="font-size:calc(13px * var(--fs));padding:8px 16px" onclick="cancelClear()">Cancel</button>
+    </div>
+  </div>
+  <div class="inline-err" id="enc-err" role="alert"></div>
+
+  <div class="fa">
+    <div class="vm" id="vm" role="alert">⚠ Please answer all 39 items before submitting.</div>
+    <button class="btn bs" onclick="clrForm()">Clear All</button>
+    <button class="btn bp" id="submit-btn" onclick="submitForm()">Score &amp; Interpret →</button>
+  </div>
+</div>
+
+<!-- ══ CLIENT DONE (Mode B) ══ -->
+<div class="view" id="vd" role="region" aria-label="Questionnaire complete — send results">
+  <div class="panel" style="text-align:center">
+    <div class="step-badge">Almost done — one last step</div>
+    <div style="font-size:38px;margin:10px 0" aria-hidden="true">✅</div>
+    <h3>You've finished — now send your results</h3>
+    <p>Your responses have been encrypted into the link below. <strong>Copy the link and send it to your clinician</strong> using the same app or email they used to send you this link.</p>
+
+    <textarea class="url-box" id="result-url" readonly aria-label="Your encrypted result link — copy all of this" rows="3" style="resize:none;cursor:text;font-family:monospace">—</textarea>
+    <div class="copy-row" style="justify-content:center;margin-bottom:8px">
+      <button class="cbtn" id="copy-result" onclick="copyResult()"><span aria-hidden="true">📋</span> Copy Result Link</button>
+    </div>
+    <p id="copy-confirm" style="font-size:calc(13px * var(--fs));color:#1A5A2A;font-weight:700;min-height:22px;margin-bottom:4px" aria-live="assertive"></p>
+    <p style="margin-top:4px;font-size:calc(12px * var(--fs));color:var(--sg)">This link contains only encrypted data. Without your clinician's PIN, it cannot be read by anyone.</p>
+  </div>
+
+  <!-- Step-by-step send instructions -->
+  <div class="panel" style="padding:24px 28px">
+    <h3 style="font-size:calc(18px * var(--fs));margin-bottom:6px">How to send it — step by step</h3>
+    <p style="font-size:calc(14px * var(--fs));color:var(--sm);margin-bottom:16px">If you already clicked "Copy Result Link" above and it worked, start at Step 2.</p>
+    <ol class="next-steps" role="list" aria-label="Steps to send your results">
+      <li class="next-step">
+        <div class="next-badge" aria-hidden="true">1</div>
+        <div class="next-text">
+          <strong>Copy the link</strong>
+          <strong>Option A (easiest):</strong> Click the green "📋 Copy Result Link" button above. You'll see a confirmation message.<br><br>
+          <strong>Option B — on a computer:</strong> Click inside the link box above, press <strong>Ctrl+A</strong> (Windows) or <strong>Cmd+A</strong> (Mac) to select all, then <strong>Ctrl+C</strong> (Windows) or <strong>Cmd+C</strong> (Mac) to copy.<br><br>
+          <strong>Option B — on a phone or tablet:</strong> Tap and hold on the link box until the text highlights, tap "Select All", then tap "Copy".
+        </div>
+      </li>
+      <li class="next-step">
+        <div class="next-badge" aria-hidden="true">2</div>
+        <div class="next-text">
+          <strong>Open your clinician's message</strong>
+          Go to the app, email, or patient portal that your clinician used to send you this link. Find their original message and open a reply to it.
+        </div>
+      </li>
+      <li class="next-step">
+        <div class="next-badge" aria-hidden="true">3</div>
+        <div class="next-text">
+          <strong>Paste the link into your reply</strong>
+          Click or tap in the reply message box to place your cursor there.<br><br>
+          <strong>On a computer:</strong> Press <strong>Ctrl+V</strong> (Windows) or <strong>Cmd+V</strong> (Mac) to paste.<br>
+          <strong>On a phone or tablet:</strong> Tap and hold in the message box until a menu appears, then tap "Paste".<br><br>
+          The link will look very long — that's correct. Do not try to edit or shorten it.
+        </div>
+      </li>
+      <li class="next-step">
+        <div class="next-badge" aria-hidden="true">4</div>
+        <div class="next-text">
+          <strong>Send the message</strong>
+          Send the reply with the link pasted in. You don't need to add anything else, but you can add a note if you'd like. Once you've sent it, you're finished.
+        </div>
+      </li>
+      <li class="next-step">
+        <div class="next-badge" aria-hidden="true">5</div>
+        <div class="next-text">
+          <strong>Close this page</strong>
+          Once you've sent the link, you can close this page. Your clinician will decrypt and score your responses and review the results with you in your next session.<br><br>
+          <strong>Note:</strong> Your answers are not saved on this page. If you close it now, they are gone — only your clinician can access them through the link you just sent.
+        </div>
+      </li>
+    </ol>
+    <div class="warn-box" style="margin-top:20px" role="note">
+      <strong>Having trouble?</strong> If you can't copy or paste, or something isn't working, just send a message to your clinician explaining what happened. They can send you a new link so you can try again, or help you through the process.
+    </div>
+  </div>
+</div>
+
+<!-- ══ PIN ENTRY (clinician opens result link) ══ -->
+<div class="view" id="vp" role="region" aria-label="Enter PIN to decrypt results">
+  <div class="panel" style="text-align:center;max-width:480px;margin:0 auto">
+    <div class="step-badge">Step 3 of 3 — Clinician Decryption</div>
+    <h3>Enter Your PIN</h3>
+    <p>Enter the 6-digit PIN you generated when you created the client link. This decrypts the responses entirely within your browser — nothing is sent to any server.</p>
+    <div class="pin-input-wrap">
+      <label for="pin-entry" style="font-size:calc(13px * var(--fs));color:var(--sm);font-weight:700;align-self:flex-start">Enter your 6-digit PIN:</label>
+      <input class="pin-input" type="text" inputmode="numeric" maxlength="6" id="pin-entry" aria-label="6-digit PIN" placeholder="e.g. 472819" autocomplete="off">
+      <div class="pin-error" id="pin-error" role="alert">Incorrect PIN. Please check and try again.</div>
+    </div>
+    <button class="btn bp" onclick="decryptAndShow()" style="margin:0 auto">Decrypt &amp; View Results →</button>
+    <p style="margin-top:14px;font-size:calc(12px * var(--fs));color:var(--sg)">Decryption happens entirely in your browser. If you've lost the PIN, the responses cannot be recovered — ask the client to complete the form again with a new link.</p>
+  </div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div class="view" id="vr" role="region" aria-label="NFMS results">
+  <div class="pa">
+    <button class="btn bs" onclick="home()" style="font-size:calc(13px * var(--fs));padding:9px 14px">← New Assessment</button>
+    <button class="btn bs" onclick="window.print()" style="font-size:calc(13px * var(--fs));padding:9px 14px"><span aria-hidden="true">🖨</span> Print Results</button>
+  </div>
+  <!-- Results tab bar -->
+  <div role="tablist" class="tabs r-tabs" id="r-tabs" aria-label="Results sections">
+    <button role="tab" class="tb on" id="rt-sc" aria-selected="true" aria-controls="rp-sc" tabindex="0" onclick="rtab('sc')">📊 Scores</button>
+    <button role="tab" class="tb" id="rt-pl" aria-selected="false" aria-controls="rp-pl" tabindex="-1" onclick="rtab('pl')">🎯 Planning</button>
+    <button role="tab" class="tb" id="rt-dc" aria-selected="false" aria-controls="rp-dc" tabindex="-1" onclick="rtab('dc')">📋 Documentation</button>
+    <button role="tab" class="tb" id="rt-tr" aria-selected="false" aria-controls="rp-tr" tabindex="-1" onclick="rtab('tr')">📈 Tracking</button>
+  </div>
+  <div role="tabpanel" class="r-panel active" id="rp-sc" aria-labelledby="rt-sc"><div id="rb-sc"></div></div>
+  <div role="tabpanel" class="r-panel" id="rp-pl" aria-labelledby="rt-pl" hidden><div id="rb-pl"></div></div>
+  <div role="tabpanel" class="r-panel" id="rp-dc" aria-labelledby="rt-dc" hidden><div id="rb-dc"></div></div>
+  <div role="tabpanel" class="r-panel" id="rp-tr" aria-labelledby="rt-tr" hidden><div id="rb-tr"></div></div>
+</div>
+
+</main>
+
+<script>
+/* ══ ASSESSMENT DATA ══ */
+const SS=[
+  {id:'overall',name:'Overall Neurocontextual Fit',items:[1,2,3,4],def:'Overall alignment between neurocognitive processing and environmental demands. Whether environments allow authentic self-expression and sustainable energy expenditure.',clin:{severe:'Crisis-level. Immediate, intensive environmental assessment needed. May indicate burnout or crisis-level mismatch.',significant:'Primary treatment target. Substantial environmental changes needed across multiple domains.',moderate:'Active treatment target. Several meaningful environmental modifications indicated.',mild:'Fine-tuning and optimisation. May address in later phases or maintenance.',good:'Preserve and protect. Leverage as resource for addressing other areas.'}},
+  {id:'envresp',name:'Environmental Responsivity',items:[5,6,7],def:'Degree to which environments can be modified. Flexibility of systems, openness to accommodations.',clin:{severe:'Environments are rigid or actively hostile to accommodation. Systems change may be urgent.',significant:'Substantial barriers to accommodation. Advocacy and systems navigation are priority.',moderate:'Some openness to change; targeted advocacy strategies can increase responsivity.',mild:'Environments generally flexible; identify remaining friction points.',good:'Strong responsivity. Preserve and use as template for other domains.'}},
+  {id:'cogload',name:'Cognitive Load Management',items:[8,9,10,11],def:'Alignment between cognitive demands and available executive resources. Decision-making burden, task complexity, capacity–demand match.',clin:{severe:'Cognitive demands overwhelming available resources. Immediate demand reduction and task restructuring needed.',significant:'Executive load exceeds capacity most of the time. Structural changes essential.',moderate:'Meaningful friction between cognitive demands and resources. Task and environmental restructuring indicated.',mild:'Generally manageable; identify specific high-demand situations for optimisation.',good:'Cognitive load well-matched to capacity. Protect current structure.'}},
+  {id:'sensory',name:'Sensory-Environmental Alignment',items:[12,13,14,15],def:'Match between sensory characteristics of environments and sensory processing patterns. Overload, regulation access, tolerability.',clin:{severe:'Sensory environment is actively harmful. Immediate modification or alternative environments needed.',significant:'Frequent sensory overload depleting capacity. Sensory accommodations are high priority.',moderate:'Sensory friction present. Access to regulation spaces and targeted modifications indicated.',mild:'Generally tolerable; some optimisation of sensory access may be helpful.',good:'Sensory environments well-matched. Maintain current conditions.'}},
+  {id:'social',name:'Social Architecture',items:[16,17,18,19],def:'Quality and structure of social environments and relationships. Authentic communication, masking burden, compatible social connections.',clin:{severe:'Social environments require constant masking and performance. Social depletion likely high.',significant:'Social architecture poorly matched. Authentic communication is a major source of load.',moderate:'Some authentic connection available; increase access to compatible social structures.',mild:'Social environment mostly functional; identify residual masking demands.',good:'Social architecture supports authentic expression. Protect these connections.'}},
+  {id:'temporal',name:'Temporal Structure Optimisation',items:[20,21,22,23],def:'Alignment between temporal demands and neurocognitive temporal patterns. Schedule flexibility, transition time, pace–capacity match.',clin:{severe:'Schedule chronically incompatible with natural pacing. Immediate restructuring needed.',significant:'Temporal demands consistently exceed natural capacity. Schedule modification is high priority.',moderate:'Some temporal mismatch present. Buffer time and pacing adjustments indicated.',mild:'Schedule generally workable; optimise transitions and energy alignment.',good:'Temporal structure well-matched. Maintain and protect current schedule architecture.'}},
+  {id:'identity',name:'Identity-Environment Coherence',items:[24,25,26,27],def:'Degree to which neurodivergent identity can be expressed and integrated. Identity expression, internalised ableism, affirming community access.',clin:{severe:'Identity suppression is pervasive. Shame and isolation are significant load contributors.',significant:'Limited ability to express or integrate identity. Community access and narrative work are priorities.',moderate:'Some identity expression possible; expand affirming contexts and reduce shame load.',mild:'Generally able to express identity; some contexts may still require masking.',good:'Identity-environment coherence is strong. Use as resource for narrative repair in other areas.'}},
+  {id:'advocacy',name:'Systemic Advocacy Capacity',items:[28,29,30],def:'Ability and opportunity to advocate for environmental changes and accommodations. Knowledge, self-advocacy skills, system responsiveness.',clin:{severe:'Client unable to access or navigate systems for accommodation. Capacity-building and advocacy support are urgent.',significant:'Significant barriers to effective advocacy. Skill-building and systems navigation support needed.',moderate:'Some advocacy capacity present; targeted skill development and knowledge gaps to address.',mild:'Generally effective advocate; identify specific domains where confidence or access is limited.',good:'Strong advocacy capacity. Use as leverage point for other domain improvements.'}},
+  {id:'narrative',name:'Narrative Injury',items:[31,32,33,34,35,36,37,38,39],def:'Degree to which harmful self-narratives add phantom demand to actual environmental load. Self-blame, shame, deficit belief, failure interpretation.',clin:{severe:'Narrative injury substantially amplifying effective demand. Track 2 (Narrative Repair) is urgent. Phantom demand load is high.',significant:'Self-narrative is a major demand multiplier. Shame reduction and mismatch reframing are priority interventions.',moderate:'Meaningful narrative injury present. Begin psychoeducation and gradual narrative repair work.',mild:'Some residual self-blame; continue narrative work in maintenance phase.',good:'Narrative injury minimal. Person-environment mismatch frame is well-integrated.'}}
+];
+const IT=[
+  {n:1,text:"My daily environments allow me to be myself without pretending or masking.",sub:'overall',rev:false},
+  {n:2,text:"I feel exhausted by the end of most days, even when I haven't done much.",sub:'overall',rev:true},
+  {n:3,text:"The demands placed on me are generally aligned with my actual capacity.",sub:'overall',rev:false},
+  {n:4,text:"I can engage in my daily life without constantly feeling \"wrong\" or inadequate.",sub:'overall',rev:false},
+  {n:5,text:"When I identify a need or accommodation, I can usually get it met.",sub:'envresp',rev:false},
+  {n:6,text:"The people in my life (family, employers, etc.) are open to making changes that help me.",sub:'envresp',rev:false},
+  {n:7,text:"I frequently encounter rigid policies or people that won't accommodate my needs.",sub:'envresp',rev:true},
+  {n:8,text:"The amount of decisions I have to make each day feels manageable.",sub:'cogload',rev:false},
+  {n:9,text:"I often feel paralyzed when facing tasks, even simple ones.",sub:'cogload',rev:true},
+  {n:10,text:"I have enough mental energy to do the things I need and want to do.",sub:'cogload',rev:false},
+  {n:11,text:"Keeping track of my responsibilities feels overwhelming most of the time.",sub:'cogload',rev:true},
+  {n:12,text:"The sensory characteristics of my environments (light, sound, smell, texture) are tolerable most of the time.",sub:'sensory',rev:false},
+  {n:13,text:"I frequently experience sensory overload in my daily environments.",sub:'sensory',rev:true},
+  {n:14,text:"I have access to spaces where I can regulate my sensory experience.",sub:'sensory',rev:false},
+  {n:15,text:"I often have to leave places or activities because of sensory discomfort.",sub:'sensory',rev:true},
+  {n:16,text:"I have relationships where I can communicate in ways that feel natural to me.",sub:'social',rev:false},
+  {n:17,text:"Most of my social interactions feel like a performance or act.",sub:'social',rev:true},
+  {n:18,text:"The social expectations in my life are clear and make sense to me.",sub:'social',rev:false},
+  {n:19,text:"I have connections with people who understand me without excessive explanation.",sub:'social',rev:false},
+  {n:20,text:"My schedule has enough buffer time between activities.",sub:'temporal',rev:false},
+  {n:21,text:"I feel like I'm always rushing, even when I've planned ahead.",sub:'temporal',rev:true},
+  {n:22,text:"I can work at a pace that matches my processing speed.",sub:'temporal',rev:false},
+  {n:23,text:"My daily schedule aligns with my natural energy patterns (morning/evening, etc.).",sub:'temporal',rev:false},
+  {n:24,text:"I can express my neurodivergent identity in most areas of my life.",sub:'identity',rev:false},
+  {n:25,text:"I feel ashamed of my neurodivergent traits or differences.",sub:'identity',rev:true},
+  {n:26,text:"I have access to neurodivergent community or people who share my experiences.",sub:'identity',rev:false},
+  {n:27,text:"My understanding of my neurodivergence helps me make sense of my life.",sub:'identity',rev:false},
+  {n:28,text:"I know what rights and accommodations are available to me.",sub:'advocacy',rev:false},
+  {n:29,text:"I feel confident advocating for changes in my environments.",sub:'advocacy',rev:false},
+  {n:30,text:"When I try to advocate for my needs, I usually get nowhere.",sub:'advocacy',rev:true},
+  {n:31,text:"I blame myself for struggling, even when my environment doesn't fit my needs.",sub:'narrative',rev:true},
+  {n:32,text:"I interpret my exhaustion as personal weakness rather than environmental mismatch.",sub:'narrative',rev:true},
+  {n:33,text:"I believe there is something fundamentally wrong or broken about me.",sub:'narrative',rev:true},
+  {n:34,text:"I assume others would handle my life circumstances better than I do.",sub:'narrative',rev:true},
+  {n:35,text:"My struggles prove that I'm not trying hard enough or doing enough.",sub:'narrative',rev:true},
+  {n:36,text:"I feel like my neurodivergence makes me a burden to others.",sub:'narrative',rev:true},
+  {n:37,text:"I tell myself I should be able to cope with things that others can cope with.",sub:'narrative',rev:true},
+  {n:38,text:"I believe my difficulties mean I'm failing at life.",sub:'narrative',rev:true},
+  {n:39,text:"When I need rest or accommodations, I judge myself as weak or deficient.",sub:'narrative',rev:true}
+];
+const SH=['','SD','D','N','A','SA'];
+const SL=['','Strongly Disagree / Never','Disagree / Rarely','Neutral / Sometimes','Agree / Often','Strongly Agree / Almost Always'];
+
+let MODE='A';
+let SESSION_PIN='';
+
+/* ══ ACCESSIBILITY ══ */
+function sf(s){
+  document.body.classList.remove('flg','flx');
+  ['fn','fl','fx'].forEach(id=>{const b=document.getElementById(id);if(b){b.classList.remove('on');b.setAttribute('aria-pressed','false')}});
+  const m={n:'fn',l:'fl',x:'fx'};
+  if(s==='l')document.body.classList.add('flg');
+  if(s==='x')document.body.classList.add('flx');
+  const b=document.getElementById(m[s]);
+  if(b){b.classList.add('on');b.setAttribute('aria-pressed','true')}
+}
+function tg(cls,bid){
+  document.body.classList.toggle(cls);
+  const b=document.getElementById(bid);
+  if(b){const on=document.body.classList.contains(cls);b.setAttribute('aria-pressed',on?'true':'false');b.classList.toggle('on',on)}
+  // Suppress smooth scroll on html when reduce-motion is active (can't target html from body.rm in CSS)
+  if(cls==='rm')document.documentElement.style.scrollBehavior=document.body.classList.contains('rm')?'auto':'';
+}
+
+/* ══ TABS ══ */
+function stab(n){
+  ['s','g'].forEach(t=>{
+    const btn=document.getElementById('t-'+t);
+    const pane=document.getElementById('p-'+t);
+    const on=(t===n);
+    if(btn){btn.classList.toggle('on',on);btn.setAttribute('aria-selected',String(on));btn.tabIndex=on?0:-1;}
+    if(pane){pane.style.display=on?'block':'none';pane.classList.toggle('active',on)}
+  });
+}
+// Arrow key nav for tablist (ARIA authoring guide pattern)
+document.addEventListener('keydown',e=>{
+  const tab=e.target.closest('[role="tab"]');
+  if(!tab)return;
+  const tabs=[...document.querySelectorAll('[role="tab"]')];
+  const idx=tabs.indexOf(tab);
+  if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+    e.preventDefault();
+    const next=e.key==='ArrowRight'?(idx+1)%tabs.length:(idx-1+tabs.length)%tabs.length;
+    tabs[next].focus();
+    stab(tabs[next].id.replace('t-',''));
+  }
+  if(e.key==='Home'){e.preventDefault();tabs[0].focus();stab(tabs[0].id.replace('t-',''))}
+  if(e.key==='End'){e.preventDefault();tabs[tabs.length-1].focus();stab(tabs[tabs.length-1].id.replace('t-',''))}
+});
+
+/* ══ CRYPTO ══ */
+function genPIN(){
+  const arr=new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  return String(100000+(arr[0]%900000));
+}
+
+async function deriveKey(pin,salt){
+  const enc=new TextEncoder();
+  const km=await crypto.subtle.importKey('raw',enc.encode(pin),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:200000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+
+async function encryptData(data,pin){
+  const enc=new TextEncoder();
+  const salt=crypto.getRandomValues(new Uint8Array(16));
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const key=await deriveKey(pin,salt);
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(data));
+  const buf=new Uint8Array(salt.length+iv.length+ct.byteLength);
+  buf.set(salt,0);buf.set(iv,16);buf.set(new Uint8Array(ct),28);
+  return btoa(String.fromCharCode(...buf)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+async function decryptData(blob,pin){
+  const b64=blob.replace(/-/g,'+').replace(/_/g,'/');
+  const buf=new Uint8Array(atob(b64).split('').map(c=>c.charCodeAt(0)));
+  const salt=buf.slice(0,16);const iv=buf.slice(16,28);const ct=buf.slice(28);
+  const key=await deriveKey(pin,salt);
+  const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct);
+  return new TextDecoder().decode(plain);
+}
+
+/* ══ RESULTS TABS ══ */
+function rtab(n){
+  ['sc','pl','dc','tr'].forEach(t=>{
+    const btn=document.getElementById('rt-'+t);
+    const pan=document.getElementById('rp-'+t);
+    const on=(t===n);
+    if(btn){btn.classList.toggle('on',on);btn.setAttribute('aria-selected',String(on));btn.tabIndex=on?0:-1}
+    if(pan){if(on){pan.removeAttribute('hidden');pan.classList.add('active')}else{pan.setAttribute('hidden','');pan.classList.remove('active')}}
+  });
+}
+// Arrow-key nav for results tablist
+document.addEventListener('keydown',e=>{
+  const tab=e.target.closest('#r-tabs [role="tab"]');
+  if(!tab)return;
+  const tabs=[...document.querySelectorAll('#r-tabs [role="tab"]')];
+  const idx=tabs.indexOf(tab);
+  if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+    e.preventDefault();
+    const next=e.key==='ArrowRight'?(idx+1)%tabs.length:(idx-1+tabs.length)%tabs.length;
+    tabs[next].focus();rtab(tabs[next].id.replace('rt-',''));
+  }
+  if(e.key==='Home'){e.preventDefault();tabs[0].focus();rtab(tabs[0].id.replace('rt-',''))}
+  if(e.key==='End'){e.preventDefault();tabs[tabs.length-1].focus();rtab(tabs[tabs.length-1].id.replace('rt-',''))}
+});
+
+/* ══ NAVIGATION ══ */
+function show(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const el=document.getElementById(id);
+  el.classList.add('active');
+  window.scrollTo(0,0);
+  requestAnimationFrame(()=>{
+    const target=el.querySelector('h1,h2,h3,[autofocus]')||(id==='vp'?document.getElementById('pin-entry'):null)||el;
+    if(target){target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}
+  });
+}
+function resetFormState(){
+  // Hide any leftover UI state before re-entering the form or landing view
+  ['vm','clr-confirm','enc-err'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display='none';
+  });
+  if(_vmTimer){clearTimeout(_vmTimer);_vmTimer=null;}
+  // Reset submit button if it got stuck
+  const sb=document.getElementById('submit-btn');
+  if(sb){sb.disabled=false;}
+  // Reset results tabs back to first tab for next run
+  rtab('sc');
+}
+function home(){
+  history.replaceState(null,'',location.pathname);
+  resetFormState();
+  show('vl');
+}
+
+/* ══ MODE A — in-office ══ */
+function goA(){
+  MODE='A';
+  resetFormState();
+  document.getElementById('client-welcome').style.display='none';
+  document.getElementById('submit-btn').textContent='Score & Interpret →';
+  renderForm();updProg();show('vf');
+}
+
+/* ══ MODE B — clinician setup ══ */
+function goSetup(){
+  MODE='B';
+  SESSION_PIN=genPIN();
+  document.getElementById('pin-display').textContent=SESSION_PIN;
+  const base=location.href.split('#')[0];
+  const clientLink=base+'#form='+SESSION_PIN;
+  document.getElementById('client-url').value=clientLink;
+  show('vs');
+}
+
+function goForm(){
+  document.getElementById('client-welcome').style.display='none';
+  document.getElementById('submit-btn').textContent='Encrypt & Generate Link →';
+  renderForm();updProg();show('vf');
+}
+
+function copyClientUrl(){
+  const url=document.getElementById('client-url').value;
+  navigator.clipboard.writeText(url).then(()=>{
+    const b=document.getElementById('copy-client-url');
+    b.textContent='✓ Copied!';b.classList.add('cp');
+    setTimeout(()=>{b.textContent='Copy Client Link';b.classList.remove('cp')},2200);
+  });
+}
+
+function copyResult(){
+  const url=document.getElementById('result-url').value;
+  navigator.clipboard.writeText(url).then(()=>{
+    const b=document.getElementById('copy-result');
+    const confirm=document.getElementById('copy-confirm');
+    b.textContent='✓ Copied!';b.classList.add('cp');
+    confirm.textContent='✓ Copied! Now go to your clinician\'s message and paste it in a reply.';
+    setTimeout(()=>{b.textContent='📋 Copy Result Link';b.classList.remove('cp')},3000);
+  }).catch(()=>{
+    const confirm=document.getElementById('copy-confirm');
+    confirm.textContent='Auto-copy didn\'t work — see the manual instructions in Step 1 below.';
+    confirm.style.color='#8B2020';
+  });
+}
+
+/* ══ FORM RENDER ══ */
+function renderForm(){
+  const c=document.getElementById('fb');
+  let out='';
+  SS.forEach(sub=>{
+    const its=IT.filter(i=>i.sub===sub.id);
+    out+=`<div class="sb"><h4>${sub.name}</h4><p class="sdf">${sub.def}</p>`;
+    its.forEach(it=>{
+      out+=`<div class="item"><div class="itx"><span class="inu" aria-hidden="true">${it.n}.</span>${it.text}</div>`;
+      out+=`<fieldset class="lk" style="border:none;padding:0;margin:0"><legend class="sr-only">Item ${it.n}: ${it.text}</legend>`;
+      for(let v=1;v<=5;v++){
+        out+=`<label title="${SL[v]}"><input type="radio" name="q${it.n}" value="${v}" onchange="updProg()" aria-label="${v} — ${SL[v]}"><div class="pip" aria-hidden="true"><span class="n">${v}</span><span class="l">${SH[v]}</span></div></label>`;
+      }
+      out+=`</fieldset></div>`;
+    });
+    out+=`</div>`;
+  });
+  c.innerHTML=out;
+}
+
+function getResp(){
+  const r={};
+  for(let n=1;n<=39;n++){const s=document.querySelector(`input[name="q${n}"]:checked`);if(s)r[n]=parseInt(s.value)}
+  return r;
+}
+
+function updProg(){
+  const r=getResp();const c=Object.keys(r).length;
+  document.getElementById('pfl').style.width=(c/39*100)+'%';
+  document.getElementById('pll').textContent=`${c} of 39 answered`;
+  document.getElementById('pbar').setAttribute('aria-valuenow',c);
+}
+
+function clrForm(){
+  const answered=Object.keys(getResp()).length;
+  if(answered===0)return;
+  const dlg=document.getElementById('clr-confirm');
+  const msg=document.getElementById('clr-msg');
+  msg.textContent=`Clear all ${answered} answered question${answered===1?'':'s'}? This cannot be undone.`;
+  dlg.style.display='block';
+  dlg.querySelector('button').focus();
+}
+function confirmClear(){
+  document.querySelectorAll('input[type=radio]').forEach(i=>i.checked=false);
+  updProg();
+  document.getElementById('clr-confirm').style.display='none';
+  const firstH4=document.querySelector('#fb .sb h4');
+  if(firstH4){firstH4.setAttribute('tabindex','-1');firstH4.focus();}
+}
+function cancelClear(){
+  document.getElementById('clr-confirm').style.display='none';
+  const clearBtn=document.querySelector('.fa button.bs');
+  if(clearBtn)clearBtn.focus();
+}
+
+let _vmTimer=null;
+async function submitForm(){
+  const r=getResp();
+  if(Object.keys(r).length<39){
+    const m=document.getElementById('vm');
+    const missing=[];for(let n=1;n<=39;n++){if(!r[n])missing.push(n)}
+    m.textContent=`⚠ ${missing.length} question${missing.length>1?'s':''} still need${missing.length===1?'s':''} an answer: items ${missing.join(', ')}.`;
+    m.style.display='block';
+    if(_vmTimer)clearTimeout(_vmTimer);
+    _vmTimer=setTimeout(()=>{m.style.display='none';_vmTimer=null;},7000);
+    const firstMissing=document.querySelector(`input[name="q${missing[0]}"]`);
+    if(firstMissing){const block=firstMissing.closest('.item');if(block)block.scrollIntoView({behavior:'smooth',block:'center'});}
+    return;
+  }
+  if(MODE==='A'){showRes(r);return}
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='Encrypting…';
+  const encErr=document.getElementById('enc-err');
+  encErr.style.display='none';encErr.textContent='';
+  try{
+    const blob=await encryptData(JSON.stringify(r),SESSION_PIN);
+    const base=location.href.split('#')[0];
+    const resultUrl=base+'#e='+blob;
+    document.getElementById('result-url').value=resultUrl;
+    show('vd');
+  }catch(err){
+    encErr.textContent='Encryption failed. Please ensure your browser supports the Web Crypto API (all modern browsers do).';
+    encErr.style.display='block';
+    btn.disabled=false;btn.textContent='Encrypt & Generate Link →';
+  }
+}
+
+/* ══ PIN ENTRY & DECRYPT ══ */
+async function decryptAndShow(){
+  const pin=document.getElementById('pin-entry').value.trim();
+  const err=document.getElementById('pin-error');
+  err.style.display='none';
+  if(pin.length!==6||!/^\d{6}$/.test(pin)){
+    err.textContent='Please enter a 6-digit numeric PIN.';err.style.display='block';return;
+  }
+  const hash=location.hash;
+  if(!hash.startsWith('#e=')){
+    err.textContent='No encrypted data found in this URL.';err.style.display='block';return;
+  }
+  const blob=hash.slice(3);
+  try{
+    const plain=await decryptData(blob,pin);
+    const resp=JSON.parse(plain);
+    showRes(resp);
+  }catch(e){
+    err.textContent='Incorrect PIN or corrupted data. Please double-check your PIN and try again. If the problem persists, ask the client to complete the form again.';
+    err.style.display='block';
+  }
+}
+
+/* ══ SCORING ══ */
+function scoreItem(r,rev){return rev?(6-r):r}
+function sev(m){
+  if(m<=2)return{l:'Severe Mismatch',k:'severe'};
+  if(m<=3)return{l:'Significant Mismatch',k:'significant'};
+  if(m<=3.5)return{l:'Moderate Mismatch',k:'moderate'};
+  if(m<=4)return{l:'Mild Mismatch',k:'mild'};
+  return{l:'Good Fit',k:'good'};
+}
+function getTI(t){
+  if(t<=78)return{l:'Severe Overall Mismatch',ph:1,pn:'Survival',rec:'Crisis-level intervention. Immediate comprehensive environmental assessment. May require intensive support services. Review NST crisis protocol (§7.6) before proceeding with standard treatment planning.',dm:'80–90% Systems Alignment / 10–20% Narrative Repair',dmS:85,dmT:15,focus:'Environment first. Stabilise demands before any narrative processing. Assess safety.'};
+  if(t<=117)return{l:'Significant Overall Mismatch',ph:2,pn:'Stabilisation',rec:'Neurodiversity-affirming treatment strongly indicated. Multiple domains require active intervention. Dual Movement (Track 1 + Track 2) essential.',dm:'50–60% Systems Alignment / 40–50% Narrative Repair',dmS:55,dmT:45,focus:'Both tracks active. Reduce demands while beginning gentle narrative work. Build capacity before deepening.'};
+  if(t<=137)return{l:'Moderate Overall Mismatch',ph:3,pn:'Sustainable Functioning',rec:'Active treatment appropriate. Focus on 2–3 primary domains with lowest subscale scores. Dual Movement: ~40% Systems Alignment / 60% Narrative Repair.',dm:'30–40% Systems Alignment / 60–70% Narrative Repair',dmS:35,dmT:65,focus:'Deepen narrative repair. Fine-tune remaining environmental friction. Identity integration work.'};
+  if(t<=156)return{l:'Mild Overall Mismatch',ph:3,pn:'Sustainable → Thriving',rec:'Maintenance and optimisation. May be approaching termination readiness. Focus on preserving gains and fine-tuning remaining friction points.',dm:'20–30% Systems Alignment / 70–80% Narrative Repair',dmS:25,dmT:75,focus:'Consolidate gains. Termination readiness assessment. Relapse prevention planning.'};
+  return{l:'Good Overall Fit',ph:4,pn:'Thriving',rec:'Prevention and preservation focus. Active treatment may not be necessary. Monitor for environmental changes that could shift fit scores.',dm:'20% Systems Alignment / 80% Narrative Repair',dmS:20,dmT:80,focus:'Maintenance and growth. Values-aligned living. Sustainability of environmental modifications.'};
+}
+function computeScores(resp){
+  const sc={};IT.forEach(i=>{sc[i.n]=scoreItem(resp[i.n],i.rev)});
+  const sub={};let tot=0;
+  SS.forEach(s=>{
+    const v=s.items.map(n=>sc[n]);
+    const sum=v.reduce((a,b)=>a+b,0);
+    tot+=sum;
+    sub[s.id]={mean:Math.round(sum/v.length*100)/100};
+  });
+  return{sub,tot};
+}
+
+/* ══ INSURANCE / GOAL DATA ══ */
+const INS_GOALS={
+  overall:{nst:'Improve overall person–environment fit and daily functioning',ins:'Client will demonstrate improved daily functioning, as evidenced by reduced symptom burden and increased capacity for meaningful activity, measured by NFMS total score improvement ≥0.5 points per targeted subscale within 12 sessions.'},
+  envresp:{nst:'Increase environmental responsivity and access to accommodations',ins:'Client will implement at least two environmental modifications to reduce anxiety-related impairment, as evidenced by increased compliance with accommodation plans and self-reported reduction in environmental stressors within 8 sessions.'},
+  cogload:{nst:'Reduce cognitive load and improve executive function alignment',ins:'Client will identify and implement cognitive load reduction strategies (decision simplification, external scaffolding, task restructuring), as evidenced by self-monitoring logs and improved daily task completion within 10 sessions.'},
+  sensory:{nst:'Improve sensory environment alignment and access to regulation',ins:'Client will implement sensory accommodations to reduce anxiety and improve daily functioning, as evidenced by decreased sensory avoidance and self-reported tolerability in primary environments within 8 sessions.'},
+  social:{nst:'Improve social architecture and reduce masking burden',ins:'Client will identify and reduce masking demands in primary social contexts, as evidenced by increased authentic communication and reduced post-interaction exhaustion, as measured by self-report within 10 sessions.'},
+  temporal:{nst:'Optimise temporal structure and schedule-capacity alignment',ins:'Client will develop and implement schedule modifications to reduce time-related anxiety, as evidenced by reduced rushing, increased buffer time, and improved energy alignment within 8 sessions.'},
+  identity:{nst:'Strengthen identity-environment coherence and reduce internalised ableism',ins:'Client will challenge maladaptive self-perceptions related to neurodivergent identity, demonstrating more affirming self-statements in 80% of sessions and increased identity expression in at least one new context within 12 sessions.'},
+  advocacy:{nst:'Build systemic advocacy capacity and accommodation knowledge',ins:'Client will demonstrate improved self-advocacy skills by identifying available accommodations and successfully navigating at least one accommodation request within 10 sessions.'},
+  narrative:{nst:'Repair narrative injury and reduce shame-driven phantom demand',ins:'Client will challenge maladaptive cognitions related to self-worth and neurodivergent identity, demonstrating more balanced self-statements and reduced shame-based self-monitoring in 80% of sessions within 12 sessions.'}
+};
+const DX_CODES=[
+  {code:'F41.1',name:'Generalized Anxiety Disorder',note:'Chronic worry/anxiety secondary to mismatch overload'},
+  {code:'F32.9',name:'Major Depressive Disorder, Single Episode',note:'Depressive sx from sustained capacity depletion'},
+  {code:'F33.1',name:'Major Depressive Disorder, Recurrent, Moderate',note:'Recurrent depressive episodes tied to mismatch cycles'},
+  {code:'F43.25',name:'Adjustment Disorder, Mixed Anxiety/Depressed Mood',note:'When mismatch was triggered by recent stressor'},
+  {code:'F43.10',name:'PTSD',note:'When trauma is present alongside or causing mismatch'},
+  {code:'F90.2',name:'ADHD, Combined Type',note:'When executive function is primary mismatch driver'},
+  {code:'F84.0',name:'Autism Spectrum Disorder',note:'Primary or secondary dx; autism-specific mismatch'},
+  {code:'Z63.0',name:'Problems in Relationship with Spouse/Partner',note:'V-code when relational mismatch is primary concern'}
+];
+
+/* ══ RESULTS RENDER ══ */
+function showRes(resp){
+  const{sub,tot}=computeScores(resp);
+  const interp=getTI(tot);
+  const sevList=SS.filter(s=>sub[s.id].mean<=2).map(s=>s.name);
+  const sorted=SS.slice().sort((a,b)=>sub[a.id].mean-sub[b.id].mean);
+  const lo=sorted[0];const hi=sorted[SS.length-1];
+  const top2=sorted.slice(0,2);
+  // Narrative injury coefficient M = (5 - mean) / 4
+  const niMean=sub['narrative'].mean;
+  const M=((5-niMean)/4);
+  const phantom=Math.round(15*M*10)/10;
+
+  /* ── TAB 1: SCORES ── */
+  let sc='';
+  if(interp.ph===1||sevList.length>=3){
+    sc+=`<div class="alert" role="alert"><strong>⚠ Clinical Attention: Severe Mismatch Indicators Present</strong> ${sevList.length?'Severe mismatch in: '+sevList.join(', ')+'. ':''}Review NST crisis protocol (§7.6) and complete safety assessment before proceeding with standard treatment planning.</div>`;
+  }
+  // Score header
+  sc+=`<div class="rh"><div class="pb">Phase ${interp.ph} · ${interp.pn}</div><h2>${interp.l}</h2><div class="ts" aria-label="Total score ${tot}">${tot}</div><div class="sr2">Total Score · Range 39–195 · Higher = better fit</div><div class="ti2">${interp.rec}</div></div>`;
+  // Narrative injury summary card
+  const niSev=M>=0.6?'high':M>=0.35?'mod':'low';
+  const niCardClass=M>=0.6?'':'ni-'+niSev;
+  const niColor=M>=0.6?'ni-high':M>=0.35?'ni-mod':'ni-low';
+  const niLabel=M>=0.6?'High — Track 2 Urgent':M>=0.35?'Moderate — Track 2 Active':'Low — Environment Primary';
+  sc+=`<div class="ni-card ${niCardClass}" aria-label="Narrative Injury: M coefficient ${M.toFixed(2)}">
+    <div class="ni-head"><div><div class="ni-title">Narrative Injury (Phantom Demand)</div><div class="ni-sub">Items 31–39 · M = (5 − subscale mean) ÷ 4</div></div><div><div class="ni-m ${niColor}">M = ${M.toFixed(2)}</div><div class="ni-sub" style="text-align:right">${niLabel}</div></div></div>
+    <div class="ni-body">${M>=0.6?`<strong>High narrative injury present.</strong> Phantom demand adds approximately <strong>${phantom} additional demand units</strong> beyond actual environmental load. This is clinically significant — the client is carrying this internal weight on top of every environmental demand. Track 2 (Narrative Repair) is urgent and should run alongside all systems work from the first session.`:M>=0.35?`<strong>Moderate narrative injury present.</strong> Phantom demand estimated at <strong>${phantom} additional demand units</strong>. Narrative work is active and important. Integrate shame-reduction and mismatch-reframing alongside systems alignment work.`:`<strong>Narrative injury is relatively low</strong> (phantom demand ~${phantom} units). Environmental mismatch is the primary driver. Systems Alignment is the priority intervention. Narrative work can be lighter-touch.`}</div>
+  </div>`;
+  // Subscale scores
+  sc+=`<h3 class="slbl">Subscale Scores</h3>`;
+  SS.forEach(s=>{
+    const{mean}=sub[s.id];const sv=sev(mean);const bar=((mean-1)/4*100).toFixed(1);
+    sc+=`<div class="sres sv-${sv.k}" aria-label="${s.name}: ${mean.toFixed(2)} — ${sv.l}"><div><div class="srn">${s.name}</div><div class="sbw" aria-hidden="true"><div class="sbf" style="width:${bar}%"></div></div><span class="badge">${sv.l}</span><div class="scl">${s.clin[sv.k]}</div></div><div class="ssc"><div class="ssv">${mean.toFixed(2)}</div><div style="font-size:calc(11px * var(--fs));color:var(--sg)">/ 5.00</div></div></div>`;
+  });
+  // Collaborative prompts
+  sc+=`<section class="cc" aria-label="Collaborative interpretation prompts"><h4>Collaborative Interpretation Prompts</h4><ul role="list">
+    <li>"Your overall score is ${tot}, which suggests ${interp.l.toLowerCase()}. How does that match what you've been experiencing?"</li>
+    <li>"${lo.name} has the lowest score at ${sub[lo.id].mean.toFixed(2)}. Does that resonate with you?"</li>
+    <li>"Can you think of specific examples from the past two weeks that reflect that score?"</li>
+    <li>"Which of these areas feels most urgent or important to address first?"</li>
+    <li>"Looking at ${hi.name} — what's working there? What can we learn from that?"</li>
+    <li>"Are you surprised by any of these scores, either higher or lower than you expected?"</li>
+  </ul></section>`;
+
+  /* ── TAB 2: INTERVENTION PLANNING ── */
+  let pl='';
+  // Phase guidance + dual movement ratio
+  pl+=`<div class="dm-card">
+    <h3>Treatment Phase ${interp.ph} — ${interp.pn}</h3>
+    <p>${interp.focus}</p>
+    <div class="dm-bars" aria-label="Dual Movement ratio for Phase ${interp.ph}">
+      <div class="dm-row"><div class="dm-lbl">Track 1 · Systems Alignment</div><div class="dm-track"><div class="dm-fill-1" style="width:${interp.dmS}%"></div></div><div class="dm-pct">${interp.dmS}%</div></div>
+      <div class="dm-row"><div class="dm-lbl">Track 2 · Narrative Repair</div><div class="dm-track"><div class="dm-fill-2" style="width:${interp.dmT}%"></div></div><div class="dm-pct">${interp.dmT}%</div></div>
+    </div>
+    <div class="dm-note">${interp.dm}. This ratio shifts as the client progresses. Phase 1 is environment-first; Phase 4 is meaning-first. Both tracks run simultaneously in all phases — only the emphasis shifts.</div>
+  </div>`;
+  // Session focus by phase
+  const SF={
+    1:[{t:'Systems Alignment Focus',items:['Complete environmental assessment across all 9 domains','Identify 1 high-impact, high-modifiability change to implement immediately','Coordinate with other providers if crisis indicators present','Postpone deep narrative processing until capacity ≥ 4/10','Document safety plan and emergency contact access']},
+       {t:'Narrative Repair Focus (minimal)',items:['Offer mismatch frame psychoeducation only — do not process shame yet','Normalise capacity fluctuation: "This is information, not character"','Avoid exploring deficit narratives until stabilised','Between-session: 1 simple demand-reduction experiment only']}],
+    2:[{t:'Systems Alignment Focus',items:['Target top 1–2 subscales from Priority Formula below','Concrete environmental modification experiments each session','Workplace/home accommodation planning','Schedule restructuring and buffer-time analysis','Sensory environment audit if Sensory Alignment is low']},
+       {t:'Narrative Repair Focus',items:['Introduce mismatch-reframing as regular session practice','Begin "symptom-as-signal" work for the primary mismatch domain','Explore masking costs gently if Social Architecture is low','Between-session: mismatch journal or capacity tracking log']}],
+    3:[{t:'Systems Alignment Focus',items:['Consolidate gains from Phase 2 modifications','Address secondary subscale targets','Advocacy capacity building: accommodation letters, rights knowledge','Relapse prevention: environmental monitoring systems']},
+       {t:'Narrative Repair Focus',items:['Identity integration — what does it mean to be in a better-fit environment?','Process grief for time spent in mismatch','Shame reduction: ISI Cycle work on core deficit narratives','Explore values alignment and life direction post-stabilisation']}],
+    4:[{t:'Systems Alignment Focus',items:['Maintenance check: are environmental modifications holding?','Prevent ε decay — are environments becoming rigid again?','Anticipatory planning for high-demand periods (holidays, life transitions)','Termination planning: sustainability of gains']},
+       {t:'Narrative Repair Focus',items:['Values-aligned living and meaning-making work','Integration of neurodivergent identity as strength','Relapse narrative: "If I struggle again, it\'s mismatch, not failure"','Termination: client as expert on their own environmental needs']}]
+  };
+  const sfItems=SF[Math.min(interp.ph,4)]||SF[3];
+  pl+=`<div class="sf-grid" aria-label="Session focus recommendations">`;
+  sfItems.forEach(block=>{
+    pl+=`<div class="sf-card"><h4>${block.t}</h4><ul role="list">${block.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+  });
+  pl+=`</div>`;
+  // Priority formula
+  pl+=`<div class="pc"><h3 class="slbl" style="margin-top:0">Intervention Priority Formula</h3><p style="font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:14px">Rate environmental modifiability (ε) for each domain. <strong>Priority = (5.0 − subscale mean) × ε.</strong> Higher score = intervene first. A moderate domain with high modifiability may outrank a severe but rigid domain.</p><div id="pr">`;
+  SS.forEach(s=>{
+    const{mean}=sub[s.id];const sv2=sev(mean);
+    pl+=`<div class="mr2" data-sub="${s.id}" data-mean="${mean}"><div><div class="mn2">${s.name}</div><div style="margin-top:3px"><span class="badge sv-${sv2.k}">${sv2.l}</span> <span style="font-size:calc(11px * var(--fs));color:var(--sg)">${mean.toFixed(2)}</span></div></div><select class="msel" onchange="updPri()" aria-label="Modifiability for ${s.name}"><option value="">Rate ε (modifiability)</option><option value="0.9">0.9 — Highly modifiable</option><option value="0.7">0.7 — Mostly modifiable</option><option value="0.5">0.5 — Somewhat modifiable</option><option value="0.3">0.3 — Somewhat rigid</option><option value="0.1">0.1 — Mostly rigid</option></select></div>`;
+  });
+  pl+=`</div><div id="prr"></div></div>`;
+
+  /* ── TAB 3: DOCUMENTATION ── */
+  let dc='';
+  // Diagnosis codes
+  dc+=`<div class="doc-section"><h3>Suggested Diagnosis Codes</h3><p style="font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:12px">Select based on actual clinical presentation. Diagnose the symptoms and functional impairment — not the neurodivergence itself. Multiple codes may apply.</p>
+    <div class="dx-grid">`;
+  DX_CODES.forEach(d=>{
+    dc+=`<div class="dx-chip"><div class="dx-code">${d.code}</div><div class="dx-name">${d.name}</div><div class="dx-note">${d.note}</div></div>`;
+  });
+  dc+=`</div>
+    <div class="cpt-row" aria-label="CPT codes">
+      <div class="cpt-chip"><strong>90837</strong>60-min Individual Therapy</div>
+      <div class="cpt-chip"><strong>90834</strong>45-min Individual Therapy</div>
+      <div class="cpt-chip"><strong>96127</strong>Brief Assessment (NFMS)</div>
+      <div class="cpt-chip"><strong>90847</strong>Family Therapy w/ Client</div>
+    </div>
+  </div>`;
+  // Insurance translation table
+  dc+=`<div class="doc-section"><h3>NST → Insurance Language</h3>
+    <table class="ins-tbl" aria-label="NST to insurance language translation">
+      <thead><tr><th>NST Concept</th><th>Insurance-Compatible Language</th></tr></thead>
+      <tbody>
+        <tr><td>Environmental mismatch</td><td>Environmental stressors impacting daily functioning</td></tr>
+        <tr><td>Capacity depletion</td><td>Decreased stress tolerance and coping resources</td></tr>
+        <tr><td>MOD Cycle</td><td>Chronic psychosocial stressors contributing to anxiety/depression</td></tr>
+        <tr><td>Systems alignment (Track 1)</td><td>Environmental modifications and adaptive coping strategy development</td></tr>
+        <tr><td>Narrative repair (Track 2)</td><td>Cognitive restructuring and self-concept work</td></tr>
+        <tr><td>Threshold exceedance</td><td>Functioning below baseline due to psychosocial stressors</td></tr>
+        <tr><td>Narrative injury</td><td>Maladaptive cognitions related to self-worth and self-efficacy</td></tr>
+        <tr><td>NFMS administration</td><td>CPT 96127 — Brief emotional/behavioural assessment</td></tr>
+        <tr><td>Capacity check (0–10)</td><td>Session-based functional status monitoring</td></tr>
+      </tbody>
+    </table>
+  </div>`;
+  // Treatment plan goals — top 2 target subscales
+  dc+=`<div class="doc-section"><h3>Treatment Plan Goals</h3><p style="font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:12px">Insurance-compatible goal statements for the two highest-priority subscales. Edit to match the client's specific presentation and your treatment approach.</p>`;
+  top2.forEach((s,i)=>{
+    const g=INS_GOALS[s.id];
+    if(g){
+      dc+=`<div class="goal-block">
+        <div class="gl">Goal ${i+1} — ${s.name} (current score: ${sub[s.id].mean.toFixed(2)})</div>
+        <p>${g.ins}</p>
+      </div>`;
+    }
+  });
+  // Also show narrative goal if M is high and narrative wasn't already in top 2
+  if(M>=0.5&&!top2.find(s=>s.id==='narrative')){
+    const g=INS_GOALS['narrative'];
+    dc+=`<div class="goal-block">
+      <div class="gl">Goal 3 — Narrative Injury (M = ${M.toFixed(2)} — co-occurring priority)</div>
+      <p>${g.ins}</p>
+    </div>`;
+  }
+  dc+=`</div>`;
+  // Progress note template
+  const topSubNames=top2.map(s=>s.name).join(' and ');
+  const noteText=`SUBJECTIVE: Client reports capacity at ___/10 today, with primary depletion sources including ${topSubNames.toLowerCase()}-related demands. Reports [describe presenting symptoms, mood, functioning update].
+
+OBJECTIVE: Client engaged [appropriately / with some difficulty] in session. Affect [congruent / flat / labile / anxious]. Thought process [organized / tangential]. No SI/HI reported / [describe if present]. NFMS Total Score: ${tot} (Phase ${interp.ph} — ${interp.pn}) administered [date].
+
+ASSESSMENT: Client presenting with ${interp.l.toLowerCase()} per NFMS (Total: ${tot}/195). Primary mismatch domains: ${topSubNames}${M>=0.5?' with co-occurring narrative injury (M = '+M.toFixed(2)+', phantom demand ~'+phantom+' units)':'. Narrative injury low to moderate'}. Currently in Phase ${interp.ph} (${interp.pn}) NST treatment arc. ${interp.ph<=2?'Environmental stabilisation is primary focus.':'Dual movement active — systems alignment and narrative repair in progress.'}
+
+PLAN:
+— Continue NST, Phase ${interp.ph}. 
+— Session today targeted: [describe specific intervention — e.g., sensory accommodation planning, mismatch reframe, capacity load analysis].
+— Between-session experiment: [specify one concrete, low-demand task].
+— Re-administer NFMS at [next milestone session].
+— [Any referrals, coordination, or safety planning if applicable].
+
+CPT: 90837 (60 min) / 90834 (45 min)
+Diagnosis: [select applicable code(s) from F41.1 / F32.9 / F90.2 / F43.25 / F84.0 / other]`;
+  dc+=`<div class="doc-section"><h3>Session Progress Note Template</h3>
+    <p style="font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:10px">Pre-populated with this client's data. Edit all bracketed fields. Copy and paste into your EHR.</p>
+    <textarea class="note-ta" id="note-ta" aria-label="Progress note template — editable" spellcheck="true">${noteText}</textarea>
+    <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="cbtn" onclick="copyNote()" id="copy-note-btn">📋 Copy Note</button>
+      <span id="copy-note-confirm" aria-live="polite" style="font-size:calc(13px * var(--fs));color:#1A5A2A;font-weight:700;align-self:center;min-height:22px"></span>
+    </div>
+  </div>`;
+
+  /* ── TAB 4: TRACKING ── */
+  let tr='';
+  // Progress benchmarks
+  tr+=`<div class="track-section"><h3>Progress Benchmarks</h3>
+    <div class="bench-grid">
+      <div class="bench-card"><div class="bench-tp">Mid-Treatment (~12 sessions)</div><div class="bench-metric">≥ 0.5</div><div class="bench-desc">point improvement on targeted subscales <span style="display:block;margin-top:2px">+10–15 total score points</span></div></div>
+      <div class="bench-card"><div class="bench-tp">Post-Treatment (~16–24 sessions)</div><div class="bench-metric">≥ 1.0 / +20</div><div class="bench-desc">subscale improvement / total score increase for clinically significant change</div></div>
+      <div class="bench-card"><div class="bench-tp">3-Month Follow-Up</div><div class="bench-metric">≤ 0.3</div><div class="bench-desc">subscale decline acceptable. Gains maintained independently.</div></div>
+    </div>
+    <div class="stall-box"><h4>⚠ Stall Rule</h4><p style="font-size:calc(12px * var(--fs));color:var(--sm);margin-bottom:8px">If a targeted subscale has not improved by ≥0.5 points after 4–6 focused sessions, audit the following:</p><ul role="list"><li>Capacity — was it overestimated at the time of targeting?</li><li>Mismatch domain — is the correct domain being targeted?</li><li>Narrative injury — is unaddressed shame blocking implementation of changes?</li><li>Modifiability — is the environment less changeable than initially assessed?</li><li>Scope — does this require resources beyond individual therapy (housing, employer, medical)?</li></ul></div>
+  </div>`;
+  // Longitudinal tracking table
+  const ssNames=[
+    {k:'overall',n:'Overall Fit'},
+    {k:'envresp',n:'Env. Responsivity'},
+    {k:'cogload',n:'Cognitive Load'},
+    {k:'sensory',n:'Sensory Alignment'},
+    {k:'social',n:'Social Architecture'},
+    {k:'temporal',n:'Temporal Structure'},
+    {k:'identity',n:'Identity Coherence'},
+    {k:'advocacy',n:'Advocacy Capacity'},
+    {k:'narrative',n:'Narrative Injury'}
+  ];
+  tr+=`<div class="track-section"><h3>Longitudinal Score Tracking</h3>
+    <p style="font-size:calc(13px * var(--fs));color:var(--sm);margin-bottom:14px">This session's scores appear in the Baseline column. Enter scores from future administrations to track progress. Print this page for paper records.</p>
+    <div style="overflow-x:auto">
+    <table class="long-tbl" aria-label="Longitudinal NFMS score tracking">
+      <thead><tr>
+        <th>Subscale</th>
+        <th>Baseline<br><small>Today</small></th>
+        <th>Mid-Tx<br><input type="text" id="lt-date-mid" placeholder="Date" aria-label="Mid-treatment date" style="width:72px;margin-top:3px;font-size:calc(11px * var(--fs))"></th>
+        <th>Post-Tx<br><input type="text" id="lt-date-post" placeholder="Date" aria-label="Post-treatment date" style="width:72px;margin-top:3px;font-size:calc(11px * var(--fs))"></th>
+        <th>3mo F/U<br><input type="text" id="lt-date-fu" placeholder="Date" aria-label="Follow-up date" style="width:72px;margin-top:3px;font-size:calc(11px * var(--fs))"></th>
+        <th>Change<br><small>BL→Post</small></th>
+      </tr></thead>
+      <tbody>`;
+  ssNames.forEach(s=>{
+    const mean=sub[s.k].mean.toFixed(2);
+    tr+=`<tr>
+      <td>${s.n}</td>
+      <td class="baseline">${mean}</td>
+      <td><input type="text" aria-label="${s.n} mid-treatment score" placeholder="—"></td>
+      <td><input type="text" aria-label="${s.n} post-treatment score" placeholder="—"></td>
+      <td><input type="text" aria-label="${s.n} follow-up score" placeholder="—"></td>
+      <td><input type="text" aria-label="${s.n} baseline to post change" placeholder="—"></td>
+    </tr>`;
+  });
+  tr+=`<tr style="border-top:2px solid var(--bd)">
+      <td><strong>TOTAL SCORE</strong></td>
+      <td class="baseline"><strong>${tot}</strong></td>
+      <td><input type="text" aria-label="Total score mid-treatment" placeholder="—"></td>
+      <td><input type="text" aria-label="Total score post-treatment" placeholder="—"></td>
+      <td><input type="text" aria-label="Total score follow-up" placeholder="—"></td>
+      <td><input type="text" aria-label="Total score baseline to post change" placeholder="—"></td>
+    </tr>
+    </tbody></table></div>
+    <p style="margin-top:10px;font-size:calc(12px * var(--fs));color:var(--sg)">Tip: use browser print (🖨 above) to save or print this tracking form. Scores are not saved between sessions.</p>
+  </div>`;
+  // Phi block for printing
+  tr+=`<div class="phi"><strong>Scoring reminder:</strong> 19 items are reverse-scored (items 2, 7, 9, 11, 13, 15, 17, 21, 25, 30–39). A single reverse-scoring error shifts a subscale mean by 1.0 point. Use the digital tool to eliminate scoring errors. Clinically meaningful change: ≥0.5 subscale point, ≥10 total score (minimum); ≥1.0 subscale, ≥20 total (clinically significant). NFMS is an emerging measure — treat all cutoffs as clinical hypotheses pending formal validation.</div>`;
+
+  // Populate all 4 tabs
+  document.getElementById('rb-sc').innerHTML=sc;
+  document.getElementById('rb-pl').innerHTML=pl;
+  document.getElementById('rb-dc').innerHTML=dc;
+  document.getElementById('rb-tr').innerHTML=tr;
+  show('vr');
+}
+
+function copyNote(){
+  const ta=document.getElementById('note-ta');
+  if(!ta)return;
+  navigator.clipboard.writeText(ta.value).then(()=>{
+    const b=document.getElementById('copy-note-btn');
+    const c=document.getElementById('copy-note-confirm');
+    b.textContent='✓ Copied!';b.classList.add('cp');
+    c.textContent='Copied to clipboard — paste into your EHR.';
+    setTimeout(()=>{b.textContent='📋 Copy Note';b.classList.remove('cp');c.textContent='';},3500);
+  });
+}
+
+function updPri(){
+  const rows=document.querySelectorAll('#pr .mr2');const items=[];
+  rows.forEach(r=>{
+    const id=r.dataset.sub;const mean=parseFloat(r.dataset.mean);
+    const eps=r.querySelector('select').value;
+    const s=SS.find(x=>x.id===id);
+    if(eps)items.push({name:s.name,mean,eps:parseFloat(eps),p:(5-mean)*parseFloat(eps)});
+  });
+  if(!items.length)return;
+  items.sort((a,b)=>b.p-a.p);
+  const pr=document.getElementById('prr');
+  let h=`<h3 class="slbl" style="margin-top:14px">Ranked Targets</h3>`;
+  items.forEach((it,i)=>{
+    h+=`<div class="pri" aria-label="${i+1}. ${it.name}, priority score ${it.p.toFixed(2)}"><div class="prk" aria-hidden="true">${i+1}</div><div><div class="prn">${it.name}</div><div class="prs2">Mean ${it.mean.toFixed(2)} · ε ${it.eps} · Priority score ${it.p.toFixed(2)}</div></div><div class="prch" aria-hidden="true">${it.p.toFixed(2)}</div></div>`;
+  });
+  // If all 9 rated, show a clinical note
+  if(items.length===9){
+    const top=items[0];
+    h+=`<div class="dm-note" style="margin-top:10px">Top priority: <strong>${top.name}</strong> (score ${top.p.toFixed(2)}). Target this domain in Track 1 session work. Rate all domains to see full ranking.</div>`;
+  }
+  pr.innerHTML=h;
+}
+
+/* ══ ENTER KEY on PIN input only (not button — prevents double-fire) ══ */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.id==='pin-entry'&&document.getElementById('vp').classList.contains('active'))decryptAndShow();
+});
+
+/* ══ INIT ══ */
+window.addEventListener('DOMContentLoaded',()=>{
+  const hash=location.hash;
+  if(hash.startsWith('#e=')){
+    // Clinician arriving with encrypted result — show PIN entry
+    show('vp');return;
+  }
+  if(hash.startsWith('#form=')){
+    // Client arriving via client link — extract PIN from hash, show welcome + form
+    const pinFromLink=hash.slice(6).trim();
+    MODE='B';
+    SESSION_PIN=pinFromLink; // used to encrypt responses before sending back
+    document.body.classList.add('client-mode'); // hides back button, clinician UI
+    document.getElementById('client-welcome').style.display='block';
+    document.getElementById('submit-btn').textContent='Encrypt & Generate Link →';
+    renderForm();updProg();show('vf');return;
+  }
+  show('vl');
+});
+</script>
+</body>
+</html>
