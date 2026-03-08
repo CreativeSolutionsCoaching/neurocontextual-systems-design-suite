@@ -1,0 +1,51 @@
+{
+  "name": "Neurocontextual Systems Design Suite",
+  "short_name": "NSDS",
+  "description": "Interactive psychoeducation tools and games built on the Neurocontextual Systems Therapy framework. Developed by Elizabeth Morrison, MS, LPC.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f0e6cc",
+  "theme_color": "#f0e6cc",
+  "categories": ["education", "health", "medical"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Central Station",
+      "short_name": "Central Station",
+      "description": "A Capacity and Routing Game",
+      "url": "/central-station.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Inner Airways",
+      "short_name": "Inner Airways",
+      "description": "Desktop Game",
+      "url": "/inner-airways-desktop-game.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Load Conditions",
+      "short_name": "Load Conditions",
+      "description": "Desktop Game",
+      "url": "/load-conditions-desktop.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

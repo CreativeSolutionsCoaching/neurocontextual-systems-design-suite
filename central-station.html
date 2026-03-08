@@ -9,6 +9,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Central Station">
+<script>
+  if ('serviceWorker' in navigator && location.hostname === 'neurocontextual-systems-design-suite.creativesolutionscoaching.com') {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(function(reg) { console.log('[NSDS] Service worker registered:', reg.scope); })
+        .catch(function(err) { console.warn('[NSDS] Service worker registration failed:', err); });
+    });
+  }
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 /* Only suppress focus ring for mouse/pointer users — never for keyboard */
@@ -3741,7 +3755,7 @@ var _cmOnboarded=false;
 var _cmOnboardTab=0;
 var _cmOnboardTotal=6;
 
-function cmOnboardTab(idx,btn){
+window.cmOnboardTab=function cmOnboardTab(idx,btn){
   _cmOnboardTab=idx;
   document.querySelectorAll('.cm-onboard-tab').forEach(function(t,i){
     t.classList.toggle('active',i===idx);
@@ -3759,7 +3773,7 @@ function cmOnboardTab(idx,btn){
   var panel=document.querySelector('.cm-onboard-panel');if(panel)panel.scrollTop=0;
 }
 
-function cmOnboardNav(dir){
+window.cmOnboardNav=function cmOnboardNav(dir){
   var newIdx=Math.max(0,Math.min(_cmOnboardTotal-1,_cmOnboardTab+dir));
   var tabs=document.querySelectorAll('.cm-onboard-tab');
   if(tabs[newIdx])cmOnboardTab(newIdx,tabs[newIdx]);
@@ -3768,7 +3782,7 @@ function cmOnboardNav(dir){
 var _cmOnboardPrevFocus=null;
 var _cmOnboardTrapHandler=null;
 
-function cmOnboardClose(){
+window.cmOnboardClose=function cmOnboardClose(){
   _cmOnboarded=true;
   var o=$$('cm-onboard-overlay');
   if(o){
