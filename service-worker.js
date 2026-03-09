@@ -6,7 +6,7 @@
  * VERSION: bump this number by 1 whenever you upload an updated game file.
  * The browser will detect the change, clear the old cache, and fetch fresh files.
  */
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 2;
 const CACHE_NAME = 'nsds-cache-v' + CACHE_VERSION;
 
 /*
@@ -21,7 +21,6 @@ const CORE_FILES = [
   '/inner-airways-desktop-game.html',
   '/inner-airspace-mobile-game.html',
   '/load-conditions-desktop.html',
-  '/NFMS_Interactive.html',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
   /* Google Fonts are cached on first load via the network-first strategy below */
