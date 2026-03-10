@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="nsds-banner.png" alt="Neurocontextual Systems Design Suite" width="100%" />
+<img src="https://raw.githubusercontent.com/CreativeSolutionsCoaching/neurocontextual-systems-design-suite/main/nsds-banner.png" alt="Neurocontextual Systems Design Suite" width="100%" />
 
 <br/>
 
