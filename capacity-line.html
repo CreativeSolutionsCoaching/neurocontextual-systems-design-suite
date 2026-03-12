@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Capacity Line</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#080d1a;--bg2:#0d1424;--panel:#111827;--panel2:#1a2235;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.16);
+  --text:#f0f4ff;--dim:#a0aec0;--muted:#64748b;
+  --t1:#10b981;--t2:#6366f1;--dx:#ef4444;
+  --speed:#f59e0b;--cyan:#22d3ee;
+  --syne:'Syne',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--syne)}
+
+/* ── SCREENS ── */
+.screen{display:none;position:fixed;inset:0;flex-direction:column;align-items:center;justify-content:center;z-index:10;overflow-y:auto}
+.screen.active{display:flex}
+
+/* ── TITLE ── */
+#s-title{
+  background:linear-gradient(160deg,#080d1a 0%,#0c1630 55%,#080d1a 100%);
+  padding:40px 24px;text-align:center;
+}
+#s-title::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 35%,rgba(99,102,241,.16) 0%,transparent 65%);
+}
+.title-tag{font-family:var(--mono);font-size:10px;letter-spacing:5px;color:var(--cyan);text-transform:uppercase;margin-bottom:14px}
+h1.gtitle{font-size:clamp(38px,9vw,78px);font-weight:800;letter-spacing:-2px;line-height:.95;margin-bottom:8px}
+h1.gtitle span{color:var(--t2)}
+.title-sub{font-family:var(--mono);font-size:11px;letter-spacing:4px;color:var(--muted);margin-bottom:44px}
+.route-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:380px;margin-bottom:20px}
+.rbtn{
+  padding:15px 12px;border:1px solid var(--border);background:var(--panel);
+  border-radius:10px;cursor:pointer;text-align:left;position:relative;overflow:hidden;
+  transition:border-color .15s,background .15s,transform .15s;
+}
+.rbtn::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--lc)}
+.rbtn:hover{border-color:var(--lc);background:var(--panel2);transform:translateY(-2px)}
+.rbtn .rn{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.rbtn .rm{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted)}
+.rbtn .rd{
+  position:absolute;top:9px;right:9px;font-family:var(--mono);font-size:9px;letter-spacing:1px;
+  padding:2px 7px;border-radius:10px;background:rgba(255,255,255,.05);color:var(--dim)
+}
+.controls-hint{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--muted)}
+
+/* ── CANVAS ── */
+#game-wrap{position:fixed;inset:0;display:none}
+#game-wrap.on{display:block}
+#canvas{position:absolute;top:0;left:0;pointer-events:none}
+
+/* ── HUD ── */
+#hud{
+  position:fixed;top:0;left:0;right:0;z-index:15;pointer-events:none;
+  padding:10px 14px 8px;display:none;
+  background:linear-gradient(180deg,rgba(8,13,26,.92) 0%,transparent 100%);
+}
+#hud.on{display:block}
+.hud-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.hp{
+  font-family:var(--mono);font-size:10px;letter-spacing:2px;
+  background:rgba(17,24,39,.85);border:1px solid var(--border);
+  padding:3px 10px;border-radius:20px;color:var(--dim);white-space:nowrap;flex-shrink:0
+}
+.hp span{color:var(--text)}
+.cap-outer{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.cap-inner{height:100%;border-radius:3px;transition:width .25s,background .4s}
+.cap-num{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--dim);flex-shrink:0;min-width:24px}
+.hud-next{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);padding-left:2px}
+
+/* ── OVERLAYS ── */
+.ov{position:fixed;inset:0;z-index:20;display:none;flex-direction:column;align-items:center;pointer-events:none}
+.ov.on{display:flex;pointer-events:all}
+
+/* ── STATION BRAKE ── */
+#ov-brake{
+  justify-content:flex-end;
+  background:linear-gradient(180deg,transparent 30%,rgba(8,13,26,.9) 80%)
+}
+#brake-panel{width:100%;max-width:480px;padding:20px 20px 28px;text-align:center}
+.stn-name{font-family:var(--mono);font-size:10px;letter-spacing:5px;color:var(--t1);margin-bottom:4px}
+.stn-head{font-size:16px;font-weight:700;margin-bottom:14px}
+.brake-bar-outer{width:80%;max-width:300px;height:12px;background:rgba(255,255,255,.07);border-radius:6px;overflow:hidden;margin:0 auto 8px;position:relative}
+#brake-zone{position:absolute;top:0;height:100%;background:var(--t1);opacity:.3;border-radius:6px}
+#brake-bar{position:absolute;top:0;left:0;height:100%;background:linear-gradient(90deg,var(--speed),#fffb);border-radius:6px;width:0%;transition:width .04s}
+.stn-msg{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--muted)}
+
+/* ── DEMAND CARD ── */
+#ov-demand{justify-content:flex-end;background:linear-gradient(180deg,transparent 15%,rgba(8,13,26,.88) 65%)}
+.demand-card{
+  width:100%;max-width:480px;
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:16px 16px 0 0;padding:24px 20px 36px;
+  transform:translateY(100%);transition:transform .38s cubic-bezier(.22,1,.36,1);
+}
+.demand-card.up{transform:translateY(0)}
+.dzone{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;
+  font-family:var(--mono);font-size:9px;letter-spacing:4px;color:var(--cyan);text-transform:uppercase
+}
+.dintensity{font-family:var(--mono);font-size:9px;letter-spacing:2px;padding:2px 8px;border-radius:10px}
+.dtext{font-size:15px;font-weight:600;line-height:1.55;color:var(--text);margin-bottom:18px}
+.dchoices{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.dchoice{
+  padding:11px 6px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(255,255,255,.02);cursor:pointer;text-align:center;
+  transition:transform .12s,border-color .12s;font-family:var(--syne);
+}
+.dchoice:hover{transform:translateY(-2px);border-color:var(--dc)}
+.dchoice .dl{font-size:12px;font-weight:700;margin-bottom:3px;color:var(--dc)}
+.dchoice .ds{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--muted);margin-bottom:6px;line-height:1.4}
+.dchoice .dd{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.05);color:var(--dc)}
+
+/* ── POST ASSESSMENT ── */
+#ov-post{justify-content:flex-end;background:rgba(8,13,26,.96)}
+.post-card{
+  width:100%;max-width:480px;
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:16px 16px 0 0;padding:24px 20px 36px;
+  transform:translateY(100%);transition:transform .38s cubic-bezier(.22,1,.36,1);
+}
+.post-card.up{transform:translateY(0)}
+.post-header{
+  background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);
+  border-radius:8px;padding:10px 14px;margin-bottom:16px;
+}
+.post-eyebrow{font-family:var(--mono);font-size:8px;letter-spacing:4px;color:var(--t2);margin-bottom:4px}
+.post-hed{font-size:13px;font-weight:700;color:var(--text)}
+.post-progress{font-family:var(--mono);font-size:8px;letter-spacing:3px;color:var(--muted);margin-bottom:10px}
+
+/* ── JUNCTION ── */
+#ov-junction{justify-content:center;background:rgba(8,13,26,.92)}
+.jcard{
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:14px;padding:30px 24px;width:100%;max-width:340px;text-align:center
+}
+.jtag{font-family:var(--mono);font-size:9px;letter-spacing:5px;color:var(--cyan);margin-bottom:8px}
+.jhead{font-size:22px;font-weight:800;margin-bottom:4px}
+.jsub{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:22px}
+.jchoices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.jbtn{
+  padding:14px 10px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(255,255,255,.02);cursor:pointer;
+  transition:all .12s;font-family:var(--syne)
+}
+.jbtn:hover{border-color:var(--jc);background:rgba(255,255,255,.05)}
+.jbtn .jl{font-size:13px;font-weight:700;margin-bottom:4px;color:var(--jc)}
+.jbtn .jd{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--muted);line-height:1.5}
+
+/* ── WIN / DEAD ── */
+#ov-win,#ov-dead{justify-content:center;background:rgba(8,13,26,.95)}
+.endcard{
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:14px;padding:32px 24px;width:100%;max-width:380px;text-align:center
+}
+.endtitle{font-size:26px;font-weight:800;margin-bottom:4px}
+.endsub{font-family:var(--mono);font-size:9px;letter-spacing:4px;color:var(--muted);margin-bottom:18px}
+.endstats{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--dim);line-height:2.3;margin-bottom:20px}
+.endstats span{color:var(--text)}
+.endbtn-row{display:flex;gap:10px;justify-content:center}
+.ebtn{
+  padding:12px 28px;border-radius:8px;font-family:var(--syne);
+  font-size:13px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:opacity .15s;
+}
+.ebtn:hover{opacity:.85}
+.ebtn-primary{background:var(--t2);color:#fff;border:none}
+.ebtn-ghost{background:transparent;color:var(--dim);border:1px solid var(--border2)}
+
+/* ── DEBRIEF ── */
+#s-debrief{background:var(--bg2);padding:28px 16px 48px;align-items:center;justify-content:flex-start}
+.dbh{text-align:center;margin-bottom:24px;width:100%;max-width:480px}
+.dbtag{font-family:var(--mono);font-size:9px;letter-spacing:5px;color:var(--cyan);margin-bottom:8px}
+.dbtitle{font-size:24px;font-weight:800;margin-bottom:4px}
+.dbsub{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted)}
+.dbsec{
+  width:100%;max-width:480px;background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;padding:16px;margin-bottom:10px;
+}
+.dbsec-title{font-family:var(--mono);font-size:8px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.cap-chart{height:56px;display:flex;align-items:flex-end;gap:3px}
+.cap-chart-bar{flex:1;min-height:3px;border-radius:2px 2px 0 0}
+.routing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
+.rg-count{font-size:22px;font-weight:800;margin-bottom:6px}
+.rg-outer{height:56px;background:rgba(255,255,255,.05);border-radius:5px;display:flex;align-items:flex-end;overflow:hidden;margin-bottom:6px}
+.rg-inner{width:100%;border-radius:5px;min-height:3px}
+.rg-lbl{font-family:var(--mono);font-size:8px;letter-spacing:2px}
+.hist-chips{display:flex;flex-wrap:wrap;gap:6px}
+.hchip{font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:4px 10px;border-radius:20px}
+.insight{font-size:13px;line-height:1.75;color:var(--dim)}
+.insight strong{color:var(--text)}
+/* pre/post comparison table */
+.compare-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:10px}
+.compare-table th{color:var(--muted);letter-spacing:3px;font-size:8px;font-weight:400;padding:6px 4px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table td{padding:8px 4px;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:top;line-height:1.5}
+.compare-table td:first-child{color:var(--text);font-size:9px;width:42%}
+.cshift{display:inline-block;padding:1px 7px;border-radius:10px;font-size:8px;letter-spacing:1px;font-weight:700}
+.cshift.same{background:rgba(100,116,139,.15);color:#64748b}
+.cshift.better{background:rgba(16,185,129,.15);color:#10b981}
+.cshift.worse{background:rgba(239,68,68,.15);color:#ef4444}
+.dbcta{
+  margin-top:6px;padding:13px 36px;background:var(--t2);border:none;
+  border-radius:8px;font-family:var(--syne);font-size:13px;font-weight:700;
+  letter-spacing:2px;color:#fff;cursor:pointer;transition:opacity .15s;
+}
+.dbcta:hover{opacity:.85}
+
+/* ── INSTRUCTIONS SCREEN ── */
+#s-instructions{
+  background:linear-gradient(160deg,#080d1a 0%,#0c1630 55%,#080d1a 100%);
+  padding:24px 20px 40px;
+  justify-content:flex-start;
+  overflow-y:auto;
+}
+#s-instructions::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 30%,rgba(99,102,241,.14) 0%,transparent 65%);
+}
+.inst-inner{
+  width:100%;max-width:440px;
+  display:flex;flex-direction:column;align-items:center;
+  padding-top:16px;
+}
+.inst-tag{font-family:var(--mono);font-size:11px;letter-spacing:5px;color:var(--cyan);text-transform:uppercase;margin-bottom:10px;text-align:center}
+.inst-title{font-size:clamp(24px,6vw,38px);font-weight:800;letter-spacing:-1px;margin-bottom:8px;color:#fff;text-align:center}
+.inst-route-label{
+  display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:3px;
+  padding:5px 16px;border-radius:20px;margin-bottom:24px;
+  background:rgba(255,255,255,.08);border:1px solid;color:#fff;
+}
+.inst-blocks{width:100%;display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.inst-block{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;
+  padding:16px;text-align:left;display:flex;gap:14px;align-items:flex-start;
+}
+.inst-icon{
+  font-size:20px;flex-shrink:0;width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.08);border-radius:8px;
+}
+.inst-block-title{font-size:15px;font-weight:700;color:#ffffff;margin-bottom:5px}
+.inst-block-desc{font-family:var(--mono);font-size:12px;letter-spacing:.5px;color:#c8d6f0;line-height:1.75}
+.inst-block-desc strong{color:#ffffff;font-weight:600}
+.inst-note{
+  width:100%;
+  font-family:var(--mono);font-size:12px;letter-spacing:.5px;color:#c8d6f0;
+  background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.35);
+  border-radius:10px;padding:14px 16px;margin-bottom:24px;line-height:1.8;text-align:left;
+}
+.inst-note strong{color:#a5b4fc;font-weight:700}
+.inst-start{
+  display:block;width:100%;
+  padding:18px 48px;
+  background:var(--t2);
+  border:3px solid rgba(255,255,255,.25);
+  border-radius:12px;
+  font-family:var(--syne);font-size:17px;font-weight:800;
+  letter-spacing:3px;color:#fff;cursor:pointer;
+  transition:background .15s, transform .12s, box-shadow .15s;
+  box-shadow:0 0 32px rgba(99,102,241,.45), 0 4px 16px rgba(0,0,0,.4);
+  text-align:center;
+}
+.inst-start:hover{background:#4f52e8;transform:translateY(-2px);box-shadow:0 0 44px rgba(99,102,241,.6), 0 6px 20px rgba(0,0,0,.5)}
+.inst-start:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+
+/* ── DEBRIEF MEANING SECTION ── */
+.meaning-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:4px}
+.meaning-card{
+  border-radius:10px;padding:14px;border:1px solid;
+}
+.meaning-card-label{font-size:13px;font-weight:700;margin-bottom:6px}
+.meaning-card-body{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--dim);line-height:1.8}
+
+
+/* ── TOUCH ZONES drawn on canvas — no HTML buttons needed ── */
+@media(hover:hover) and (pointer:fine){} /* keyboard users unaffected */
+
+/* Screen reader only utility */
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0
+}
+
+/* Skip link */
+.skip-link{
+  position:fixed;top:-100%;left:16px;z-index:999;
+  padding:12px 20px;background:var(--t2);color:#fff;
+  font-family:var(--syne);font-size:14px;font-weight:700;
+  border-radius:0 0 8px 8px;text-decoration:none;
+  transition:top .15s;
+}
+.skip-link:focus{top:0}
+
+/* Visible focus indicators for all interactive elements */
+:focus-visible{
+  outline:3px solid var(--cyan);
+  outline-offset:3px;
+}
+button:focus-visible{
+  outline:3px solid var(--cyan);
+  outline-offset:3px;
+  box-shadow:0 0 0 6px rgba(34,211,238,.18);
+}
+.dchoice:focus-visible{
+  outline:3px solid var(--dc,var(--cyan));
+  outline-offset:2px;
+  box-shadow:0 0 0 6px rgba(34,211,238,.15);
+}
+.jbtn:focus-visible{
+  outline:3px solid var(--jc,var(--cyan));
+  outline-offset:2px;
+}
+.rbtn:focus-visible{
+  outline:3px solid var(--lc,var(--cyan));
+  outline-offset:2px;
+  box-shadow:0 0 0 6px rgba(34,211,238,.15);
+}
+
+/* Enforce minimum font sizes (WCAG 1.4.4) */
+.dchoice .ds{font-size:12px !important}
+.jbtn .jd{font-size:12px !important}
+.rbtn .rm{font-size:11px !important}
+.hchip{font-size:11px !important}
+.dbsec-title{font-size:11px !important}
+.dbtag{font-size:11px !important}
+.title-tag{font-size:11px !important}
+.compare-table{font-size:12px !important}
+.compare-table th{font-size:10px !important}
+.cap-num{font-size:11px !important}
+.hud-next{font-size:11px !important}
+.hp{font-size:11px !important}
+.stn-name{font-size:12px !important}
+.stn-msg{font-size:12px !important}
+.post-eyebrow{font-size:10px !important}
+.post-progress{font-size:10px !important}
+.dzone{font-size:11px !important}
+
+/* Touch target minimum 44x44px (WCAG 2.5.5) */
+.dchoice{min-height:64px}
+.jbtn{min-height:64px}
+.rbtn{min-height:64px}
+.ebtn{min-height:44px;min-width:88px}
+.dbcta{min-height:48px;min-width:160px}
+
+/* Button reset for converted divs */
+button.dchoice,button.jbtn{
+  background:rgba(255,255,255,.02);
+  cursor:pointer;
+  width:100%;
+  text-align:center;
+  border:1px solid var(--border);
+}
+button.dchoice{border-radius:10px}
+button.jbtn{border-radius:10px}
+
+/* Reduced motion — respect system preference */
+@media (prefers-reduced-motion: reduce){
+  *{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  .demand-card,.post-card{transform:none !important;transition:none !important}
+  .demand-card.up,.post-card.up{transform:none !important}
+  #ann{transition:none !important}
+  .rbtn:hover,.dchoice:hover,.jbtn:hover{transform:none !important}
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high){
+  :root{
+    --border:rgba(255,255,255,.5);
+    --border2:rgba(255,255,255,.8);
+    --dim:#e0e8ff;
+    --muted:#b0c0e0;
+  }
+  .dchoice,.jbtn,.rbtn,.ebtn{border-width:2px}
+  .cap-inner{outline:1px solid #fff}
+  .compare-table td,.compare-table th{border-color:rgba(255,255,255,.4)}
+}
+
+/* Ensure overlay dialogs are above everything when active */
+.ov.on{z-index:50}
+
+#ann{
+  position:fixed;top:64px;left:50%;transform:translateX(-50%);
+  z-index:40;pointer-events:none;text-align:center;opacity:0;transition:opacity .25s;
+}
+.ann-t{font-size:clamp(13px,3vw,20px);font-weight:800;letter-spacing:6px;text-shadow:0 0 18px currentColor;display:block}
+.ann-s{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--dim);display:block;margin-top:2px}
+</style>
+</head>
+<body>
+
+<!-- Skip to main content -->
+<a href="#s-title" class="skip-link">Skip to game</a>
+
+<!-- Screen reader live regions -->
+<div id="sr-announce" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+<div id="sr-status" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+<!-- ══ TITLE ══ -->
+<div class="screen active" id="s-title" role="main">
+  <div class="title-tag">Capacity Line · Student Edition</div>
+  <h1 class="gtitle">CAPACITY<br><span>LINE</span></h1>
+  <p class="title-sub">DRIVE THE LINE · MANAGE THE LOAD</p>
+  <div class="route-grid" role="group" aria-label="Select a route to begin">
+    <button class="rbtn" style="--lc:#6366f1" onclick="startGame('blue')" aria-label="Blue Line: Intro difficulty. 3 stations, tunnel environment.">
+      <div class="rn" aria-hidden="true">Blue Line</div>
+      <div class="rm" aria-hidden="true">3 STATIONS · TUNNEL</div>
+      <div class="rd" aria-hidden="true">INTRO</div>
+    </button>
+    <button class="rbtn" style="--lc:#10b981" onclick="startGame('green')" aria-label="Green Line: Moderate difficulty. 4 stations, surface environment.">
+      <div class="rn" aria-hidden="true">Green Line</div>
+      <div class="rm" aria-hidden="true">4 STATIONS · SURFACE</div>
+      <div class="rd" aria-hidden="true">MODERATE</div>
+    </button>
+    <button class="rbtn" style="--lc:#ef4444" onclick="startGame('red')" aria-label="Red Line: Demanding difficulty. 4 stations, mixed environment.">
+      <div class="rn" aria-hidden="true">Red Line</div>
+      <div class="rm" aria-hidden="true">4 STATIONS · MIXED</div>
+      <div class="rd" aria-hidden="true">DEMANDING</div>
+    </button>
+    <button class="rbtn" style="--lc:#f59e0b" onclick="startGame('yellow')" aria-label="Yellow Line: High pressure difficulty. 5 stations, complex environment.">
+      <div class="rn" aria-hidden="true">Yellow Line</div>
+      <div class="rm" aria-hidden="true">5 STATIONS · COMPLEX</div>
+      <div class="rd" aria-hidden="true">PRESSURE</div>
+    </button>
+  </div>
+  <div class="controls-hint" aria-label="Keyboard controls: Left and right arrow keys change lanes. Up and down arrow keys control speed. Space bar brakes.">← → LANES &nbsp;·&nbsp; ↑ ↓ SPEED &nbsp;·&nbsp; SPACE BRAKE</div>
+</div>
+
+<!-- ══ INSTRUCTIONS ══ -->
+<div class="screen" id="s-instructions" role="main" aria-labelledby="inst-heading">
+  <div class="inst-inner">
+    <div class="inst-tag">Before You Drive</div>
+    <h2 class="inst-title" id="inst-heading">How This Works</h2>
+    <div class="inst-route-label" id="inst-route-label">BLUE LINE · INTRO</div>
+
+    <div class="inst-blocks" role="list">
+
+      <div class="inst-block" role="listitem">
+        <div class="inst-icon" aria-hidden="true">🚇</div>
+        <div>
+          <div class="inst-block-title">You're driving a train</div>
+          <div class="inst-block-desc">
+            Use <strong>← →</strong> to switch lanes and dodge obstacles.<br>
+            Use <strong>↑ ↓</strong> to speed up and slow down.<br>
+            On mobile, <strong>swipe</strong> to control the train.
+          </div>
+        </div>
+      </div>
+
+      <div class="inst-block" role="listitem">
+        <div class="inst-icon" aria-hidden="true">🛑</div>
+        <div>
+          <div class="inst-block-title">Brake at every station</div>
+          <div class="inst-block-desc">
+            When a station appears, hold <strong>↓ or SPACE</strong> to brake.<br>
+            Stop in the <strong>green zone</strong> for the best result.<br>
+            Too fast or too slow costs you capacity.
+          </div>
+        </div>
+      </div>
+
+      <div class="inst-block" role="listitem">
+        <div class="inst-icon" aria-hidden="true">⚡</div>
+        <div>
+          <div class="inst-block-title">Situations will come up</div>
+          <div class="inst-block-desc">
+            At each station you'll get a real situation and three ways to respond.<br>
+            There's no trick — just pick what feels right to you.
+          </div>
+        </div>
+      </div>
+
+      <div class="inst-block" role="listitem">
+        <div class="inst-icon" aria-hidden="true">📊</div>
+        <div>
+          <div class="inst-block-title">Watch your capacity bar</div>
+          <div class="inst-block-desc">
+            The bar at the top shows your capacity — your ability to keep going.<br>
+            If it hits zero, the line goes out of service.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="inst-note" role="note">
+      <strong>After the run</strong> you'll see a breakdown of your choices and what they actually mean. That part's worth sitting with.
+    </div>
+
+    <button class="inst-start" id="inst-start-btn" onclick="beginGame()" aria-label="Start driving the selected route">
+      START DRIVING →
+    </button>
+  </div>
+</div>
+
+<!-- ══ CANVAS ══ -->
+<div id="game-wrap" aria-hidden="true">
+  <canvas id="canvas" role="img" aria-label="Capacity Line game view — use arrow keys to navigate lanes and control speed"></canvas>
+</div>
+
+<!-- tap zones are handled directly on canvas -->
+
+<!-- ══ HUD ══ -->
+<div id="hud">
+  <div class="hud-row">
+    <div class="hp">SPD <span id="h-spd">0</span></div>
+    <div class="hp">SCORE <span id="h-sc">0</span></div>
+    <div class="hp">DIST <span id="h-dist">0</span>m</div>
+    <div class="cap-outer"><div class="cap-inner" id="cap-bar" style="width:80%;background:var(--t1)"></div></div>
+    <div class="cap-num" id="cap-num">80</div>
+  </div>
+  <div class="hud-next">NEXT: <span id="h-next">—</span></div>
+</div>
+
+<!-- ══ ANNOUNCER ══ -->
+<div id="ann"><span class="ann-t" id="ann-t"></span><span class="ann-s" id="ann-s"></span></div>
+
+<!-- ══ BRAKE OVERLAY ══ -->
+<div class="ov" id="ov-brake" role="dialog" aria-modal="true" aria-labelledby="stn-name" aria-describedby="stn-msg">
+  <div id="brake-panel">
+    <div class="stn-name" id="stn-name">STATION</div>
+    <div class="stn-head">Bring it to a stop</div>
+    <div class="brake-bar-outer" aria-hidden="true">
+      <div id="brake-zone"></div>
+      <div id="brake-bar"></div>
+    </div>
+    <div class="stn-msg" id="stn-msg">HOLD ↓ OR SPACE TO BRAKE</div>
+    <div id="brake-sr-status" class="sr-only" aria-live="polite"></div>
+  </div>
+</div>
+
+<!-- ══ DEMAND CARD OVERLAY ══ -->
+<div class="ov" id="ov-demand" role="dialog" aria-modal="true" aria-labelledby="d-text" aria-describedby="d-zone">
+  <div class="demand-card" id="dcard">
+    <div class="dzone">
+      <span id="d-zone">ZONE</span>
+      <span class="dintensity" id="d-int"></span>
+    </div>
+    <div class="dtext" id="d-text">Demand.</div>
+    <div class="dchoices" role="group" aria-label="Choose how to respond to this demand">
+      <button class="dchoice" style="--dc:var(--t1)" onclick="chooseDemand('T1')" aria-label="Structure It: Use a system or ask for help. Plus 8 capacity.">
+        <div class="dl" aria-hidden="true">Structure It</div>
+        <div class="ds" aria-hidden="true">Use a system or ask for help</div>
+        <div class="dd" aria-hidden="true">+8 CAP</div>
+      </button>
+      <button class="dchoice" style="--dc:var(--t2)" onclick="chooseDemand('T2')" aria-label="Push Through: Handle it on your own. Minus 3 capacity.">
+        <div class="dl" aria-hidden="true">Push Through</div>
+        <div class="ds" aria-hidden="true">Handle it on your own</div>
+        <div class="dd" aria-hidden="true">−3 CAP</div>
+      </button>
+      <button class="dchoice" style="--dc:var(--dx)" onclick="chooseDemand('DX')" aria-label="Let It Hit: No move. It just lands. Minus 15 capacity.">
+        <div class="dl" aria-hidden="true">Let It Hit</div>
+        <div class="ds" aria-hidden="true">No move. It just lands.</div>
+        <div class="dd" aria-hidden="true">−15 CAP</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ POST ASSESSMENT OVERLAY ══ -->
+<div class="ov" id="ov-post" role="dialog" aria-modal="true" aria-labelledby="p-text" aria-describedby="post-progress">
+  <div class="post-card" id="pcard">
+    <div class="post-header">
+      <div class="post-eyebrow">SAME SITUATION · FRESH EYES</div>
+      <div class="post-hed">You've been through the line now. What would you do?</div>
+    </div>
+    <div class="post-progress" id="post-progress">SITUATION 1 OF 4</div>
+    <div class="dzone">
+      <span id="p-zone">ZONE</span>
+      <span class="dintensity" id="p-int"></span>
+    </div>
+    <div class="dtext" id="p-text">Situation.</div>
+    <div class="dchoices" role="group" aria-label="Choose how you would respond now">
+      <button class="dchoice" style="--dc:var(--t1)" onclick="choosePost('T1')" aria-label="Structure It: Use a system or ask for help.">
+        <div class="dl" aria-hidden="true">Structure It</div>
+        <div class="ds" aria-hidden="true">Use a system or ask for help</div>
+        <div class="dd" aria-hidden="true">T1</div>
+      </button>
+      <button class="dchoice" style="--dc:var(--t2)" onclick="choosePost('T2')" aria-label="Push Through: Handle it on your own.">
+        <div class="dl" aria-hidden="true">Push Through</div>
+        <div class="ds" aria-hidden="true">Handle it on your own</div>
+        <div class="dd" aria-hidden="true">T2</div>
+      </button>
+      <button class="dchoice" style="--dc:var(--dx)" onclick="choosePost('DX')" aria-label="Let It Hit: No move. It just lands.">
+        <div class="dl" aria-hidden="true">Let It Hit</div>
+        <div class="ds" aria-hidden="true">No move. It just lands.</div>
+        <div class="dd" aria-hidden="true">DX</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ JUNCTION OVERLAY ══ -->
+<div class="ov" id="ov-junction" role="dialog" aria-modal="true" aria-labelledby="junction-head">
+  <div class="jcard">
+    <div class="jtag" aria-hidden="true">JUNCTION AHEAD</div>
+    <div class="jhead" id="junction-head">Choose Your Track</div>
+    <div class="jsub">ROUTE AFFECTS DIFFICULTY AHEAD</div>
+    <div class="jchoices" role="group" aria-label="Choose your track">
+      <button class="jbtn" style="--jc:var(--cyan)" onclick="chooseJunction('fast')" aria-label="Express track: Higher speed, more obstacles">
+        <div class="jl" aria-hidden="true">Express</div>
+        <div class="jd" aria-hidden="true">Higher speed<br>More obstacles</div>
+      </button>
+      <button class="jbtn" style="--jc:var(--t1)" onclick="chooseJunction('steady')" aria-label="Steady track: Controlled pace, lower obstacle rate">
+        <div class="jl" aria-hidden="true">Steady</div>
+        <div class="jd" aria-hidden="true">Controlled pace<br>Lower obstacle rate</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WIN OVERLAY ══ -->
+<div class="ov" id="ov-win" role="dialog" aria-modal="true" aria-labelledby="win-title">
+  <div class="endcard">
+    <div class="endtitle" id="win-title" style="color:var(--t1)">LINE COMPLETE</div>
+    <div class="endsub">END OF RUN</div>
+    <div class="endstats" id="win-stats"></div>
+    <div class="endbtn-row">
+      <button class="ebtn ebtn-primary" onclick="startPostAssessment()">ONE MORE THING →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DEAD OVERLAY ══ -->
+<div class="ov" id="ov-dead" role="dialog" aria-modal="true" aria-labelledby="dead-title">
+  <div class="endcard">
+    <div class="endtitle" id="dead-title" style="color:var(--dx)">OUT OF SERVICE</div>
+    <div class="endsub" id="dead-reason">CAPACITY EXHAUSTED</div>
+    <div class="endstats" id="dead-stats"></div>
+    <div class="endbtn-row">
+      <button class="ebtn ebtn-ghost" onclick="retryRoute()">RETRY</button>
+      <button class="ebtn ebtn-primary" onclick="startPostAssessment()">ONE MORE THING →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DEBRIEF ══ -->
+<div class="screen" id="s-debrief" role="main" aria-labelledby="debrief-title">
+  <div class="dbh">
+    <div class="dbtag" aria-hidden="true">End of Run · Pattern Analysis</div>
+    <h2 class="dbtitle" id="debrief-title" tabindex="-1">Debrief</h2>
+    <div class="dbsub" id="db-meta" aria-live="polite">—</div>
+  </div>
+  <div class="dbsec" aria-label="Capacity over the run">
+    <div class="dbsec-title">Capacity Over the Run</div>
+    <div class="cap-chart" id="db-cap-chart" role="img" aria-label="Bar chart showing capacity changes throughout the run"></div>
+    <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--muted);display:flex;justify-content:space-between;margin-top:4px"><span>START</span><span>END</span></div>
+  </div>
+  <div class="dbsec">
+    <div class="dbsec-title">How You Routed Demands</div>
+    <div class="routing-grid">
+      <div>
+        <div class="rg-count" id="db-t1-n" style="color:var(--t1)">0</div>
+        <div class="rg-outer"><div class="rg-inner" id="db-t1-b" style="background:var(--t1)"></div></div>
+        <div class="rg-lbl" style="color:var(--t1)">STRUCTURE IT</div>
+      </div>
+      <div>
+        <div class="rg-count" id="db-t2-n" style="color:var(--t2)">0</div>
+        <div class="rg-outer"><div class="rg-inner" id="db-t2-b" style="background:var(--t2)"></div></div>
+        <div class="rg-lbl" style="color:var(--t2)">PUSH THROUGH</div>
+      </div>
+      <div>
+        <div class="rg-count" id="db-dx-n" style="color:var(--dx)">0</div>
+        <div class="rg-outer"><div class="rg-inner" id="db-dx-b" style="background:var(--dx)"></div></div>
+        <div class="rg-lbl" style="color:var(--dx)">LET IT HIT</div>
+      </div>
+    </div>
+  </div>
+  <div class="dbsec" id="db-compare-sec" style="display:none">
+    <div class="dbsec-title">Before vs After</div>
+    <table class="compare-table" id="db-compare"></table>
+  </div>
+  <div class="dbsec">
+    <div class="dbsec-title">Decision Log</div>
+    <div class="hist-chips" id="db-hist"></div>
+  </div>
+  <div class="dbsec" aria-label="What your choices mean">
+    <div class="dbsec-title">What These Choices Actually Mean</div>
+    <div class="meaning-grid">
+      <div class="meaning-card" style="background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.25)">
+        <div class="meaning-card-label" style="color:var(--t1)">Structure It — T1</div>
+        <div class="meaning-card-body">Using external support: asking for help, breaking things into steps, using a system or routine. This is the highest-capacity move because it offloads the work instead of absorbing it.</div>
+      </div>
+      <div class="meaning-card" style="background:rgba(99,102,241,.06);border-color:rgba(99,102,241,.25)">
+        <div class="meaning-card-label" style="color:var(--t2)">Push Through — T2</div>
+        <div class="meaning-card-body">Handling it internally: willpower, staying composed, not letting it show. It works — but it costs capacity every time because you're carrying it alone.</div>
+      </div>
+      <div class="meaning-card" style="background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.25)">
+        <div class="meaning-card-label" style="color:var(--dx)">Let It Hit — DX</div>
+        <div class="meaning-card-body">No move at all — the situation lands without any response. Sometimes that's all that's available. But when it's a pattern, it's usually a sign that capacity was already too low to do anything else.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dbsec">
+    <div class="dbsec-title">What This Pattern Says</div>
+    <div class="insight" id="db-insight"></div>
+  </div>
+  <button class="dbcta" onclick="goTitle()">BACK TO LINES</button>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════
+const ROUTE_DEFS = {
+  blue:{name:'Blue Line',col:'#6366f1',diff:1,
+    segs:[
+      {t:'drive',env:'tunnel',dist:320},
+      {t:'station',name:'Aldgate'},
+      {t:'drive',env:'overground',dist:360},
+      {t:'station',name:'Moorgate'},
+      {t:'drive',env:'tunnel',dist:300},
+      {t:'station',name:'Farringdon'},
+    ]},
+  green:{name:'Green Line',col:'#10b981',diff:2,
+    segs:[
+      {t:'drive',env:'overground',dist:280},
+      {t:'station',name:'Depot'},
+      {t:'drive',env:'overground',dist:320},
+      {t:'junction'},
+      {t:'drive',env:'overground',dist:300},
+      {t:'station',name:'Market'},
+      {t:'drive',env:'overground',dist:260},
+      {t:'station',name:'Bridge'},
+      {t:'drive',env:'overground',dist:240},
+      {t:'station',name:'Central'},
+    ]},
+  red:{name:'Red Line',col:'#ef4444',diff:2,
+    segs:[
+      {t:'drive',env:'tunnel',dist:250},
+      {t:'junction'},
+      {t:'drive',env:'overground',dist:300},
+      {t:'station',name:'Vauxhall'},
+      {t:'drive',env:'tunnel',dist:280},
+      {t:'station',name:'Oval'},
+      {t:'drive',env:'overground',dist:260},
+      {t:'station',name:'Stockwell'},
+      {t:'drive',env:'tunnel',dist:220},
+      {t:'station',name:'Brixton'},
+    ]},
+  yellow:{name:'Yellow Line',col:'#f59e0b',diff:3,
+    segs:[
+      {t:'drive',env:'tunnel',dist:240},
+      {t:'station',name:'Limehouse'},
+      {t:'drive',env:'overground',dist:270},
+      {t:'junction'},
+      {t:'drive',env:'tunnel',dist:310},
+      {t:'station',name:'Mile End'},
+      {t:'drive',env:'overground',dist:260},
+      {t:'station',name:'Bethnal Grn'},
+      {t:'drive',env:'tunnel',dist:250},
+      {t:'junction'},
+      {t:'drive',env:'overground',dist:220},
+      {t:'station',name:'Liverpool St'},
+      {t:'drive',env:'tunnel',dist:200},
+      {t:'station',name:'Bank'},
+    ]},
+};
+
+// 4 baseline cards — always shown first, same order every time
+// These are the pre-assessment (invisible to student)
+// and repeated post-game as the post-assessment (explicit)
+const BASELINE_DEMANDS = [
+  {
+    text:"Your teacher reads your essay out loud as a bad example. Everyone in the room turns to look at you.",
+    zone:'Social Pressure',int:'HIGH',ic:'#ef4444',
+    shortLabel:'Essay called out in class'
+  },
+  {
+    text:"You just got your test back. You failed. You have to bring it home for a parent signature.",
+    zone:'Performance Pressure',int:'HIGH',ic:'#ef4444',
+    shortLabel:'Failed test, need parent signature'
+  },
+  {
+    text:"You haven't slept properly in three days. You're in third period with two more classes and practice after school.",
+    zone:'Physical Demand',int:'MED',ic:'#f59e0b',
+    shortLabel:'Running on no sleep, long day ahead'
+  },
+  {
+    text:"Three assignments due tomorrow, a group project falling apart, and your phone keeps blowing up.",
+    zone:'Cognitive Load',int:'MED',ic:'#f59e0b',
+    shortLabel:'Three deadlines, group project chaos'
+  },
+];
+
+// 15 random pool cards — teen school scenarios
+const RANDOM_DEMANDS = [
+  {text:"Someone screenshots your message in the group chat and shares it without context. People are already reacting.",zone:'Social Pressure',int:'HIGH',ic:'#ef4444'},
+  {text:"You studied hard for a week. You open the test and realize you studied the completely wrong chapters.",zone:'Performance Pressure',int:'HIGH',ic:'#ef4444'},
+  {text:"Your group project partner hasn't done anything. The presentation is tomorrow and your grade is tied to theirs.",zone:'Relational Pressure',int:'MED',ic:'#f59e0b'},
+  {text:"It's 6th period. You haven't eaten since breakfast. Holding focus is getting harder by the minute.",zone:'Physical Demand',int:'LOW',ic:'#22d3ee'},
+  {text:"Someone you thought was your friend is being cold to you today and you don't know why.",zone:'Social Pressure',int:'MED',ic:'#f59e0b'},
+  {text:"Your coach pulls you aside and says your performance has been slipping. It affects your standing on the team.",zone:'Performance Pressure',int:'HIGH',ic:'#ef4444'},
+  {text:"The cafeteria is overwhelming — too loud, too crowded, too much. You still have the whole afternoon ahead of you.",zone:'Sensory Load',int:'LOW',ic:'#22d3ee'},
+  {text:"You're sitting in class and just realized you completely forgot about an assignment due at the end of this period.",zone:'Cognitive Load',int:'HIGH',ic:'#ef4444'},
+  {text:"A teacher keeps cold-calling you even when you don't raise your hand. Today you don't know the answer.",zone:'Relational Pressure',int:'MED',ic:'#f59e0b'},
+  {text:"There's a conversation happening about you that you're not part of. You can tell by the way people keep glancing over.",zone:'Social Pressure',int:'HIGH',ic:'#ef4444'},
+  {text:"College application season. Everyone around you seems to know exactly what they're doing and where they're going. You don't.",zone:'Performance Pressure',int:'MED',ic:'#f59e0b'},
+  {text:"You're fighting something off — headache, exhaustion. You have a big test today and you can't go home.",zone:'Physical Demand',int:'MED',ic:'#f59e0b'},
+  {text:"Three teachers assigned major work on the same night. Your brain feels completely full before you even start.",zone:'Cognitive Load',int:'MED',ic:'#f59e0b'},
+  {text:"You and your closest friend had a bad fight last night. You have to sit next to each other in every class today.",zone:'Relational Pressure',int:'HIGH',ic:'#ef4444'},
+  {text:"A new person joined your friend group and the whole dynamic shifted. You feel less like yourself around them lately.",zone:'Social Pressure',int:'LOW',ic:'#22d3ee'},
+];
+
+const DFECTS = {
+  T1:{col:'#10b981',lbl:'Structure It',cap:+8,sc:100},
+  T2:{col:'#6366f1',lbl:'Push Through',cap:-3,sc:50},
+  DX:{col:'#ef4444',lbl:'Let It Hit',cap:-15,sc:10},
+};
+
+// ══════════════════════════════════════════════════════════
+// ACCESSIBILITY HELPERS
+// ══════════════════════════════════════════════════════════
+
+// Announce to screen readers
+function srAnnounce(msg, priority='polite'){
+  const el = document.getElementById(priority === 'assertive' ? 'sr-announce' : 'sr-status');
+  el.textContent = '';
+  requestAnimationFrame(() => { el.textContent = msg; });
+}
+
+// Move focus to first focusable element inside a container
+function focusFirst(containerId){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  const focusable = el.querySelector('button,[tabindex]:not([tabindex="-1"]),a[href]');
+  if(focusable) setTimeout(()=>focusable.focus(), 50);
+}
+
+// Store element to return focus to after overlay closes
+let _focusReturnEl = null;
+function trapFocusOpen(overlayId){
+  _focusReturnEl = document.activeElement;
+  focusFirst(overlayId);
+}
+function trapFocusClose(){
+  if(_focusReturnEl) { setTimeout(()=>{ try{ _focusReturnEl.focus(); } catch(e){} }, 50); }
+}
+
+
+let G={}, keys={}, animId=null, annTimer=null, usedD=[];
+let postIdx=0, postAnswers=[];
+let pendingRoute=null; // stores route key until instructions are dismissed
+
+function initG(rk){
+  const rd=ROUTE_DEFS[rk];
+  G={
+    rk,rd,
+    state:'driving',
+    cap:80,score:0,dist:0,
+    speed:0,tSpeed:0,
+    dodge:0,dAnim:0,
+    obs:[],frame:0,t:0,
+    env:rd.segs[0].env||'tunnel',
+    segIdx:0,segDist:0,
+    hitFlash:0,
+    stops:0,jBonus:0,
+    history:[],capHist:[80],
+    express:false,
+    lane:0,   // persistent lane: -1 left, 0 center, 1 right
+    scroll:0, // accumulated scroll offset driven by actual speed
+    bTimer:0,bFrozen:false,bBarPos:0,bStartSpd:0,
+    curDemand:null,curStn:null,
+    baselineIdx:0,    // tracks how many baseline cards have been shown
+    preAnswers:[],    // records baseline answers DURING game
+  };
+  usedD=[];
+  postIdx=0;
+  postAnswers=[];
+}
+
+// ══════════════════════════════════════════════════════════
+// CANVAS
+// ══════════════════════════════════════════════════════════
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
+let CW=0,CH=0;
+
+function resizeCanvas(){
+  CW=window.innerWidth; CH=window.innerHeight;
+  canvas.width=CW; canvas.height=CH;
+}
+
+// ─── TUNNEL ───
+function drawTunnel(){
+  const cx=CW/2 - G.dAnim*CW*.12, vy=CH*0.42;
+  ctx.fillStyle='#03070f'; ctx.fillRect(0,0,CW,CH);
+  const dg=ctx.createRadialGradient(cx,vy,0,cx,vy,CW*0.55);
+  dg.addColorStop(0,'rgba(13,20,36,.8)');dg.addColorStop(1,'rgba(3,7,15,0)');
+  ctx.fillStyle=dg; ctx.fillRect(0,0,CW,CH);
+  for(let i=0;i<=10;i++){
+    const f=i/10;
+    ctx.strokeStyle=`rgba(99,102,241,${.025+f*.035})`;ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(CW*f,0);ctx.lineTo(cx,vy);ctx.stroke();
+  }
+  ctx.strokeStyle='rgba(99,102,241,.18)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(cx,vy-CH*.015,CW*.36,Math.PI*1.06,Math.PI*1.94);ctx.stroke();
+  ctx.fillStyle='rgba(13,18,32,.92)';
+  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(cx-CW*.36,vy);ctx.lineTo(0,vy+CH*.1);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.moveTo(CW,0);ctx.lineTo(cx+CW*.36,vy);ctx.lineTo(CW,vy+CH*.1);ctx.closePath();ctx.fill();
+  drawTrack(cx,vy);drawTunnelLights(cx,vy);
+}
+
+// ─── OVERGROUND ───
+function drawOverground(){
+  const cx=CW/2 - G.dAnim*CW*.12, vy=CH*0.40;
+  const sky=ctx.createLinearGradient(0,0,0,vy);
+  sky.addColorStop(0,'#050c18');sky.addColorStop(1,'#0c1830');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,CW,vy);
+  ctx.fillStyle='rgba(255,255,255,.6)';
+  for(let i=0;i<25;i++){const sx=((i*73+11)%100/100)*CW,sy=((i*37+7)%100/100)*vy;ctx.beginPath();ctx.arc(sx,sy,.7,0,Math.PI*2);ctx.fill();}
+  const gr=ctx.createLinearGradient(0,vy,0,CH);
+  gr.addColorStop(0,'#080e1c');gr.addColorStop(1,'#050b16');
+  ctx.fillStyle=gr; ctx.fillRect(0,vy,CW,CH-vy);
+  const bScroll=(G.scroll*.45)%(CW*2);
+  for(let b=0;b<14;b++){
+    const bx=((b*115-bScroll+CW*2*3)%(CW*2))-CW*.15;
+    const bh=(b%4+1)*18+24,bw=36+(b%3)*12;
+    if(bx>-bw&&bx<CW+bw){
+      ctx.fillStyle='rgba(6,11,22,.97)';ctx.fillRect(bx,vy-bh,bw,bh);
+      ctx.fillStyle='rgba(18,28,58,.7)';
+      for(let r=0;r<Math.floor(bh/10);r++)for(let c=0;c<Math.floor(bw/11);c++)
+        if((r+c+b)%3!==0) ctx.fillRect(bx+c*11+2,vy-bh+r*10+2,5,5);
+    }
+  }
+  drawTrack(cx,vy);
+}
+
+// ─── TRACK ───
+function drawTrack(cx,vy){
+  for(const side of[-1,1]){
+    ctx.strokeStyle='rgba(99,102,241,.55)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(cx+side*CW*.012,vy+2);ctx.lineTo(cx+side*CW*.32,CH+20);ctx.stroke();
+    ctx.strokeStyle='rgba(34,211,238,.25)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx+side*CW*.013,vy+2);ctx.lineTo(cx+side*CW*.325,CH+20);ctx.stroke();
+  }
+  const slSp=80,off=(G.scroll*.55)%slSp;
+  for(let d=0.02;d<1;d+=.04){
+    const dv=((d+off/slSp*.04)%1);
+    if(dv<.02) continue;
+    const p=dv*dv,sy=vy+2+p*(CH-vy+20),sw=CW*.05+p*CW*.58;
+    ctx.fillStyle=`rgba(28,38,66,${.08+p*.45})`;
+    ctx.fillRect(cx-sw/2,sy-2,sw,3+p*4);
+  }
+  for(const lane of[-1,1]){
+    for(let d=0;d<8;d++){
+      const dp=(d+(G.scroll*.012)%1)/8;
+      const p=dp*dp,y=vy+p*(CH-vy+10),x=cx+lane*(CW*.07+p*CW*.17);
+      ctx.fillStyle=`rgba(99,102,241,${.04+p*.08})`;
+      ctx.fillRect(x-1,y,2,4+p*7);
+    }
+  }
+}
+
+// ─── TUNNEL LIGHTS ───
+function drawTunnelLights(cx,vy){
+  const lSp=110,off=(G.scroll*.45)%lSp;
+  for(let i=0;i<9;i++){
+    const raw=(i*lSp-off+lSp*9)%(lSp*8);
+    const depth=raw/(lSp*7);if(depth<.02) continue;
+    const p=depth*depth,lx=cx,ly=vy-CH*.015-p*CH*.1,lw=CW*.18*(1-depth*.65),al=Math.min(.65,p*2.2);
+    const lg=ctx.createRadialGradient(lx,ly,0,lx,ly,lw*.55);
+    lg.addColorStop(0,`rgba(34,211,238,${al*.25})`);lg.addColorStop(1,'rgba(34,211,238,0)');
+    ctx.fillStyle=lg;ctx.fillRect(lx-lw,ly-lw*.4,lw*2,lw*.8);
+    ctx.fillStyle=`rgba(200,240,255,${al})`;ctx.fillRect(lx-lw*.45,ly-1.5,lw*.9,2.5);
+  }
+}
+
+// ─── OBSTACLES ───
+function drawObstacles(){
+  const cx=CW/2 - G.dAnim*CW*.12, vy=CH*.42;
+  G.obs.forEach(o=>{
+    const p=o.z*o.z,y=vy+2+p*(CH-vy+10),x=cx+o.lane*(CW*.07+p*CW*.17),w=18+p*55,h=14+p*44;
+    // Hit flash — clean, no glow bleed
+    if(o.hit){
+      ctx.fillStyle=`rgba(239,68,68,${.18*(1-o.z)})`;
+      ctx.fillRect(x-w,y-h,w*2,h*2);
+      return;
+    }
+    if(o.type==='barrier'){
+      // Sharp red barrier — no ambient glow, clear shape
+      ctx.fillStyle='rgba(220,38,38,.95)';
+      ctx.fillRect(x-w/2,y-h/2,w,h);
+      // White stripe accent only — no radial bleed
+      ctx.fillStyle='rgba(255,255,255,.65)';
+      for(let s=0;s<3;s++) ctx.fillRect(x-w/2+s*w/3+1,y-h/2,w/6-2,h);
+      // Tight outline for clarity
+      ctx.strokeStyle='rgba(255,100,100,.9)';ctx.lineWidth=1.5;
+      ctx.strokeRect(x-w/2,y-h/2,w,h);
+    } else {
+      // Signal — amber circle, clean background, no glow spread
+      ctx.fillStyle='rgba(15,23,42,.95)';
+      ctx.fillRect(x-w/2,y-h/2,w,h);
+      ctx.strokeStyle='rgba(245,158,11,.6)';ctx.lineWidth=1.5;
+      ctx.strokeRect(x-w/2,y-h/2,w,h);
+      ctx.fillStyle='rgba(245,158,11,.95)';
+      ctx.beginPath();ctx.arc(x,y,w*.28,0,Math.PI*2);ctx.fill();
+    }
+  });
+}
+
+// ─── CAB ───
+function drawCab(){
+  const cabY=CH*.78,cabH=CH*.22,rc=G.rd?G.rd.col:'#6366f1';
+  ctx.fillStyle='#040810'; ctx.fillRect(0,cabY,CW,cabH);
+  ctx.fillStyle='#111827'; ctx.fillRect(0,cabY,CW,3);
+  ctx.fillStyle=rc; ctx.fillRect(0,cabY,CW,2);
+  ctx.strokeStyle='#1a2235';ctx.lineWidth=3;ctx.strokeRect(CW*.12,cabY+7,CW*.76,cabH-14);
+  const dg=ctx.createLinearGradient(0,cabY,0,CH);
+  dg.addColorStop(0,`rgba(99,102,241,.04)`);dg.addColorStop(1,'rgba(99,102,241,0)');
+  ctx.fillStyle=dg;ctx.fillRect(0,cabY,CW,cabH);
+  ctx.fillStyle='#0a1020';ctx.fillRect(CW*.4,cabY+8,CW*.2,cabH-12);
+  ctx.fillStyle='rgba(99,102,241,.22)';ctx.fillRect(CW*.42,cabY+12,CW*.16,2);
+  if(G.hitFlash>0){ctx.fillStyle=`rgba(239,68,68,${G.hitFlash*.32})`;ctx.fillRect(0,0,CW,CH);}
+  drawSpeedometer();
+}
+
+// ─── SPEEDOMETER ───
+function drawSpeedometer(){
+  const cr=CW*.065,cx2=CW*.12,cy2=CH*.88,rc=G.rd?G.rd.col:'#6366f1';
+  ctx.save();
+  ctx.beginPath();ctx.arc(cx2,cy2,cr,0,Math.PI*2);
+  ctx.fillStyle='rgba(4,8,16,.9)';ctx.fill();
+  ctx.strokeStyle=rc;ctx.lineWidth=2;ctx.stroke();
+  const sa=Math.PI*.75,ea=sa+(G.speed/200)*Math.PI*1.5;
+  ctx.beginPath();ctx.arc(cx2,cy2,cr*.78,sa,ea);
+  ctx.strokeStyle=G.speed>150?'#ef4444':G.speed>80?'#f59e0b':'#10b981';
+  ctx.lineWidth=5;ctx.stroke();
+  ctx.fillStyle='#f0f4ff';ctx.font=`bold ${cr*.43}px 'IBM Plex Mono'`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(Math.round(G.speed),cx2,cy2);
+  ctx.font=`${cr*.22}px 'IBM Plex Mono'`;ctx.fillStyle='#64748b';
+  ctx.fillText('km/h',cx2,cy2+cr*.38);ctx.restore();
+}
+
+// ─── STATUS BAR ───
+function drawStatusBar(msg,col='#22d3ee'){
+  const barY=CH*.58,barH=CH*.046;
+  ctx.save();ctx.fillStyle='rgba(4,8,18,.82)';ctx.fillRect(0,barY,CW,barH);
+  ctx.strokeStyle=col;ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,barY);ctx.lineTo(CW,barY);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,barY+barH);ctx.lineTo(CW,barY+barH);ctx.stroke();
+  ctx.fillStyle=col;ctx.font=`bold ${CW*.017}px 'IBM Plex Mono'`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(msg,CW*.5,barY+barH*.5);ctx.restore();
+}
+
+// ══════════════════════════════════════════════════════════
+// GAME LOGIC
+// ══════════════════════════════════════════════════════════
+function updateDriving(){
+  G.frame++;G.t+=.016;
+  const isMobile = window.matchMedia('(hover:none)').matches;
+  if(isMobile){
+    if(keys.ArrowDown||keys.s||keys.Space) G.tSpeed=Math.max(0,G.tSpeed-2.6);
+    else G.tSpeed=Math.min(80,G.tSpeed+0.6);
+  } else {
+    if(keys.ArrowUp||keys.w) G.tSpeed=Math.min(200,G.tSpeed+1.4);
+    if(keys.ArrowDown||keys.s||keys.Space) G.tSpeed=Math.max(0,G.tSpeed-2.6);
+    else if(!keys.ArrowUp&&!keys.w) G.tSpeed=Math.max(0,G.tSpeed-.25);
+  }
+  // Keyboard can override lane; otherwise use persistent G.lane
+  if(keys.ArrowLeft||keys.a) G.lane=-1;
+  else if(keys.ArrowRight||keys.d) G.lane=1;
+  else if(!isMobile){ /* desktop: release key recenters */ }
+  G.dodge=G.lane;
+  G.dAnim+=(G.dodge-G.dAnim)*.12;
+  G.speed+=(G.tSpeed-G.speed)*.04;
+  G.scroll += G.speed * .016; // accumulates only when moving
+  G.segDist+=G.speed*.01; G.dist+=G.speed*.01;
+  G.score=Math.floor(G.dist*.5+(G.speed>60?G.speed*.08:0));
+  const diff=G.rd.diff+(G.express?1:0);
+  // Grace period: no obstacles for first 4 seconds (~240 frames)
+  // Slower base rate: was 215, now 320. Still speeds up with velocity but much less dense
+  // Max obstacles on screen capped by difficulty so screen never floods
+  const maxObs = diff <= 1 ? 2 : diff <= 2 ? 3 : 4;
+  if(G.frame > 240 && G.obs.filter(o=>!o.hit).length < maxObs){
+    const sr=Math.max(55, 320-G.speed*.7-diff*14);
+    if(G.frame%Math.floor(sr)===0){
+      G.obs.push({z:0,lane:[-1,0,1][Math.floor(Math.random()*3)],type:Math.random()<.5?'barrier':'signal',hit:false});
+    }
+  }
+  const mr=.007+G.speed*.000055;
+  G.obs.forEach(o=>{o.z=Math.min(1,o.z+mr);});
+  G.obs.forEach(o=>{
+    if(o.z>.82&&o.z<.95&&!o.hit&&o.lane===G.dodge){
+      o.hit=true;
+      const loss=Math.round(5+G.speed*.065);
+      G.cap=Math.max(0,G.cap-loss); G.capHist.push(G.cap);
+      G.hitFlash=1; G.tSpeed=Math.max(0,G.tSpeed-18);
+      srAnnounce(`Impact. Capacity decreased by ${loss}. Current capacity: ${Math.round(G.cap)} percent.`, 'assertive');
+      announce('IMPACT',`−${loss} CAPACITY`,'#ef4444',1600);
+    }
+  });
+  if(G.hitFlash>0) G.hitFlash-=.058;
+  G.obs=G.obs.filter(o=>o.z<1.05);
+  updateHUD();
+  if(G.cap<=0){triggerDead('Capacity exhausted.');return;}
+  const seg=G.rd.segs[G.segIdx];
+  if(seg&&seg.t==='drive'&&G.segDist>=seg.dist){G.segIdx++;G.segDist=0;processSegment();}
+}
+
+function updateBraking(){
+  G.t+=.016;
+  if((keys.ArrowDown||keys.s||keys.Space)&&G.speed>0) G.speed=Math.max(0,G.speed-3.8);
+  else G.speed=Math.max(0,G.speed-.35);
+  G.scroll += G.speed * .016;
+  G.dAnim+=(0-G.dAnim)*.1;
+  if(!G.bFrozen){
+    G.bTimer+=16;
+    const pos=(G.bTimer/3800);
+    document.getElementById('brake-bar').style.width=(Math.min(pos,1)*100)+'%';
+    if(G.speed<3||pos>=1){
+      G.bFrozen=true; G.bBarPos=pos;
+      const bz=Math.min(pos,1);
+      let capD=0,msg='';
+      if(bz>=.65&&bz<=.88){capD=5;G.score+=150;msg='+5 CAP';}
+      else if(bz<.65){capD=-4;msg='−4 CAP';}
+      else{capD=-6;msg='−6 CAP';}
+      G.cap=Math.max(0,Math.min(100,G.cap+capD));
+      G.capHist.push(G.cap); G.stops++;
+      const col=capD>0?'#10b981':capD<0?'#ef4444':'#22d3ee';
+      const stopMsg = capD>0?`Smooth stop! Capacity increased by ${capD}. Current capacity: ${Math.round(G.cap)} percent.` : capD<0?`Rough stop. Capacity decreased by ${Math.abs(capD)}. Current capacity: ${Math.round(G.cap)} percent.`:`Stop. Capacity unchanged at ${Math.round(G.cap)} percent.`;
+      srAnnounce(stopMsg, 'assertive');
+      document.getElementById('brake-sr-status').textContent = stopMsg;
+      announce(capD>0?'SMOOTH STOP':capD<0?'ROUGH STOP':'STOP',msg,col,1800);
+      document.getElementById('stn-msg').textContent='STOOD AT PLATFORM';
+      setTimeout(()=>showDemand(),900);
+    }
+  }
+  updateHUD();
+}
+
+function processSegment(){
+  if(G.segIdx>=G.rd.segs.length){triggerWin();return;}
+  const seg=G.rd.segs[G.segIdx];
+  if(seg.t==='drive'){
+    G.env=seg.env; G.state='driving';
+    if(seg.env==='overground') announce('ABOVE GROUND','OPEN TRACK — WATCH THE LINE','#22d3ee',2200);
+    else announce('UNDERGROUND','TUNNEL AHEAD','#818cf8',2200);
+  } else if(seg.t==='station'){
+    G.state='braking'; G.curStn=seg.name;
+    G.bTimer=0; G.bFrozen=false; G.bBarPos=0; G.bStartSpd=Math.max(G.speed,20);
+    document.getElementById('stn-name').textContent=seg.name.toUpperCase();
+    document.getElementById('stn-msg').textContent='HOLD ↓ OR SPACE TO BRAKE';
+    document.getElementById('brake-bar').style.width='0%';
+    const bz=document.getElementById('brake-zone');
+    bz.style.left='65%';bz.style.width='23%';
+    document.getElementById('ov-brake').classList.add('on');
+    srAnnounce(`Station ahead: ${seg.name}. Hold down arrow or space bar to brake. Stop in the green zone for a capacity bonus.`, 'assertive');
+    announce('STATION AHEAD',seg.name.toUpperCase(),'#10b981',2400);
+  } else if(seg.t==='junction'){
+    G.state='junction';
+    document.getElementById('ov-junction').classList.add('on');
+    trapFocusOpen('ov-junction');
+    srAnnounce('Junction ahead. Choose your track: Express for higher speed and more obstacles, or Steady for controlled pace.', 'assertive');
+    announce('JUNCTION','CHOOSE YOUR TRACK','#f59e0b',1600);
+  }
+}
+
+// ── DEMAND CARD LOGIC ──
+// First 4 station stops show baseline cards (the silent pre-assessment)
+// After that, random pool kicks in
+function showDemand(){
+  document.getElementById('ov-brake').classList.remove('on');
+  let d;
+  if(G.baselineIdx < BASELINE_DEMANDS.length){
+    d = BASELINE_DEMANDS[G.baselineIdx];
+    G.baselineIdx++;
+  } else {
+    let pool=RANDOM_DEMANDS.filter(x=>!usedD.includes(x));
+    if(!pool.length){usedD=[];pool=RANDOM_DEMANDS;}
+    d=pool[Math.floor(Math.random()*pool.length)];
+    usedD.push(d);
+  }
+  G.curDemand=d;
+  document.getElementById('d-zone').textContent=d.zone.toUpperCase();
+  document.getElementById('d-text').textContent=d.text;
+  const di=document.getElementById('d-int');
+  di.textContent=d.int; di.style.background=d.ic+'22'; di.style.color=d.ic; di.style.border=`1px solid ${d.ic}44`;
+  G.state='demand';
+  document.getElementById('ov-demand').classList.add('on');
+  setTimeout(()=>{
+    document.getElementById('dcard').classList.add('up');
+    trapFocusOpen('ov-demand');
+    srAnnounce(`Demand situation at ${G.curStn||'station'}. ${d.zone} — ${d.int} intensity. ${d.text} Choose your response.`, 'assertive');
+  },40);
+}
+
+function chooseDemand(c){
+  const ef=DFECTS[c];
+  // If this was a baseline card, record it as a pre answer
+  const bIdx=G.baselineIdx-1;
+  if(bIdx>=0 && bIdx<BASELINE_DEMANDS.length && G.curDemand===BASELINE_DEMANDS[bIdx]){
+    G.preAnswers[bIdx]=c;
+  }
+  G.cap=Math.max(0,Math.min(100,G.cap+ef.cap));
+  G.score+=ef.sc; G.capHist.push(G.cap);
+  G.history.push({zone:G.curDemand.zone,c,col:ef.col,lbl:ef.lbl,stn:G.curStn,capD:ef.cap});
+  srAnnounce(`${ef.lbl}. Capacity ${ef.cap>=0?'increased by':'decreased by'} ${Math.abs(ef.cap)}. Current capacity: ${Math.round(G.cap)} percent.`,'assertive');
+  announce(ef.lbl.toUpperCase(),`${ef.cap>=0?'+':''}${ef.cap} CAPACITY`,ef.col,2000);
+  document.getElementById('dcard').classList.remove('up');
+  setTimeout(()=>{
+    document.getElementById('ov-demand').classList.remove('on');
+    if(G.cap<=0){triggerDead('Capacity exhausted at station.');return;}
+    G.segIdx++;G.segDist=0;G.state='driving';processSegment();
+  },420);
+}
+
+function chooseJunction(mode){
+  G.express=(mode==='fast');
+  if(mode==='fast'){G.score+=150;G.jBonus+=150;srAnnounce('Express track selected. Higher speed and more obstacles ahead.');announce('EXPRESS TRACK','MORE OBSTACLES AHEAD','#22d3ee',2000);}
+  else {srAnnounce('Steady track selected. Controlled pace ahead.');announce('STEADY TRACK','CONTROLLED PACE AHEAD','#10b981',2000);}
+  document.getElementById('ov-junction').classList.remove('on');
+  trapFocusClose();
+  G.segIdx++;G.segDist=0;G.state='driving';processSegment();
+}
+
+function triggerWin(){
+  G.state='won'; cancelAnimationFrame(animId); hideOvs();
+  document.getElementById('win-stats').innerHTML=
+    `ROUTE: <span>${G.rd.name}</span><br>SCORE: <span>${G.score}</span><br>DISTANCE: <span>${Math.round(G.dist)}m</span><br>STATIONS: <span>${G.stops}</span><br>FINAL CAPACITY: <span>${Math.round(G.cap)}%</span>`;
+  document.getElementById('ov-win').classList.add('on');
+  trapFocusOpen('ov-win');
+  srAnnounce(`Line complete! Route: ${G.rd.name}. Final score: ${G.score}. Final capacity: ${Math.round(G.cap)} percent. Press One More Thing to continue.`, 'assertive');
+}
+
+function triggerDead(msg){
+  G.state='dead'; cancelAnimationFrame(animId); hideOvs();
+  document.getElementById('dead-reason').textContent=msg.toUpperCase();
+  document.getElementById('dead-stats').innerHTML=
+    `SCORE: <span>${G.score}</span><br>DISTANCE: <span>${Math.round(G.dist)}m</span>`;
+  document.getElementById('ov-dead').classList.add('on');
+  trapFocusOpen('ov-dead');
+  srAnnounce(`Out of service. ${msg}. Score: ${G.score}. You can retry or continue.`, 'assertive');
+}
+
+function hideOvs(){
+  ['ov-brake','ov-demand','ov-junction'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById('dcard').classList.remove('up');
+}
+
+// ══════════════════════════════════════════════════════════
+// POST ASSESSMENT
+// ══════════════════════════════════════════════════════════
+function startPostAssessment(){
+  document.getElementById('ov-win').classList.remove('on');
+  document.getElementById('ov-dead').classList.remove('on');
+  document.getElementById('game-wrap').classList.remove('on');
+  document.getElementById('hud').classList.remove('on');
+  postIdx=0; postAnswers=[];
+  showPostCard();
+}
+
+function showPostCard(){
+  if(postIdx >= BASELINE_DEMANDS.length){ showDebrief(); return; }
+  const d=BASELINE_DEMANDS[postIdx];
+  document.getElementById('post-progress').textContent=`SITUATION ${postIdx+1} OF ${BASELINE_DEMANDS.length}`;
+  document.getElementById('p-zone').textContent=d.zone.toUpperCase();
+  document.getElementById('p-text').textContent=d.text;
+  const pi=document.getElementById('p-int');
+  pi.textContent=d.int; pi.style.background=d.ic+'22'; pi.style.color=d.ic; pi.style.border=`1px solid ${d.ic}44`;
+  document.getElementById('ov-post').classList.add('on');
+  setTimeout(()=>{
+    document.getElementById('pcard').classList.add('up');
+    trapFocusOpen('ov-post');
+    srAnnounce(`Situation ${postIdx+1} of ${BASELINE_DEMANDS.length}. ${d.zone}. ${d.text} What would you do now?`, 'assertive');
+  },40);
+}
+
+function choosePost(c){
+  postAnswers[postIdx]=c;
+  document.getElementById('pcard').classList.remove('up');
+  setTimeout(()=>{
+    postIdx++;
+    if(postIdx < BASELINE_DEMANDS.length){
+      showPostCard();
+    } else {
+      document.getElementById('ov-post').classList.remove('on');
+      showDebrief();
+    }
+  },380);
+}
+
+// ══════════════════════════════════════════════════════════
+// HUD
+// ══════════════════════════════════════════════════════════
+function updateHUD(){
+  document.getElementById('h-spd').textContent=Math.round(G.speed);
+  document.getElementById('h-sc').textContent=G.score;
+  document.getElementById('h-dist').textContent=Math.round(G.dist);
+  const c=Math.max(0,Math.round(G.cap));
+  const cb=document.getElementById('cap-bar');
+  cb.style.width=c+'%'; cb.style.background=c>60?'#10b981':c>30?'#f59e0b':'#ef4444';
+  document.getElementById('cap-num').textContent=c;
+  let nx='TERMINUS';
+  for(let i=G.segIdx+1;i<G.rd.segs.length;i++){
+    const s=G.rd.segs[i];
+    if(s.t==='station'){nx='STN: '+s.name.toUpperCase();break;}
+    if(s.t==='junction'){nx='JUNCTION';break;}
+  }
+  document.getElementById('h-next').textContent=nx;
+}
+
+// ══════════════════════════════════════════════════════════
+// ANNOUNCER
+// ══════════════════════════════════════════════════════════
+function announce(t,s,col='#22d3ee',dur=2200){
+  const el=document.getElementById('ann');
+  const at=document.getElementById('ann-t'),as=document.getElementById('ann-s');
+  at.textContent=t; at.style.color=col; as.textContent=s;
+  el.style.opacity='1'; clearTimeout(annTimer);
+  annTimer=setTimeout(()=>{el.style.opacity='0';},dur);
+}
+
+// ══════════════════════════════════════════════════════════
+// DEBRIEF
+// ══════════════════════════════════════════════════════════
+function showDebrief(){
+  document.getElementById('s-debrief').classList.add('active');
+  document.getElementById('game-wrap').classList.remove('on');
+  document.getElementById('hud').classList.remove('on');
+  document.getElementById('db-meta').textContent=`${G.rd.name} · ${G.stops} Stops · Score: ${G.score}`;
+  setTimeout(()=>{ document.getElementById('debrief-title').focus(); },100);
+
+  // cap chart
+  const ch=document.getElementById('db-cap-chart'); ch.innerHTML='';
+  G.capHist.forEach(c=>{
+    const b=document.createElement('div');b.className='cap-chart-bar';
+    b.style.height=(c/100*100)+'%';
+    b.style.background=c>60?'#10b981':c>30?'#f59e0b':'#ef4444';
+    ch.appendChild(b);
+  });
+
+  // routing counts
+  const cnt={T1:0,T2:0,DX:0};
+  G.history.forEach(h=>cnt[h.c]++);
+  const tot=G.history.length||1;
+  document.getElementById('db-t1-n').textContent=cnt.T1;
+  document.getElementById('db-t2-n').textContent=cnt.T2;
+  document.getElementById('db-dx-n').textContent=cnt.DX;
+  document.getElementById('db-t1-b').style.height=(cnt.T1/tot*100)+'%';
+  document.getElementById('db-t2-b').style.height=(cnt.T2/tot*100)+'%';
+  document.getElementById('db-dx-b').style.height=(cnt.DX/tot*100)+'%';
+
+  // before vs after comparison table
+  const hasPost = postAnswers.length === BASELINE_DEMANDS.length;
+  const hasPreAll = G.preAnswers.length === BASELINE_DEMANDS.length;
+  const compareSec = document.getElementById('db-compare-sec');
+  if(hasPost && hasPreAll){
+    compareSec.style.display='block';
+    const tbl=document.getElementById('db-compare');
+    tbl.innerHTML=`<tr><th>SITUATION</th><th>BEFORE</th><th>AFTER</th><th>SHIFT</th></tr>`;
+    BASELINE_DEMANDS.forEach((d,i)=>{
+      const pre=G.preAnswers[i]||'—';
+      const post=postAnswers[i]||'—';
+      let shiftClass='same',shiftTxt='—';
+      if(pre!==post){
+        const rank={T1:3,T2:2,DX:1};
+        const better=(rank[post]||0)>(rank[pre]||0);
+        shiftClass=better?'better':'worse';
+        shiftTxt=better?'↑':'↓';
+      }
+      const preCol=pre!=='—'?DFECTS[pre].col:'#64748b';
+      const postCol=post!=='—'?DFECTS[post].col:'#64748b';
+      tbl.innerHTML+=`<tr>
+        <td>${d.shortLabel}</td>
+        <td style="color:${preCol}">${pre!=='—'?DFECTS[pre].lbl:pre}</td>
+        <td style="color:${postCol}">${post!=='—'?DFECTS[post].lbl:post}</td>
+        <td><span class="cshift ${shiftClass}">${shiftTxt}</span></td>
+      </tr>`;
+    });
+  } else {
+    compareSec.style.display='none';
+  }
+
+  // history chips
+  const hc=document.getElementById('db-hist'); hc.innerHTML='';
+  G.history.forEach(h=>{
+    const c=document.createElement('span');c.className='hchip';
+    c.style.cssText=`background:${h.col}20;color:${h.col};border:1px solid ${h.col}40`;
+    c.textContent=`${h.stn} · ${h.lbl} (${h.capD>0?'+':''}${h.capD})`;
+    hc.appendChild(c);
+  });
+
+  // insight
+  let ins='';
+  if(cnt.DX>tot/2) ins="<strong>Most of it just landed on you.</strong> That's not a character flaw — when there's no structure and no one in your corner, the full weight hits every time. The question isn't whether you're tough enough. It's whether you had tools available.";
+  else if(cnt.T1>=tot/2) ins="<strong>You reached for structure and support more than most.</strong> That takes real self-awareness. The question is whether those moves are still available to you when your capacity gets critically low — or whether they feel out of reach by then.";
+  else if(cnt.T2>tot/2) ins="<strong>You mostly pushed through on your own.</strong> That works — until it doesn't. Handling everything internally costs capacity every time, with no relief valve. It's the pattern that leads to burnout without anyone around you even realizing it's happening.";
+  else ins="<strong>Mixed pattern — some structure, some pushing through, some letting it land.</strong> That's an honest result. Notice where the shift happened. Usually it's right when capacity dropped and the better choices started feeling impossible or pointless.";
+
+  // add shift insight if we have pre/post data
+  if(hasPost && hasPreAll){
+    const improved=postAnswers.filter((p,i)=>{
+      const rank={T1:3,T2:2,DX:1};
+      return (rank[p]||0)>(rank[G.preAnswers[i]]||0);
+    }).length;
+    const same=postAnswers.filter((p,i)=>p===G.preAnswers[i]).length;
+    let shiftIns='';
+    if(improved>=3) shiftIns=" <strong>After the run, you shifted toward better choices on most situations.</strong> Something in the experience landed.";
+    else if(improved>=1&&improved<3) shiftIns=" <strong>You shifted on some situations after the run, not all.</strong> The ones that didn't move are worth sitting with.";
+    else if(same===BASELINE_DEMANDS.length) shiftIns=" <strong>Your choices didn't change after the run.</strong> That consistency can mean confidence — or it can mean the patterns are deeply set. Worth knowing either way.";
+    else shiftIns=" <strong>Some choices shifted after the run.</strong> What changed between the first time you saw these and now?";
+    ins += shiftIns;
+  }
+
+  document.getElementById('db-insight').innerHTML=`<p>${ins}</p><p style="font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);margin-top:14px">FINAL CAPACITY: ${Math.round(G.cap)}% · SCORE: ${G.score}</p>`;
+
+  // Screen reader summary of debrief
+  const cnt2={T1:0,T2:0,DX:0}; G.history.forEach(h=>cnt2[h.c]++);
+  srAnnounce(`Debrief complete. Route: ${G.rd.name}. Score: ${G.score}. Final capacity: ${Math.round(G.cap)} percent. You chose Structure It ${cnt2.T1} times, Push Through ${cnt2.T2} times, and Let It Hit ${cnt2.DX} times.`, 'polite');
+
+  // ── SILENT DATA SUBMISSION ──
+  try {
+    const shiftResult = hasPost && hasPreAll ? (()=>{
+      const rank={T1:3,T2:2,DX:1};
+      const improved=postAnswers.filter((p,i)=>(rank[p]||0)>(rank[G.preAnswers[i]]||0)).length;
+      const same=postAnswers.filter((p,i)=>p===G.preAnswers[i]).length;
+      if(improved>=3) return 'improved';
+      if(improved>=1) return 'partial';
+      if(same===BASELINE_DEMANDS.length) return 'no_change';
+      return 'mixed';
+    })() : 'no_post_data';
+
+    const formURL = 'https://docs.google.com/forms/d/e/1FAIpQLSc_BI9jLYlTfdmsxZn8wYNXfmBBkXoKx_6R2qhHTllc-pHVjg/formResponse';
+    const params = new URLSearchParams({
+      'entry.364693926': G.rd.name,
+      'entry.1539905694': Math.round(G.cap),
+      'entry.781377587': G.score,
+      'entry.967233703': cnt.T1,
+      'entry.459547497': cnt.T2,
+      'entry.809045620': cnt.DX,
+      'entry.2073892985': shiftResult,
+    });
+
+    const iframe = document.createElement('iframe');
+    iframe.name = 'hidden-submit-' + Date.now();
+    iframe.style.cssText = 'display:none;position:absolute;width:0;height:0';
+    document.body.appendChild(iframe);
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = formURL;
+    form.target = iframe.name;
+    form.style.display = 'none';
+    params.forEach((val, key) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = val;
+      form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    form.submit();
+
+    // cleanup after submission
+    setTimeout(()=>{ iframe.remove(); form.remove(); }, 5000);
+  } catch(e) { /* silent fail */ }
+}
+
+function retryRoute(){
+  document.getElementById('ov-dead').classList.remove('on');
+  // Skip instructions on retry — they've already seen them
+  const rk = G.rk;
+  document.getElementById('game-wrap').classList.add('on');
+  document.getElementById('hud').classList.add('on');
+  ['ov-win','ov-dead','ov-post'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  hideOvs();
+  initG(rk);
+  resizeCanvas();
+  processSegment();
+  if(animId) cancelAnimationFrame(animId);
+  loop();
+}
+function goTitle(){
+  document.getElementById('s-debrief').classList.remove('active');
+  document.getElementById('s-title').classList.add('active');
+  setTimeout(()=>{ const f=document.querySelector('#s-title button'); if(f) f.focus(); },50);
+}
+
+// ══════════════════════════════════════════════════════════
+// GAME START
+// ══════════════════════════════════════════════════════════
+function startGame(rk){
+  // Show instructions first, store route for after
+  pendingRoute = rk;
+  const rd = ROUTE_DEFS[rk];
+  document.getElementById('inst-route-label').textContent = `${rd.name.toUpperCase()} · ${['','INTRO','MODERATE','','DEMANDING','','PRESSURE'][rd.diff] || 'ROUTE'}`;
+  document.getElementById('inst-route-label').style.color = rd.col;
+  document.getElementById('inst-route-label').style.borderColor = rd.col + '44';
+  document.getElementById('s-title').classList.remove('active');
+  document.getElementById('s-debrief').classList.remove('active');
+  document.getElementById('s-instructions').classList.add('active');
+  setTimeout(()=>{ document.getElementById('inst-start-btn').focus(); }, 80);
+  srAnnounce(`${rd.name} selected. Instructions screen. ${rd.name} has ${rd.segs.filter(s=>s.t==='station').length} stations.`, 'polite');
+}
+
+function beginGame(){
+  // Called from instructions screen Start button
+  const rk = pendingRoute;
+  document.getElementById('s-instructions').classList.remove('active');
+  document.getElementById('game-wrap').classList.add('on');
+  document.getElementById('hud').classList.add('on');
+  ['ov-win','ov-dead','ov-post'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  hideOvs();
+  initG(rk);
+  resizeCanvas();
+  processSegment();
+  if(animId) cancelAnimationFrame(animId);
+  loop();
+}
+
+// ══════════════════════════════════════════════════════════
+// MAIN LOOP
+// ══════════════════════════════════════════════════════════
+function loop(){
+  animId=requestAnimationFrame(loop);
+  ctx.clearRect(0,0,CW,CH);
+  if(G.env==='overground') drawOverground(); else drawTunnel();
+  drawObstacles(); drawCab(); drawTapZones();
+  if(G.state==='driving') updateDriving();
+  else if(G.state==='braking'){
+    updateBraking();
+    drawStatusBar(`▶ ${(G.curStn||'').toUpperCase()} — BRAKING`,'#10b981');
+  } else if(G.state==='demand'&&G.curStn){
+    G.t+=.001; drawStatusBar(`● ${G.curStn.toUpperCase()} — STOPPED`,'#10b981');
+  } else {
+    G.t+=.001;
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// INPUT
+// ══════════════════════════════════════════════════════════
+document.addEventListener('keydown',e=>{
+  keys[e.key]=true;
+  if(e.key===' '){keys.Space=true;e.preventDefault();}
+});
+document.addEventListener('keyup',e=>{keys[e.key]=false;if(e.key===' ')keys.Space=false;});
+window.addEventListener('resize',()=>{if(CW>0) resizeCanvas();});
+
+window.addEventListener('touchend', e=>{
+  // Only reset keys from swipe gestures, not tap zones
+  if(e.target.closest && e.target.closest('#game-wrap')) return;
+  keys.ArrowLeft=false;keys.ArrowRight=false;keys.ArrowUp=false;keys.ArrowDown=false;keys.Space=false;
+},{passive:true});
+
+// ══════════════════════════════════════════════════════════
+// TAP ZONES — screen divided into regions, no HTML buttons
+// Left third = move left | Right third = move right
+// Bottom center = brake (during braking state)
+// ══════════════════════════════════════════════════════════
+let tapZoneFlash = {left:0, right:0, brake:0};
+
+function drawTapZones(){
+  if(!CW || !CH) return;
+  const zoneH = CH * 0.35;
+  const zoneY = CH - zoneH;
+  const third = CW / 3;
+  const alpha = 0.06;
+
+  // Left zone
+  if(tapZoneFlash.left > 0){
+    ctx.fillStyle = `rgba(99,102,241,${alpha + tapZoneFlash.left * 0.18})`;
+    tapZoneFlash.left = Math.max(0, tapZoneFlash.left - 0.08);
+  } else {
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+  }
+  ctx.fillRect(0, zoneY, third, zoneH);
+
+  // Right zone
+  if(tapZoneFlash.right > 0){
+    ctx.fillStyle = `rgba(99,102,241,${alpha + tapZoneFlash.right * 0.18})`;
+    tapZoneFlash.right = Math.max(0, tapZoneFlash.right - 0.08);
+  } else {
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+  }
+  ctx.fillRect(third*2, zoneY, third, zoneH);
+
+  // Brake zone (center bottom) — only show during braking
+  if(G.state === 'braking'){
+    if(tapZoneFlash.brake > 0){
+      ctx.fillStyle = `rgba(16,185,129,${alpha + tapZoneFlash.brake * 0.25})`;
+      tapZoneFlash.brake = Math.max(0, tapZoneFlash.brake - 0.08);
+    } else {
+      ctx.fillStyle = `rgba(16,185,129,${alpha + 0.06})`;
+    }
+    ctx.fillRect(third, zoneY, third, zoneH);
+  }
+
+  // Labels
+  ctx.font = `bold ${CW * 0.045}px 'IBM Plex Mono'`;
+  ctx.textBaseline = 'middle';
+  const labelY = zoneY + zoneH * 0.5;
+
+  ctx.fillStyle = 'rgba(255,255,255,.4)';
+  ctx.textAlign = 'center';
+  ctx.fillText('◀', third * 0.5, labelY);
+  ctx.fillText('▶', third * 2.5, labelY);
+
+  if(G.state === 'braking'){
+    ctx.fillStyle = 'rgba(16,185,129,.6)';
+    ctx.font = `bold ${CW * 0.032}px 'IBM Plex Mono'`;
+    ctx.fillText('BRAKE', third * 1.5, labelY);
+  }
+}
+
+function handleTapZone(x, y){
+  if(!G || (G.state !== 'driving' && G.state !== 'braking')) return;
+  const zoneY = CH * 0.65;
+  if(y < zoneY) return; // only bottom 35% of screen
+  const third = CW / 3;
+  if(G.state === 'driving'){
+    if(x < third){
+      G.lane = Math.max(-1, G.lane - 1);
+      tapZoneFlash.left = 1;
+    } else if(x > third * 2){
+      G.lane = Math.min(1, G.lane + 1);
+      tapZoneFlash.right = 1;
+    }
+  } else if(G.state === 'braking'){
+    if(x >= third && x <= third * 2){
+      // Brake tap — simulate a brake press pulse
+      keys.Space = true;
+      tapZoneFlash.brake = 1;
+      setTimeout(()=>{ keys.Space = false; }, 120);
+    }
+  }
+}
+
+// Wire tap zones to canvas touchstart (single tap, no hold needed)
+const gameWrapEl = document.getElementById('game-wrap');
+gameWrapEl.addEventListener('touchstart', e=>{
+  e.preventDefault();
+  const t = e.changedTouches[0];
+  handleTapZone(t.clientX, t.clientY);
+}, {passive:false});
+gameWrapEl.addEventListener('click', e=>{
+  handleTapZone(e.clientX, e.clientY);
+});
+
+resizeCanvas();
+</script>
+</body>
+</html>

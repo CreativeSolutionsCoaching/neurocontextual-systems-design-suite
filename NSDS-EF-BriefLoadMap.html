@@ -1,0 +1,4051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Executive Function Load Map Assessment – Neurocontextual Systems Therapy tool by Creative Solutions Coaching. Fully accessible assessment for disabled and neurodiverse clients."/>
+<meta name="theme-color" content="#3D6B4F"/>
+<title>Executive Function Load Map – NST Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════════ */
+:root {
+  --cream:    #FAF8F3;
+  --paper:    #F3EFE6;
+  --ink:      #1E1A14;
+  --muted:    #5A5248;
+  --border:   #D9D0C0;
+  --sage:     #3D6B4F;
+  --sage-lt:  #5A8A6A;
+  --sage-bg:  #EBF2EC;
+  --terra:    #B85C38;
+  --terra-lt: #D4775A;
+  --terra-bg: #F7EDE8;
+  --amber:    #C8921A;
+  --amber-bg: #FDF4E0;
+  --low-bg:   #EBF2EC;
+  --low-ink:  #2C5C3B;
+  --mid-bg:   #FDF4E0;
+  --mid-ink:  #7A5C10;
+  --hi-bg:    #F7EDE8;
+  --hi-ink:   #8A3318;
+  --radius:   10px;
+  --shadow:   0 2px 14px rgba(30,26,20,0.10);
+
+  /* Accessibility tokens */
+  --font-scale: 1;
+  --base-font: 'DM Sans', 'Atkinson Hyperlegible', sans-serif;
+  --focus-color: #B85C38;
+  --focus-width: 3px;
+  --min-tap: 48px;
+  --line-height: 1.65;
+  --letter-spacing: 0em;
+}
+
+/* ═══════════════════════════════════════════════════
+   ACCESSIBILITY MODES (toggled via body classes)
+═══════════════════════════════════════════════════ */
+
+/* ── High Contrast ── */
+body.high-contrast {
+  --cream:   #000;
+  --paper:   #0a0a0a;
+  --ink:     #fff;
+  --muted:   #e0e0e0;
+  --border:  #fff;
+  --sage:    #00ff88;
+  --sage-lt: #00cc6a;
+  --sage-bg: #001a0d;
+  --terra:   #ff6b35;
+  --terra-lt:#ff8c5a;
+  --terra-bg:#1a0800;
+  --amber:   #ffd700;
+  --amber-bg:#1a1400;
+  --low-ink: #00ff88;
+  --mid-ink: #ffd700;
+  --hi-ink:  #ff6b35;
+  --low-bg:  #001a0d;
+  --mid-bg:  #1a1400;
+  --hi-bg:   #1a0800;
+  --focus-color: #fff;
+  --shadow:  0 0 0 2px #fff;
+}
+body.high-contrast .site-header { border-bottom: 2px solid #fff; }
+body.high-contrast input[type=range]::-webkit-slider-thumb { background: #fff; }
+body.high-contrast .delivery-card { border-width: 2px; }
+
+/* ── Dyslexia-Friendly Font ── */
+body.dyslexia-font,
+body.dyslexia-font * {
+  font-family: 'Atkinson Hyperlegible', sans-serif !important;
+  --letter-spacing: 0.04em;
+  --line-height: 1.9;
+  word-spacing: 0.12em;
+}
+body.dyslexia-font p,
+body.dyslexia-font li,
+body.dyslexia-font label,
+body.dyslexia-font .domain-desc,
+body.dyslexia-font .domain-anchors {
+  letter-spacing: var(--letter-spacing);
+  line-height: var(--line-height);
+}
+
+/* ── Small Text ── */
+body.text-sm { --font-scale: 0.88; }
+body.text-sm p, body.text-sm li, body.text-sm label {
+  font-size: calc(1rem * var(--font-scale));
+}
+
+/* ── Large Text ── */
+body.text-lg  { --font-scale: 1.2; }
+body.text-xl  { --font-scale: 1.45; }
+
+body.text-lg p, body.text-lg li, body.text-lg label,
+body.text-xl p, body.text-xl li, body.text-xl label {
+  font-size: calc(1rem * var(--font-scale));
+}
+body.text-lg .domain-name  { font-size: calc(1rem * var(--font-scale)); }
+body.text-xl .domain-name  { font-size: calc(1.05rem * var(--font-scale)); }
+body.text-lg .btn, body.text-xl .btn { font-size: calc(0.9rem * var(--font-scale)); }
+
+/* ── Reduced Motion ── */
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ── Focus Mode (one domain visible at a time) ── */
+body.focus-mode .domain-item { opacity: 0.28; pointer-events: none; }
+body.focus-mode .domain-item.focus-active {
+  opacity: 1;
+  pointer-events: all;
+  box-shadow: 0 0 0 3px var(--sage), var(--shadow);
+}
+body.focus-mode .domain-item.focus-done { opacity: 0.55; pointer-events: all; }
+
+/* ── Reading Guide ── */
+#reading-guide {
+  position: fixed;
+  left: 0; right: 0;
+  height: 3px;
+  background: var(--terra);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 8000;
+  transition: opacity 0.2s;
+  border-radius: 2px;
+}
+body.reading-guide-on #reading-guide { opacity: 0.7; }
+
+/* System media queries */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+@media (prefers-contrast: more) {
+  :root {
+    --focus-width: 4px;
+    --border: #666;
+  }
+  :focus-visible { outline-width: 4px; }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cream: #1a1713;
+    --paper: #211e1a;
+    --ink:   #f0ebe3;
+    --muted: #a89e92;
+    --border:#4a4440;
+    --sage-bg:#1a2a20;
+    --terra-bg:#2a1510;
+    --amber-bg:#2a2010;
+    --low-bg:#1a2a20;
+    --mid-bg:#2a2010;
+    --hi-bg:#2a1510;
+    --low-ink:#6ECC7A;
+    --mid-ink:#E8C060;
+    --hi-ink: #E88A6A;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   ACCESSIBILITY TOOLBAR
+═══════════════════════════════════════════════════ */
+.a11y-toolbar {
+  background: var(--paper);
+  border-bottom: 1.5px solid var(--border);
+  padding: 0.45rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 500;
+}
+.a11y-toolbar-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 0.3rem;
+  white-space: nowrap;
+}
+.a11y-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.32rem 0.7rem;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  background: var(--cream);
+  font-family: var(--base-font);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.15s;
+  white-space: nowrap;
+  min-height: 36px;
+  min-width: 36px;
+  justify-content: center;
+}
+.a11y-btn:hover, .a11y-btn:focus-visible {
+  background: var(--sage-bg);
+  border-color: var(--sage);
+  color: var(--sage);
+}
+.a11y-btn.active {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: #fff;
+}
+.a11y-btn:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: 2px;
+}
+.a11y-sep {
+  width: 1px; height: 22px;
+  background: var(--border);
+  margin: 0 0.2rem;
+  flex-shrink: 0;
+}
+
+/* Keyboard shortcuts panel */
+.shortcuts-panel {
+  display: none;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--cream);
+  border: 2px solid var(--sage);
+  border-radius: 14px;
+  padding: 1.5rem;
+  z-index: 9000;
+  max-width: 480px;
+  width: 90vw;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.shortcuts-panel.open { display: block; }
+.shortcuts-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 8999;
+}
+.shortcuts-overlay.open { display: block; }
+.shortcuts-panel h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--sage);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.shortcuts-close {
+  background: none; border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  line-height: 1;
+}
+.shortcuts-close:hover { color: var(--terra); }
+.shortcut-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.shortcut-table th {
+  text-align: left;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.shortcut-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border); }
+.shortcut-table tr:last-child td { border-bottom: none; }
+kbd {
+  display: inline-block;
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink);
+  box-shadow: 0 1px 0 var(--border);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--base-font);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: var(--line-height);
+  min-height: 100vh;
+}
+
+/* ─── Focus Visible ───────────────────────────────── */
+:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* Extra-visible focus for interactive elements */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible,
+[role="tab"]:focus-visible,
+[role="button"]:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(184,92,56,0.15);
+}
+
+/* ─── Multiple Skip Links ─────────────────────────── */
+.skip-links {
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 9999;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.65rem 1.2rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  display: block;
+}
+.skip-link:focus {
+  position: fixed;
+  left: 1rem;
+  top: 0;
+  width: auto;
+  height: auto;
+  clip: auto;
+  overflow: visible;
+  white-space: normal;
+  z-index: 99999;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+/* Stack multiple skip links vertically when focused */
+.skip-link:focus ~ .skip-link:focus {
+  top: 3rem;
+}
+
+
+/* ─── Header ──────────────────────────────────────── */
+.site-header {
+  background: var(--sage);
+  color: #fff;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.brand-mark {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.brand-mark-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+.brand-mark-suite {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.brand-mark-sub {
+  font-size: 0.72rem;
+  opacity: 0.88;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+/* NSDS badge — dark navy + green from the logo */
+.nsds-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #1E2D4A;
+  border-radius: 5px;
+  padding: 0.18rem 0.45rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #6ECC7A;
+  line-height: 1;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(110,204,122,0.4);
+}
+.header-divider {
+  width: 1px;
+  height: 2.5rem;
+  background: rgba(255,255,255,0.3);
+}
+.header-title-block { flex: 1; }
+.header-tool-label {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.header-tool-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.header-copyright {
+  font-size: 0.7rem;
+  opacity: 0.65;
+  white-space: nowrap;
+}
+
+/* ─── Layout ──────────────────────────────────────── */
+.outer-wrap { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+/* ─── Mode Panels ────────────────────────────────── */
+.mode-panel {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.mode-panel h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--sage);
+  margin-bottom: 0.5rem;
+}
+.mode-panel p { font-size: 0.92rem; color: var(--muted); margin-bottom: 1rem; }
+
+.pin-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; }
+.pin-field-wrap { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 140px; }
+.pin-field-wrap label { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em; color: var(--muted); }
+.pin-input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  padding: 0.55rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--ink);
+  width: 100%;
+}
+.pin-input:focus { border-color: var(--sage); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+.btn:active { transform: scale(0.97); }
+.btn-sage { background: var(--sage); color: #fff; }
+.btn-sage:hover, .btn-sage:focus-visible { background: var(--sage-lt); box-shadow: 0 3px 10px rgba(61,107,79,0.35); }
+.btn-terra { background: var(--terra); color: #fff; }
+.btn-terra:hover, .btn-terra:focus-visible { background: var(--terra-lt); box-shadow: 0 3px 10px rgba(184,92,56,0.35); }
+.btn-amber { background: var(--amber); color: #fff; }
+.btn-amber:hover, .btn-amber:focus-visible { box-shadow: 0 3px 10px rgba(200,146,26,0.35); }
+.btn-ghost {
+  background: transparent;
+  color: var(--sage);
+  border: 1.5px solid var(--sage);
+}
+.btn-ghost:hover, .btn-ghost:focus-visible { background: var(--sage-bg); }
+
+.generated-link-box {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  background: var(--sage-bg);
+  border: 1.5px solid var(--sage);
+  border-radius: 8px;
+}
+.generated-link-box label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--sage);
+  display: block;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.generated-link-text {
+  font-size: 0.8rem;
+  word-break: break-all;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  margin-bottom: 0.6rem;
+  font-family: monospace;
+}
+.copy-confirm {
+  font-size: 0.8rem;
+  color: var(--sage);
+  font-weight: 600;
+  display: none;
+}
+.copy-confirm.visible { display: inline; }
+
+/* ─── Info Banner ─────────────────────────────────── */
+.info-banner {
+  background: var(--sage-bg);
+  border-left: 4px solid var(--sage);
+  border-radius: 0 8px 8px 0;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.92rem;
+}
+.info-banner strong { color: var(--sage); }
+
+/* ─── Section Card ────────────────────────────────── */
+.section-card {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.section-step {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--terra);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.section-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.section-card p.lead {
+  font-size: 0.93rem;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+/* ─── Client Info Row ─────────────────────────────── */
+.client-info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+@media (max-width: 520px) { .client-info-row { grid-template-columns: 1fr; } }
+.field-wrap { display: flex; flex-direction: column; gap: 0.3rem; }
+.field-wrap label { font-size: 0.82rem; font-weight: 600; color: var(--muted); letter-spacing: 0.04em; }
+.field-input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.8rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--ink);
+}
+.field-input:focus { border-color: var(--sage); }
+
+/* ─── Domain Sliders ──────────────────────────────── */
+.domain-list { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.domain-item {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem 1.15rem 0.9rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+.domain-item:focus-within { border-color: var(--sage); background: var(--cream); }
+
+.domain-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.3rem; }
+.domain-name { font-weight: 700; font-size: 1rem; color: var(--ink); }
+.domain-score-badge {
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  min-width: 2.8rem;
+  text-align: right;
+  transition: color 0.2s;
+}
+.domain-desc { font-size: 0.84rem; color: var(--muted); margin-bottom: 0.65rem; }
+.domain-anchors {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 0.4rem;
+}
+
+/* Slider + Step Buttons */
+.slider-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+}
+.step-btn {
+  flex-shrink: 0;
+  width: var(--min-tap);
+  height: var(--min-tap);
+  min-width: var(--min-tap);
+  min-height: var(--min-tap);
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--cream);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  touch-action: manipulation;
+  user-select: none;
+}
+.step-btn:hover, .step-btn:focus-visible {
+  background: var(--sage-bg);
+  border-color: var(--sage);
+  color: var(--sage);
+}
+.step-btn:active { transform: scale(0.92); }
+.step-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+  touch-action: pan-x;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--sage);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.28);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+input[type=range]::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--sage);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.28);
+  cursor: pointer;
+}
+input[type=range]:hover::-webkit-slider-thumb,
+input[type=range]:focus::-webkit-slider-thumb { transform: scale(1.18); }
+input[type=range]:focus-visible { outline: var(--focus-width) solid var(--focus-color); outline-offset: 4px; border-radius: 6px; }
+
+/* Number stepper input (shown alongside slider) */
+.score-stepper {
+  width: 58px;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.25rem 0.3rem;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--ink);
+  -moz-appearance: textfield;
+}
+.score-stepper::-webkit-inner-spin-button,
+.score-stepper::-webkit-outer-spin-button { -webkit-appearance: none; }
+.score-stepper:focus { border-color: var(--sage); }
+
+
+.domain-notes-toggle {
+  margin-top: 0.6rem;
+}
+.notes-toggle-btn {
+  background: none;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: var(--sage);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.notes-toggle-btn:focus-visible { outline: 2px solid var(--terra); border-radius: 2px; }
+.domain-notes-field {
+  display: none;
+  margin-top: 0.5rem;
+}
+.domain-notes-field.open { display: block; }
+.domain-notes-field textarea {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  padding: 0.55rem 0.8rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--ink);
+  resize: vertical;
+  min-height: 72px;
+}
+.domain-notes-field textarea:focus { border-color: var(--sage); }
+
+/* ─── Score Color Helpers ─────────────────────────── */
+.score-low  { color: var(--low-ink); }
+.score-mid  { color: var(--mid-ink); }
+.score-hi   { color: var(--hi-ink); }
+
+/* ─── Radar Chart ─────────────────────────────────── */
+.radar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+#radarChart {
+  max-width: 420px;
+  width: 100%;
+  height: auto;
+}
+.radar-legend {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.legend-item { display: flex; align-items: center; gap: 0.4rem; }
+.legend-swatch { width: 14px; height: 14px; border-radius: 3px; }
+
+/* ─── Pattern Interpretation ──────────────────────── */
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 560px) { .pattern-grid { grid-template-columns: 1fr; } }
+.pattern-col {
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+}
+.pattern-col.hi { background: var(--hi-bg); border: 1.5px solid var(--terra-lt); }
+.pattern-col.mid { background: var(--mid-bg); border: 1.5px solid var(--amber); }
+.pattern-col.low { background: var(--low-bg); border: 1.5px solid var(--sage); }
+.pattern-col h3 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.pattern-col.hi h3 { color: var(--hi-ink); }
+.pattern-col.mid h3 { color: var(--mid-ink); }
+.pattern-col.low h3 { color: var(--low-ink); }
+.domain-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  margin: 0.15rem 0.1rem;
+}
+.tag-hi { background: rgba(184,92,56,0.15); color: var(--hi-ink); }
+.tag-mid { background: rgba(200,146,26,0.15); color: var(--mid-ink); }
+.tag-low { background: rgba(61,107,79,0.15); color: var(--low-ink); }
+.pattern-col .empty-note { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
+.key-insight {
+  background: var(--amber-bg);
+  border-left: 4px solid var(--amber);
+  border-radius: 0 8px 8px 0;
+  padding: 0.9rem 1rem;
+  font-size: 0.9rem;
+}
+.key-insight strong { color: var(--amber); }
+
+/* ─── Domain Deep Dives ───────────────────────────── */
+.deep-dive-intro {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.deep-dive-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.deep-dive-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.deep-dive-card.priority-hi { border-color: var(--terra-lt); }
+.deep-dive-card.priority-mid { border-color: var(--amber); }
+.deep-dive-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  background: var(--paper);
+  gap: 0.75rem;
+}
+.deep-dive-header:hover { background: var(--cream); }
+.deep-dive-header[aria-expanded="true"] { background: var(--cream); }
+.deep-dive-title { font-weight: 700; font-size: 0.96rem; flex: 1; }
+.deep-dive-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  min-width: 2.2rem;
+  text-align: right;
+}
+.deep-dive-arrow {
+  font-size: 0.7rem;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+.deep-dive-header[aria-expanded="true"] .deep-dive-arrow { transform: rotate(180deg); }
+.deep-dive-body {
+  display: none;
+  padding: 1rem;
+  border-top: 1.5px solid var(--border);
+  background: var(--cream);
+}
+.deep-dive-body.open { display: block; }
+.deep-dive-body h4 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin: 0.75rem 0 0.4rem;
+}
+.deep-dive-body h4:first-child { margin-top: 0; }
+.deep-dive-body ul {
+  padding-left: 1.2rem;
+  font-size: 0.87rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.deep-dive-body ul li { margin-bottom: 0.25rem; }
+.deep-dive-body p { font-size: 0.87rem; color: var(--muted); }
+
+/* ─── Checkboxes for Accommodations ──────────────── */
+.accomm-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.accomm-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.accomm-list input[type=checkbox] {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin-top: 2px;
+  accent-color: var(--sage);
+  cursor: pointer;
+}
+.accomm-list label {
+  font-size: 0.87rem;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+/* ─── Action Plan ─────────────────────────────────── */
+.action-plan-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.action-box {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.action-box-title { background: var(--paper); padding: 0.6rem 0.9rem; font-size: 0.85rem; font-weight: 700; color: var(--sage); letter-spacing: 0.03em; }
+.action-box-prompt { display: block; font-size: 0.78rem; font-weight: 400; color: var(--muted); font-style: italic; margin-top: 0.2rem; }
+.accomm-auto-list {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.85rem;
+  background: var(--sage-bg);
+  min-height: 2.5rem;
+  color: var(--muted);
+  font-style: italic;
+}
+.accomm-auto-list ul { padding-left: 1.1rem; }
+.accomm-auto-list ul li { margin-bottom: 0.2rem; color: var(--ink); font-style: normal; }
+.accomm-auto-empty { color: var(--muted); font-style: italic; font-size: 0.82rem; }
+.action-box textarea {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  border: none;
+  background: var(--cream);
+  color: var(--ink);
+  resize: vertical;
+  min-height: 80px;
+}
+.action-box textarea:focus {
+  outline: 2px solid var(--sage);
+  background: var(--cream);
+}
+
+/* ─── NST Framing Note ────────────────────────────── */
+.nst-note {
+  background: var(--sage-bg);
+  border: 1.5px solid var(--sage);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1.5rem;
+}
+.nst-note p { font-size: 0.88rem; color: var(--muted); }
+.nst-note strong { color: var(--sage); }
+
+/* ─── Result / Decrypt Section ────────────────────── */
+.result-section {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.result-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--sage);
+  margin-bottom: 0.5rem;
+}
+.result-section p { font-size: 0.92rem; color: var(--muted); margin-bottom: 1rem; }
+.result-url-box {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-family: monospace;
+  font-size: 0.75rem;
+  word-break: break-all;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+.decrypt-results {
+  margin-top: 1.25rem;
+  display: none;
+}
+.decrypt-results.visible { display: block; }
+.decrypt-results h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+.result-domain-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+.result-domain-row:last-child { border-bottom: none; }
+.result-domain-name { flex: 1; }
+.result-domain-score {
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  min-width: 3rem;
+  text-align: right;
+}
+
+/* ─── Delivery Mode Choice Cards ─────────────────── */
+.delivery-choice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+@media (max-width: 560px) { .delivery-choice { grid-template-columns: 1fr; } }
+.delivery-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1.4rem 1.2rem;
+  cursor: pointer;
+  background: var(--paper);
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.delivery-card:hover, .delivery-card:focus-visible {
+  background: var(--cream);
+  box-shadow: var(--shadow);
+}
+.delivery-card.selected-session { border-color: var(--sage); background: var(--sage-bg); }
+.delivery-card.selected-remote  { border-color: var(--terra); background: var(--terra-bg); }
+.delivery-card-icon { font-size: 1.8rem; line-height: 1; }
+.delivery-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.delivery-card-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.55; }
+.delivery-card-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  margin-top: 0.2rem;
+  width: fit-content;
+}
+.badge-session { background: rgba(61,107,79,0.15); color: var(--sage); }
+.badge-remote  { background: rgba(184,92,56,0.15); color: var(--terra); }
+
+/* ─── In-Session Banner ───────────────────────────── */
+.session-banner {
+  background: var(--sage);
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.session-banner-text { font-size: 0.88rem; font-weight: 600; }
+.session-banner-text span { opacity: 0.8; font-weight: 400; }
+.btn-sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+}
+
+/* ─── In-Session Live Results ─────────────────────── */
+.session-results-card {
+  background: var(--cream);
+  border: 2px solid var(--sage);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.session-results-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--sage);
+  margin-bottom: 0.35rem;
+}
+.session-results-card .session-subtitle {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 1.1rem;
+}
+.session-domain-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+.session-domain-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.session-domain-name { flex: 1; font-size: 0.9rem; font-weight: 500; }
+.session-bar-wrap {
+  flex: 2;
+  background: var(--border);
+  border-radius: 4px;
+  height: 10px;
+  overflow: hidden;
+}
+.session-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease, background 0.3s;
+}
+.session-score-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 2.5rem;
+  text-align: right;
+}
+.session-notes-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+@media (max-width: 680px) { .session-notes-row { grid-template-columns: 1fr !important; } }
+
+/* ─── Decorative Divider ──────────────────────────── */
+.ornamental-divider {
+  text-align: center;
+  color: var(--border);
+  font-size: 1.1rem;
+  letter-spacing: 0.5em;
+  margin: 1.5rem 0;
+  user-select: none;
+}
+
+/* ─── Pattern Description ─────────────────────────── */
+.pattern-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+/* ─── Progress Indicator ──────────────────────────── */
+.progress-bar-wrap {
+  background: var(--border);
+  border-radius: 4px;
+  height: 6px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sage), var(--sage-lt));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* ─── Page Tabs (Clinician vs Client vs Decrypt) ─── */
+.mode-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.mode-tab {
+  padding: 0.5rem 1.1rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--paper);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--muted);
+  transition: background 0.15s, border-color 0.15s;
+}
+.mode-tab[aria-selected="true"] {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: #fff;
+}
+.mode-tab:focus-visible {
+  outline: 3px solid var(--terra);
+  outline-offset: 3px;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ─── Toast Notification ──────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #2C3E2D;
+  color: #fff;
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  z-index: 9001;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+.toast:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════
+   WIZARD STEP NAVIGATION
+═══════════════════════════════════════════════════ */
+.wizard-nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 1.75rem;
+  padding: 0 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.wizard-nav::-webkit-scrollbar { display: none; }
+
+.wizard-step-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0.25rem;
+  font-family: var(--base-font);
+  position: relative;
+  z-index: 1;
+}
+.wizard-step-btn:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.wizard-bubble {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: 2.5px solid var(--border);
+  background: var(--cream);
+  color: var(--muted);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+.wizard-step-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+  transition: color 0.2s;
+}
+
+/* Connecting line between steps */
+.wizard-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  margin-bottom: 1.4rem;
+  transition: background 0.3s;
+  min-width: 12px;
+}
+.wizard-connector.done { background: var(--sage); }
+
+/* States */
+.wizard-step-btn.active .wizard-bubble {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: #fff;
+}
+.wizard-step-btn.active .wizard-step-label { color: var(--sage); font-weight: 700; }
+
+.wizard-step-btn.done .wizard-bubble {
+  background: var(--sage-bg);
+  border-color: var(--sage);
+  color: var(--sage);
+}
+.wizard-step-btn.done .wizard-step-label { color: var(--sage); }
+
+/* Wizard step panels */
+.wizard-panel { display: none; }
+.wizard-panel.active { display: block; }
+
+/* Wizard footer nav buttons */
+.wizard-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1.5px solid var(--border);
+  flex-wrap: wrap;
+}
+.wizard-footer-center {
+  flex: 1;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Step intro callout */
+.step-intro {
+  background: var(--paper);
+  border-left: 4px solid var(--sage);
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.step-intro strong { color: var(--sage); }
+
+/* ─── Hidden Utility ──────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+.hidden { display: none !important; }
+
+/* ─── Minimum Touch Targets ───────────────────────── */
+.btn, .a11y-btn, .step-btn, .mode-tab, .delivery-card,
+input[type=checkbox], .notes-toggle-btn, .deep-dive-header,
+.shortcuts-close {
+  min-height: var(--min-tap);
+}
+input[type=checkbox] {
+  width: 22px; height: 22px; min-width: 22px; min-height: 22px;
+  cursor: pointer;
+}
+.accomm-list label { cursor: pointer; padding: 0.2rem 0; }
+.accomm-list li { min-height: var(--min-tap); align-items: center; }
+
+/* ─── Error / Invalid States ──────────────────────── */
+input[aria-invalid="true"], textarea[aria-invalid="true"] {
+  border-color: var(--terra) !important;
+  box-shadow: 0 0 0 2px rgba(184,92,56,0.2);
+}
+.field-error {
+  color: var(--terra);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+/* ─── Required field indicator ────────────────────── */
+label .required { color: var(--terra); margin-left: 0.2rem; }
+
+/* ─── Status/Error banner ─────────────────────────── */
+[role="alert"] {
+  border: 1.5px solid var(--terra);
+  background: var(--terra-bg);
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-weight: 600;
+}
+
+/* ─── Clinician notes grid responsive ─────────────── */
+.clinician-notes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+@media (max-width: 680px) {
+  .clinician-notes-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ─── Print / Footer ──────────────────────────────── */
+.clinical-disclaimer {
+  font-size: 0.82rem;
+  color: var(--terra);
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--terra-lt);
+  border-radius: 6px;
+  display: inline-block;
+  background: var(--terra-bg);
+}
+.site-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+.site-footer a { color: var(--sage); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+
+@media print {
+  /* Hide all interactive UI */
+  .a11y-toolbar, .mode-tabs, .site-header, .skip-links,
+  .mode-panel, #panel-clinician, #panel-decrypt,
+  .session-banner, #generate-result-section,
+  .result-section, .step-btn, .score-stepper,
+  .domain-notes-toggle, #reading-guide,
+  .shortcuts-panel, .shortcuts-overlay,
+  #btn-print, .session-notes-row,
+  #deep-dives-section .accomm-list input[type=checkbox],
+  .toast, .site-footer,
+  .wizard-nav, .wizard-footer, .wizard-panel,
+  input[type=range], .nst-note, .info-banner,
+  #track-over-time-section, #print-btn-section { display: none !important; }
+
+  /* Show the print report panel */
+  #print-report { display: block !important; }
+  #panel-client { display: block !important; }
+
+  body { background: #fff !important; font-size: 11pt; color: #000 !important; }
+  .outer-wrap { max-width: 100%; padding: 0; margin: 0; }
+
+  .section-card { box-shadow: none !important; border: 1px solid #ccc !important; break-inside: avoid; margin-bottom: 0.5rem; }
+  .print-page-break { break-before: page; }
+
+  /* Print report specific */
+  .print-report-header { display: flex !important; }
+  .print-score-table { width: 100%; border-collapse: collapse; }
+  .print-score-table th, .print-score-table td { border: 1px solid #ccc; padding: 5pt 7pt; font-size: 10pt; }
+  .print-score-table th { background: #f0ede6; font-weight: 700; }
+  .print-bar { height: 10px; border-radius: 3px; display: inline-block; }
+
+  /* Radar SVG: force size for print */
+  #radarChartPrint { width: 280pt !important; height: 280pt !important; }
+
+  .print-action-box { border: 1px solid #ccc; border-radius: 4px; margin-bottom: 0.4rem; padding: 6pt 8pt; break-inside: avoid; }
+  .print-action-label { font-size: 8.5pt; font-weight: 700; color: #3D6B4F; margin-bottom: 3pt; text-transform: uppercase; letter-spacing: 0.05em; }
+  .print-action-value { font-size: 10pt; min-height: 18pt; color: #1E1A14; }
+  .print-action-blank { border-bottom: 1px solid #ccc; height: 18pt; margin-bottom: 4pt; }
+
+  .print-clinician-box { border: 1.5px solid #3D6B4F; border-radius: 4px; padding: 6pt 8pt; margin-bottom: 0.4rem; }
+  .print-domain-bar-row { display: flex; align-items: center; gap: 6pt; margin-bottom: 3pt; font-size: 9pt; }
+  .print-domain-bar-wrap { flex: 1; height: 8pt; background: #e0dbd0; border-radius: 3pt; overflow: hidden; }
+  .print-domain-bar-fill { height: 100%; border-radius: 3pt; }
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Skip navigation" class="skip-links">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#domain-list" class="skip-link" id="skip-to-assessment" onclick="if(!document.getElementById('panel-client').classList.contains('active')){switchTab('client');}" >Skip to assessment</a>
+</nav><!-- /.skip-links -->
+
+<!-- ─── Reading Guide (horizontal line) ─── -->
+<div id="reading-guide" aria-hidden="true"></div>
+
+<!-- ─── Keyboard Shortcuts Overlay ─── -->
+<div class="shortcuts-overlay" id="shortcuts-overlay" aria-hidden="true" onclick="closeShortcuts()"></div>
+<div class="shortcuts-panel" id="shortcuts-panel" role="dialog" aria-modal="true" aria-labelledby="shortcuts-heading">
+  <h2 id="shortcuts-heading">
+    Keyboard Shortcuts
+    <button type="button" class="shortcuts-close" onclick="closeShortcuts()" aria-label="Close keyboard shortcuts panel">✕</button>
+  </h2>
+  <table class="shortcut-table" aria-label="Keyboard shortcuts reference">
+    <thead>
+      <tr><th scope="col">Key</th><th scope="col">Action</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><kbd>Alt</kbd>+<kbd>1</kbd></td><td>Go to Clinician panel</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>2</kbd></td><td>Go to Client / Assessment panel</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>3</kbd></td><td>Go to View Results panel</td></tr>
+      <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Adjust focused slider by 1</td></tr>
+      <tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Set slider to 0 / 10</td></tr>
+      <tr><td><kbd>Page Up/Down</kbd></td><td>Jump slider by 2</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>C</kbd></td><td>Toggle high contrast</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>D</kbd></td><td>Toggle dyslexia font</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>M</kbd></td><td>Toggle reduced motion</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>F</kbd></td><td>Toggle focus mode</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>G</kbd></td><td>Toggle reading guide</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>=</kbd></td><td>Increase text size</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>-</kbd></td><td>Decrease text size</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>0</kbd></td><td>Reset text size</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>N</kbd></td><td>Next domain (focus mode)</td></tr>
+      <tr><td><kbd>Alt</kbd>+<kbd>P</kbd></td><td>Previous domain (focus mode)</td></tr>
+      <tr><td><kbd>Escape</kbd></td><td>Close this panel</td></tr>
+      <tr><td><kbd>?</kbd></td><td>Open this help panel</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ───────────────────────────── TOOLBAR ─── -->
+<div class="a11y-toolbar" role="toolbar" aria-label="Accessibility options">
+  <span class="a11y-toolbar-label" aria-hidden="true">Accessibility:</span>
+
+  <!-- Text size -->
+  <button type="button" class="a11y-btn" id="btn-text-sm" onclick="setTextSize('sm')" aria-label="Small text size" aria-pressed="false" title="Small text (Alt+-)">A−</button>
+  <button class="a11y-btn active" id="btn-text-md" onclick="setTextSize('md')" aria-label="Default text size" aria-pressed="true" title="Default text (Alt+0)" type="button">A</button>
+  <button type="button" class="a11y-btn" id="btn-text-lg" onclick="setTextSize('lg')" aria-label="Large text size" aria-pressed="false" title="Large text (Alt+=)">A+</button>
+  <button type="button" class="a11y-btn" id="btn-text-xl" onclick="setTextSize('xl')" aria-label="Extra large text size" aria-pressed="false" title="Extra large text">A++</button>
+
+  <div class="a11y-sep" aria-hidden="true"></div>
+
+  <!-- Contrast -->
+  <button type="button" class="a11y-btn" id="btn-contrast" onclick="toggleA11y('high-contrast','btn-contrast')"
+    aria-label="Toggle high contrast mode" aria-pressed="false" title="High contrast (Alt+C)">
+    ◑ Contrast
+  </button>
+
+  <!-- Dyslexia font -->
+  <button type="button" class="a11y-btn" id="btn-dyslexia" onclick="toggleA11y('dyslexia-font','btn-dyslexia')"
+    aria-label="Toggle dyslexia-friendly font (Atkinson Hyperlegible)" aria-pressed="false" title="Dyslexia font (Alt+D)">
+    Aa Font
+  </button>
+
+  <div class="a11y-sep" aria-hidden="true"></div>
+
+  <!-- Motion -->
+  <button type="button" class="a11y-btn" id="btn-motion" onclick="toggleA11y('reduce-motion','btn-motion')"
+    aria-label="Toggle reduced motion" aria-pressed="false" title="Reduce motion (Alt+M)">
+    ⏸ Motion
+  </button>
+
+  <!-- Reading guide -->
+  <button type="button" class="a11y-btn" id="btn-guide" onclick="toggleA11y('reading-guide-on','btn-guide')"
+    aria-label="Toggle reading guide line" aria-pressed="false" title="Reading guide (Alt+G)">
+    ━ Guide
+  </button>
+
+  <div class="a11y-sep" aria-hidden="true"></div>
+
+  <!-- Focus mode -->
+  <button type="button" class="a11y-btn" id="btn-focus-mode" onclick="toggleFocusMode()"
+    aria-label="Toggle focus mode — one domain at a time" aria-pressed="false" title="Focus mode (Alt+F)">
+    🔍 Focus Mode
+  </button>
+
+  <!-- Keyboard shortcuts -->
+  <button type="button" class="a11y-btn" id="btn-shortcuts" onclick="openShortcuts()"
+    aria-label="View keyboard shortcuts" title="Keyboard shortcuts (?)">
+    ⌨ Shortcuts
+  </button>
+</div>
+
+<!-- ── LIVE ANNOUNCER (screen readers) ── -->
+<div id="sr-announcer" class="sr-only" aria-live="assertive" aria-atomic="true" role="alert"></div>
+<div id="sr-announcer-polite" class="sr-only" aria-live="polite" aria-atomic="true" role="status"></div>
+
+<!-- ───────────────────────────── HEADER ─── -->
+<header class="site-header" role="banner">
+  <div class="brand-mark" aria-label="Creative Solutions Coaching – Neurocontextual Systems Design Suite">
+    <span class="brand-mark-name">Creative Solutions Coaching</span>
+    <div class="brand-mark-suite">
+      <span class="nsds-badge" aria-hidden="true">NSDS</span>
+      <span class="brand-mark-sub">Neurocontextual Systems<br>Design Suite</span>
+    </div>
+  </div>
+  <div class="header-divider" aria-hidden="true"></div>
+  <div class="header-title-block">
+    <div class="header-tool-label">NSDS Assessment Tool</div>
+    <div class="header-tool-name">Executive Function Load Map</div>
+  </div>
+  <div class="header-copyright" aria-label="Copyright 2026 Creative Solutions Coaching. All rights reserved.">&copy; 2026 Creative Solutions Coaching</div>
+</header>
+
+<!-- ───────────────────────────── TOAST ─── -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<main id="main-content" class="outer-wrap">
+
+  <!-- ── MODE TABS ── -->
+  <div role="tablist" class="mode-tabs" aria-label="Select assessment mode">
+    <button type="button" role="tab" class="mode-tab" id="tab-clinician" aria-selected="false" tabindex="-1" aria-controls="panel-clinician" onclick="switchTab('clinician', true)">
+      🔑 Clinician: Generate Link
+    </button>
+    <button type="button" role="tab" class="mode-tab" id="tab-client" aria-selected="false" tabindex="-1" aria-controls="panel-client" onclick="switchTab('client', true)">
+      📋 Client: Complete Assessment
+    </button>
+    <button type="button" role="tab" class="mode-tab" id="tab-decrypt" aria-selected="false" tabindex="-1" aria-controls="panel-decrypt" onclick="switchTab('decrypt', true)">
+      🔓 Clinician: View Results
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 1 — CLINICIAN: CHOOSE DELIVERY MODE
+  ══════════════════════════════════════════════ -->
+  <div id="panel-clinician" role="tabpanel" aria-labelledby="tab-clinician" class="tab-panel">
+
+    <div class="mode-panel">
+      <h2>How would you like to use this assessment?</h2>
+      <p>Choose whether you'll complete this together in session, or send it to the client to fill out on their own.</p>
+
+      <div class="delivery-choice" role="group" aria-label="Choose assessment delivery method">
+
+        <button type="button" class="delivery-card" id="card-session"
+          onclick="selectDelivery('session')"
+          aria-pressed="false"
+          aria-describedby="desc-session">
+          <span class="delivery-card-icon" aria-hidden="true">🪑</span>
+          <span class="delivery-card-title">Use In Session</span>
+          <span class="delivery-card-desc" id="desc-session">Complete together now — in person or on a shared screen. Results appear live for you both to review and discuss.</span>
+          <span class="delivery-card-badge badge-session">No link needed · Results visible immediately</span>
+        </button>
+
+        <button type="button" class="delivery-card" id="card-remote"
+          onclick="selectDelivery('remote')"
+          aria-pressed="false"
+          aria-describedby="desc-remote">
+          <span class="delivery-card-icon" aria-hidden="true">📤</span>
+          <span class="delivery-card-title">Send to Client</span>
+          <span class="delivery-card-desc" id="desc-remote">Generate an encrypted link to send your client. They complete it independently and send back a results URL only you can decrypt.</span>
+          <span class="delivery-card-badge badge-remote">PIN-encrypted · Client completes independently</span>
+        </button>
+
+      </div>
+
+      <!-- In-Session sub-flow -->
+      <div id="subflow-session" class="hidden">
+        <div class="info-banner" role="note" style="margin-bottom:1rem;">
+          <strong>In-Session Mode:</strong> The assessment will open on this screen. The client rates each domain and the results appear live below — no link, no PIN, no data stored anywhere.
+        </div>
+        <button type="button" class="btn btn-sage" onclick="launchSessionMode()" aria-label="Open assessment in session mode">
+          🪑 Open Assessment for This Session
+        </button>
+      </div>
+
+      <!-- Remote / Send-to-Client sub-flow -->
+      <div id="subflow-remote" class="hidden">
+        <div class="pin-row">
+          <div class="pin-field-wrap">
+            <label for="clinician-pin">Your PIN (4–8 digits)</label>
+            <input type="password" id="clinician-pin" class="pin-input" placeholder="e.g. 2847"
+              maxlength="8" inputmode="numeric" autocomplete="off"
+              aria-describedby="pin-hint clinician-pin-error"/>
+            <span id="pin-hint" class="sr-only">Enter a 4 to 8 digit PIN that only you know. You will need this PIN to decrypt your client's results.</span>
+            <span id="clinician-pin-error" class="field-error hidden" role="alert"></span>
+          </div>
+          <button type="button" class="btn btn-terra" onclick="generateClientLink()" aria-label="Generate encrypted client link">
+            ✦ Generate Link
+          </button>
+        </div>
+
+        <div id="client-link-result" class="generated-link-box hidden" aria-live="polite">
+          <div class="generated-link-text" id="generated-link-text" tabindex="0" aria-label="Generated client link URL" role="region"></div>
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+            <button type="button" class="btn btn-terra" onclick="copyGeneratedLink()" aria-label="Copy client link to clipboard">📋 Copy Link</button>
+            <span class="copy-confirm" id="copy-confirm" role="status"></span>
+          </div>
+          <p style="margin-top:0.75rem; font-size:0.8rem; color:var(--muted);">
+            Send this link to your client. Keep your PIN safe — you will need it to decrypt their results.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- end mode-panel -->
+
+    <div class="nst-note" role="note">
+      <p><strong>A note on NST framing:</strong> Elevated load scores are not evidence of dysfunction or weakness. They are accurate information about mismatch — the gap between what a nervous system needs and what the current environment provides. High load does not mean something is wrong. It means the conditions are not adequately supporting how that brain actually works.</p>
+    </div>
+
+    <div class="info-banner" role="note">
+      <strong>Privacy:</strong> No data is stored on any server. In-session mode, nothing leaves the device at all. In remote mode, responses are encrypted in the URL hash using your PIN and only you can decrypt them. No login, no database, no data retention.
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 2 — CLIENT: COMPLETE ASSESSMENT (WIZARD)
+  ══════════════════════════════════════════════ -->
+  <div id="panel-client" role="tabpanel" aria-labelledby="tab-client" class="tab-panel">
+
+    <!-- Session mode banner (shown in-session only) -->
+    <div id="session-mode-banner" class="session-banner hidden" role="status" aria-live="polite">
+      <span class="session-banner-text">🪑 In-Session Mode <span>· Work through each step together</span></span>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="resetSession()"
+        style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.4);"
+        aria-label="End this session and start a new one">
+        ↺ New Session
+      </button>
+    </div>
+
+    <!-- ── WIZARD STEP NAVIGATION ── -->
+    <nav class="wizard-nav" aria-label="Assessment steps">
+      <button type="button" class="wizard-step-btn active" id="wbtn-1" onclick="goToStep(1)"
+        aria-label="Step 1: Rate Your Domains" aria-current="step">
+        <span class="wizard-bubble" aria-hidden="true">1</span>
+        <span class="wizard-step-label">Rate Domains</span>
+      </button>
+      <div class="wizard-connector" id="wcon-1-2" aria-hidden="true"></div>
+      <button type="button" class="wizard-step-btn" id="wbtn-2" onclick="goToStep(2)"
+        aria-label="Step 2: Your EF Load Shape">
+        <span class="wizard-bubble" aria-hidden="true">2</span>
+        <span class="wizard-step-label">Your Shape</span>
+      </button>
+      <div class="wizard-connector" id="wcon-2-3" aria-hidden="true"></div>
+      <button type="button" class="wizard-step-btn" id="wbtn-3" onclick="goToStep(3)"
+        aria-label="Step 3: Deep Dives and Accommodations">
+        <span class="wizard-bubble" aria-hidden="true">3</span>
+        <span class="wizard-step-label">Deep Dives</span>
+      </button>
+      <div class="wizard-connector" id="wcon-3-4" aria-hidden="true"></div>
+      <button type="button" class="wizard-step-btn" id="wbtn-4" onclick="goToStep(4)"
+        aria-label="Step 4: Action Plan and Finish">
+        <span class="wizard-bubble" aria-hidden="true">4</span>
+        <span class="wizard-step-label">Action Plan</span>
+      </button>
+    </nav>
+
+    <!-- ────────────────────────────────────────────
+         WIZARD STEP 1 — RATE EACH DOMAIN
+    ──────────────────────────────────────────── -->
+    <div class="wizard-panel active" id="wpanel-1" role="region" aria-label="Step 1: Rate your domains">
+
+      <!-- About / disclaimer -->
+      <div class="section-card">
+        <div class="section-step">About This Tool</div>
+        <h2>Executive Function Load Map</h2>
+        <div style="background:var(--terra-bg);border:1.5px solid var(--terra-lt);border-radius:8px;padding:0.6rem 0.9rem;margin-bottom:0.9rem;font-size:0.82rem;color:var(--hi-ink);font-weight:600;" role="note" aria-label="Clinical disclaimer">
+          This tool is not a diagnostic instrument. For clinical and educational use only.
+        </div>
+        <p class="lead">Executive function isn't one thing — it's a set of brain-based skills that manage everything from starting tasks to managing time to regulating emotions. This tool maps which EF domains are under the most strain right now, so support can go where it is actually needed.</p>
+        <div class="info-banner" role="note" style="margin-bottom:0;">
+          <strong>How to use:</strong> Rate each domain 0 (no strain) to 10 (maximum strain). Use the anchor descriptions to calibrate. There are no right or wrong answers — honest ratings give the most useful picture.
+        </div>
+      </div>
+
+      <!-- Client info -->
+      <div class="section-card">
+        <div class="section-step">Your Information</div>
+        <h2>Name &amp; Date</h2>
+        <div class="client-info-row">
+          <div class="field-wrap">
+            <label for="client-name">Name (optional)</label>
+            <input type="text" id="client-name" class="field-input" placeholder="Your name" autocomplete="name" aria-describedby="name-hint"/>
+            <span id="name-hint" class="sr-only">Optional. Your name will be included in the encrypted results sent back to your clinician.</span>
+          </div>
+          <div class="field-wrap">
+            <label for="client-date">Date</label>
+            <input type="date" id="client-date" class="field-input" aria-describedby="date-hint"/>
+            <span id="date-hint" class="sr-only">Today's date for the assessment record.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Domain sliders -->
+      <div class="section-card">
+        <div class="section-step">Step 1 of 4</div>
+        <h2>Rate Each Domain</h2>
+        <p class="lead">For each area, move the slider to match your current strain level. Press arrow keys to fine-tune any slider.</p>
+
+        <div class="progress-bar-wrap" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Assessment completion: domains rated" id="progress-wrap" style="margin-bottom:1.25rem;">
+          <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+
+        <div class="domain-list" id="domain-list" aria-label="Executive function domain ratings">
+          <!-- Domains injected by JS -->
+        </div>
+      </div>
+
+      <!-- Step footer -->
+      <div class="wizard-footer">
+        <span></span>
+        <span class="wizard-footer-center" id="wfooter-rated-count" aria-live="polite"></span>
+        <button type="button" class="btn btn-sage" onclick="goToStep(2)" aria-label="Continue to Step 2: Your EF Load Shape">
+          Continue → Your Shape
+        </button>
+      </div>
+
+    </div><!-- end wpanel-1 -->
+
+    <!-- ────────────────────────────────────────────
+         WIZARD STEP 2 — EF LOAD SHAPE
+    ──────────────────────────────────────────── -->
+    <div class="wizard-panel" id="wpanel-2" role="region" aria-label="Step 2: Your EF load shape">
+
+      <div class="section-card">
+        <div class="section-step">Step 2 of 4</div>
+        <h2>Your EF Load Shape</h2>
+        <p class="lead">The radar shows your current strain pattern across all 8 domains. Spikes show where accommodation is most urgent; valleys show where you can borrow strength.</p>
+
+        <div class="radar-section">
+          <svg id="radarChart" viewBox="0 0 420 420" role="img"
+            aria-label="Radar chart showing executive function load across 8 domains"
+            aria-describedby="radar-description">
+            <title>Executive Function Load Radar</title>
+            <desc id="radar-description">A spider/radar chart with 8 axes representing the 8 executive function domains. The shaded area shows current strain scores.</desc>
+          </svg>
+
+          <div class="radar-legend" role="list" aria-label="Radar chart legend">
+            <div class="legend-item" role="listitem">
+              <div class="legend-swatch" style="background:rgba(184,92,56,0.25);border:1.5px solid var(--terra);"></div>
+              <span>High strain (7–10)</span>
+            </div>
+            <div class="legend-item" role="listitem">
+              <div class="legend-swatch" style="background:rgba(200,146,26,0.20);border:1.5px solid var(--amber);"></div>
+              <span>Moderate (4–6)</span>
+            </div>
+            <div class="legend-item" role="listitem">
+              <div class="legend-swatch" style="background:rgba(61,107,79,0.20);border:1.5px solid var(--sage);"></div>
+              <span>Low strain (0–3)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen-reader table fallback -->
+        <div class="sr-only" aria-live="polite" id="radar-sr-summary" role="region" aria-label="Current domain scores summary"></div>
+      </div>
+
+      <!-- Pattern interpretation -->
+      <div class="section-card">
+        <h2>Read the Pattern</h2>
+        <p class="lead">Your radar shape matters more than your total score. The spikes show where support is most urgent; the valleys show where you can borrow strength.</p>
+
+        <div class="pattern-grid" role="group" aria-label="Domain strain categories" id="pattern-grid">
+          <div class="pattern-col hi">
+            <h3>High Strain (7–10)</h3>
+            <p class="pattern-desc">Target external scaffolding and reduced demands here first.</p>
+            <div id="tags-hi" role="list" aria-label="High strain domains"></div>
+          </div>
+          <div class="pattern-col mid">
+            <h3>Moderate Strain (4–6)</h3>
+            <p class="pattern-desc">Functioning but effortful. May break down under additional stress.</p>
+            <div id="tags-mid" role="list" aria-label="Moderate strain domains"></div>
+          </div>
+          <div class="pattern-col low">
+            <h3>Low Strain (0–3)</h3>
+            <p class="pattern-desc">Working relatively well. Use these strengths to compensate for weaker areas.</p>
+            <div id="tags-low" role="list" aria-label="Low strain domains"></div>
+          </div>
+        </div>
+
+        <div class="key-insight" role="note">
+          <strong>Key insight:</strong> Someone with three domains at 9 and five at 2 needs very different support than someone with all domains at 5. The shape tells the story.
+        </div>
+      </div>
+
+      <!-- IN-SESSION ONLY: Live clinician view embedded in step 2 -->
+      <div id="session-live-results" class="session-results-card hidden" aria-live="polite" aria-label="Live session results">
+        <h2>📊 Live Results — Session View</h2>
+        <p class="session-subtitle">Scores update as each domain is rated. Use this to guide your session discussion.</p>
+        <div class="session-domain-grid" id="session-bar-grid" aria-label="Domain scores bar chart"></div>
+        <div class="radar-section" style="margin:1rem 0;">
+          <svg id="radarChartSession" viewBox="0 0 420 420" role="img"
+            aria-label="Live session radar chart" aria-describedby="radar-session-desc">
+            <title>Session EF Load Radar</title>
+            <desc id="radar-session-desc">Live radar chart updating as the client rates each domain.</desc>
+          </svg>
+        </div>
+        <div class="pattern-grid" id="session-pattern-grid" style="margin-bottom:0.75rem;">
+          <div class="pattern-col hi"><h3>High Strain (7–10)</h3><div id="session-tags-hi" role="list"></div></div>
+          <div class="pattern-col mid"><h3>Moderate (4–6)</h3><div id="session-tags-mid" role="list"></div></div>
+          <div class="pattern-col low"><h3>Low Strain (0–3)</h3><div id="session-tags-low" role="list"></div></div>
+        </div>
+        <div class="session-notes-row">
+          <div class="action-box">
+            <div class="action-box-title">Priority Domains This Session</div>
+            <textarea aria-label="Priority domains this session" placeholder="Note EF areas to focus on today…"></textarea>
+          </div>
+          <div class="action-box">
+            <div class="action-box-title">Patterns / Connections Noted</div>
+            <textarea aria-label="Patterns and connections" placeholder="Cross-domain patterns, context factors…"></textarea>
+          </div>
+          <div class="action-box">
+            <div class="action-box-title">Intervention Ideas / Next Steps</div>
+            <textarea aria-label="Next steps" placeholder="Scaffolding ideas, referrals, next steps…"></textarea>
+          </div>
+        </div>
+        <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button type="button" class="btn btn-sage" onclick="printReport()" aria-label="Print session results">🖨 Print Summary</button>
+          <button type="button" class="btn btn-ghost" onclick="resetSession()" aria-label="Reset and start a new session">↺ New Session</button>
+        </div>
+      </div>
+
+      <!-- Step footer -->
+      <div class="wizard-footer">
+        <button type="button" class="btn btn-ghost" onclick="goToStep(1)" aria-label="Back to Step 1: Rate domains">← Back</button>
+        <span class="wizard-footer-center">Review your pattern before continuing</span>
+        <button type="button" class="btn btn-sage" onclick="goToStep(3)" aria-label="Continue to Step 3: Deep Dives">
+          Continue → Deep Dives
+        </button>
+      </div>
+
+    </div><!-- end wpanel-2 -->
+
+    <!-- ────────────────────────────────────────────
+         WIZARD STEP 3 — DEEP DIVES
+    ──────────────────────────────────────────── -->
+    <div class="wizard-panel" id="wpanel-3" role="region" aria-label="Step 3: Domain deep dives and accommodations">
+
+      <div class="section-card" id="deep-dives-section">
+        <div class="section-step">Step 3 of 4</div>
+        <h2>Domain Deep-Dives</h2>
+        <p class="deep-dive-intro">Explore each domain's signs and accommodation ideas. Check accommodations you'd like to try — your selections carry forward to the action plan.</p>
+
+        <div class="step-intro" role="note">
+          <strong>Tip:</strong> Start with your highest-strain domains. Open each accordion and check any accommodations that feel relevant or worth trying.
+        </div>
+
+        <div class="deep-dive-grid" id="deep-dive-grid" aria-label="Executive function domain details">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Step footer -->
+      <div class="wizard-footer">
+        <button type="button" class="btn btn-ghost" onclick="goToStep(2)" aria-label="Back to Step 2: Your EF load shape">← Back</button>
+        <span class="wizard-footer-center">Check accommodations you want to try</span>
+        <button type="button" class="btn btn-sage" onclick="goToStep(4)" aria-label="Continue to Step 4: Action Plan">
+          Continue → Action Plan
+        </button>
+      </div>
+
+    </div><!-- end wpanel-3 -->
+
+    <!-- ────────────────────────────────────────────
+         WIZARD STEP 4 — ACTION PLAN + FINISH
+    ──────────────────────────────────────────── -->
+    <div class="wizard-panel" id="wpanel-4" role="region" aria-label="Step 4: Action plan and finish">
+
+      <!-- Action Plan -->
+      <div class="section-card" id="action-plan-section">
+        <div class="section-step">Step 4 of 4</div>
+        <h2>Executive Function Action Plan</h2>
+        <p class="lead">Use your radar results and domain deep-dives to build a targeted support plan. Start with one change, not ten.</p>
+
+        <div class="action-plan-grid">
+
+          <div class="action-box">
+            <div class="action-box-title">My highest-strain EF domains (need scaffolding most):
+              <span class="action-box-prompt">What would external support look like for these specific areas?</span>
+            </div>
+            <textarea id="ap-highest" placeholder="e.g. Working Memory is at 9. I need written instructions rather than verbal. Use a whiteboard to track steps mid-task." aria-label="My highest-strain EF domains and what external support would look like"></textarea>
+          </div>
+
+          <div class="action-box">
+            <div class="action-box-title">My strongest EF domains (build on these):
+              <span class="action-box-prompt">Can these strengths compensate for weaker areas? How?</span>
+            </div>
+            <textarea id="ap-strengths" placeholder="e.g. Emotional Regulation is at 2. I can use self-awareness to catch when I'm hitting a wall and exit before overload." aria-label="My strongest EF domains and how they can compensate for weaker areas"></textarea>
+          </div>
+
+          <div class="action-box">
+            <div class="action-box-title">The EF demand that causes the most daily friction:
+              <span class="action-box-prompt">Where do you lose the most time, energy, or functioning? What's the real cost?</span>
+            </div>
+            <textarea id="ap-friction" placeholder="e.g. Task Initiation is costing me about 2 hours every morning. I lose the whole morning trying to start." aria-label="The EF demand causing the most daily friction and real cost"></textarea>
+          </div>
+
+          <div class="action-box">
+            <div class="action-box-title">Accommodations I'm choosing from the deep-dives:
+              <span class="action-box-prompt">Check boxes in the domain deep-dives above — selected accommodations appear here automatically. Add any extras below.</span>
+            </div>
+            <div id="ap-accomm-auto" class="accomm-auto-list" aria-live="polite" aria-label="Automatically populated selected accommodations"></div>
+            <textarea id="ap-accomm" placeholder="Any additional accommodations not listed above…" aria-label="Additional accommodations I am choosing"></textarea>
+          </div>
+
+          <div class="action-box">
+            <div class="action-box-title">One accommodation I'll start this week:
+              <span class="action-box-prompt">Start with one. Not three, not five. One.</span>
+            </div>
+            <textarea id="ap-one" placeholder="e.g. I'll use a visual task board with three steps visible at a time, starting Monday." aria-label="One accommodation to start this week" style="min-height:60px;"></textarea>
+          </div>
+
+          <div class="action-box">
+            <div class="action-box-title">What I want my partner / employer / family to understand about my EF load:
+              <span class="action-box-prompt">What do they misread as laziness, carelessness, or not caring?</span>
+            </div>
+            <textarea id="ap-others" placeholder="e.g. When I don't reply to messages, it's not that I don't care — my Working Memory is at 8 and your message disappears from my mind the moment I set the phone down." aria-label="What my support network misunderstands about my EF load"></textarea>
+          </div>
+
+          <div class="action-box">
+            <div class="action-box-title">What I need from my therapist to support EF management:</div>
+            <textarea id="ap-therapist" placeholder="e.g. Help me build external scaffolding systems. Don't rely on verbal-only instructions — send a written summary after each session." aria-label="What I need from my therapist to support EF management"></textarea>
+          </div>
+
+          <div class="action-box">
+            <div class="action-box-title">How I'll know this is working (what would improvement look like?):
+              <span class="action-box-prompt">Be specific: fewer missed deadlines? Less end-of-day exhaustion? Starting tasks without a crisis?</span>
+            </div>
+            <textarea id="ap-success" placeholder="e.g. Fewer missed deadlines. Less end-of-day exhaustion. Being able to start tasks without a crisis." aria-label="How I will know the accommodations are working — what improvement looks like"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- NST note + track over time -->
+      <div class="section-card" id="track-over-time-section">
+        <div class="info-banner" role="note" style="margin-bottom:1rem;">
+          <strong>Track over time:</strong> Complete this assessment at intake and every 4–8 sessions. Comparing radar charts shows whether accommodations and scaffolding are reducing strain — and where new pressure may be building.
+        </div>
+        <div class="nst-note" role="note" style="margin-bottom:0;">
+          <p><strong>A note about executive function:</strong> Executive function challenges aren't laziness, carelessness, or lack of motivation. They're neurological — your brain's management system is working differently, not failing. You don't need to fix your brain. You need environments and tools that work with it.</p>
+        </div>
+      </div>
+
+      <!-- Generate results / print -->
+      <div class="result-section" id="generate-result-section">
+        <h2>Generate Your Results Link</h2>
+        <p>When you're done, click below to create an encrypted results URL. Copy it and send it back to your clinician — your answers are encrypted and only they can read them.</p>
+        <button type="button" class="btn btn-terra" onclick="generateResultURL()" aria-label="Generate encrypted results URL to share with clinician" style="margin-bottom:1rem;">
+          ✦ Generate Results Link
+        </button>
+        <div id="result-url-wrap" class="hidden" aria-live="polite">
+          <div class="result-url-box" id="result-url-display" tabindex="0" role="region" aria-label="Encrypted results URL"></div>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;">
+            <button type="button" class="btn btn-terra" onclick="copyResultURL()" aria-label="Copy results URL to clipboard">📋 Copy Results Link</button>
+            <span class="copy-confirm" id="copy-confirm-result" role="status"></span>
+          </div>
+          <p style="margin-top:0.75rem; font-size:0.82rem; color:var(--muted);">Share this link with your clinician. Your data never leaves your device — it lives in this URL.</p>
+        </div>
+      </div>
+
+      <!-- Print button -->
+      <div class="section-card" style="text-align:center;" id="print-btn-section">
+        <p style="margin-bottom:0.75rem;font-size:0.9rem;color:var(--muted);">Generate a printable clinical summary of this complete assessment.</p>
+        <button type="button" class="btn btn-sage" id="btn-print" onclick="printReport()" aria-label="Generate and print clinical summary report">
+          🖨 Generate &amp; Print Clinical Summary
+        </button>
+      </div>
+
+      <!-- Step footer -->
+      <div class="wizard-footer">
+        <button type="button" class="btn btn-ghost" onclick="goToStep(3)" aria-label="Back to Step 3: Deep dives">← Back</button>
+        <span class="wizard-footer-center">Assessment complete</span>
+        <button type="button" class="btn btn-ghost" onclick="goToStep(1)" aria-label="Start over from Step 1">↺ Start Over</button>
+      </div>
+
+    </div><!-- end wpanel-4 -->
+
+    <!-- PRINT REPORT (hidden on screen, shown on print) -->
+    <div id="print-report" style="display:none;" aria-label="Printable assessment report">
+      <!-- injected by buildPrintReport() -->
+    </div>
+
+  </div><!-- end panel-client -->
+
+  <!-- ══════════════════════════════════════════════
+       TAB 3 — CLINICIAN: DECRYPT RESULTS
+  ══════════════════════════════════════════════ -->
+  <div id="panel-decrypt" role="tabpanel" aria-labelledby="tab-decrypt" class="tab-panel">
+
+    <div class="mode-panel">
+      <h2>Decrypt Client Results</h2>
+      <p>Paste the results URL your client sent you. Enter the PIN you used when generating their link. Their assessment will be decrypted and displayed below.</p>
+
+      <div class="field-wrap" style="margin-bottom:1rem;">
+        <label for="result-url-input">Client's Result URL</label>
+        <textarea id="result-url-input" class="field-input" rows="3" placeholder="Paste the full result URL here…" aria-describedby="result-url-hint" style="min-height:80px;resize:vertical;"></textarea>
+        <span id="result-url-hint" class="sr-only">Paste the full encrypted URL your client sent you.</span>
+      </div>
+
+      <div class="pin-row">
+        <div class="pin-field-wrap">
+          <label for="decrypt-pin">Your PIN</label>
+          <input type="password" id="decrypt-pin" class="pin-input" placeholder="Your PIN" maxlength="8" inputmode="numeric" autocomplete="off" aria-describedby="decrypt-pin-hint"/>
+          <span id="decrypt-pin-hint" class="sr-only">Enter the same 4 to 8 digit PIN you used when generating the client link.</span>
+        </div>
+        <button type="button" class="btn btn-sage" onclick="decryptResults()" aria-label="Decrypt and view client results">
+          🔓 Decrypt Results
+        </button>
+      </div>
+
+      <div id="decrypt-error" class="hidden" role="alert" style="margin-top:0.9rem; color:var(--terra); font-size:0.88rem; font-weight:600;"></div>
+    </div>
+
+    <!-- Decrypted Results Display -->
+    <div id="decrypted-display" class="hidden">
+
+      <div class="section-card" id="dec-info-card">
+        <h2 id="dec-client-name-heading">Client Assessment Results</h2>
+        <p id="dec-meta" style="color:var(--muted); font-size:0.9rem;"></p>
+      </div>
+
+      <!-- Radar -->
+      <div class="section-card">
+        <h2>EF Load Shape</h2>
+        <div class="radar-section">
+          <svg id="radarChartDec" viewBox="0 0 420 420" role="img" aria-label="Decrypted radar chart" aria-describedby="radar-dec-desc">
+            <title>Client Executive Function Load Radar</title>
+            <desc id="radar-dec-desc">Radar chart showing client's executive function load scores.</desc>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Domain scores -->
+      <div class="section-card" id="dec-scores-card">
+        <h2>Domain Scores</h2>
+        <div id="dec-domain-list" aria-label="Decrypted domain scores"></div>
+      </div>
+
+      <!-- Pattern -->
+      <div class="section-card">
+        <h2>Pattern Summary</h2>
+        <div class="pattern-grid" role="group" aria-label="Decrypted domain strain categories" id="dec-pattern-grid">
+          <div class="pattern-col hi">
+            <h3>High Strain (7–10)</h3>
+            <div id="dec-tags-hi" role="list"></div>
+          </div>
+          <div class="pattern-col mid">
+            <h3>Moderate Strain (4–6)</h3>
+            <div id="dec-tags-mid" role="list"></div>
+          </div>
+          <div class="pattern-col low">
+            <h3>Low Strain (0–3)</h3>
+            <div id="dec-tags-low" role="list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Plan -->
+      <div class="section-card" id="dec-action-card">
+        <h2>Client Action Plan Notes</h2>
+        <div id="dec-action-plan" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+      </div>
+
+      <!-- Checked Accommodations -->
+      <div class="section-card" id="dec-accomm-card">
+        <h2>Selected Accommodations</h2>
+        <div id="dec-accommodations" style="font-size:0.9rem;color:var(--muted);"></div>
+      </div>
+
+      <!-- Clinician notes -->
+      <div class="section-card">
+        <div class="section-step">Clinician Use</div>
+        <h2>Session Notes</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;" class="clinician-notes-grid">
+          <div class="action-box">
+            <div class="action-box-title">Priority Domains This Session</div>
+            <textarea aria-label="Priority domains for this session" placeholder="Note priority EF areas to focus on…"></textarea>
+          </div>
+          <div class="action-box">
+            <div class="action-box-title">Patterns / Connections Noted</div>
+            <textarea aria-label="Patterns and connections noted" placeholder="Cross-domain patterns, context factors…"></textarea>
+          </div>
+          <div class="action-box">
+            <div class="action-box-title">Intervention Ideas / Next Steps</div>
+            <textarea aria-label="Intervention ideas and next steps" placeholder="Scaffolding ideas, referrals, next steps…"></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end decrypted-display -->
+
+  </div><!-- end panel-decrypt -->
+
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <p class="clinical-disclaimer" role="note" aria-label="Clinical disclaimer">
+    <strong>This tool is not a diagnostic instrument. For clinical and educational use only.</strong>
+  </p>
+  <p style="margin-top:0.5rem;">&copy; 2026 Creative Solutions Coaching &mdash; All Rights Reserved</p>
+  <p style="margin-top:0.3rem;">
+    <a href="https://www.creativesolutionscoaching.com/nst" target="_blank" rel="noopener noreferrer">creativesolutionscoaching.com/nst<span class="sr-only"> (opens in new tab)</span></a>
+    &nbsp;|&nbsp;
+    <a href="https://www.creativesolutionscoaching.com/neurocontextual-systems-design-suite" target="_blank" rel="noopener noreferrer">Neurocontextual Systems Design Suite<span class="sr-only"> (opens in new tab)</span></a>
+    &nbsp;|&nbsp;
+    <a href="https://github.com/CreativeSolutionsCoaching/neurocontextual-systems-design-suite" target="_blank" rel="noopener noreferrer">GitHub Repository<span class="sr-only"> (opens in new tab)</span></a>
+  </p>
+  <p style="margin-top:0.3rem; font-size:0.72rem;">No data is stored, transmitted, or retained. All assessment data lives in the URL only.</p>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   DATA: EF DOMAINS
+═══════════════════════════════════════════════════ */
+const DOMAINS = [
+  {
+    id: 'planning',
+    name: 'Planning & Organization',
+    desc: 'Scheduling, prioritizing, breaking down multi-step tasks, keeping things in order.',
+    anchor0: '0 – Planning feels manageable; you can organize without major effort.',
+    anchor10: '10 – Can\'t plan or prioritize; everything feels equally urgent or impossible.',
+    color: '#3D6B4F',
+    signs: [
+      'Difficulty breaking tasks into steps',
+      'Losing track of what needs to happen next',
+      'Everything feels equally urgent or equally impossible',
+      'Struggling to create or maintain systems',
+      'Frequently missed or disorganized to-do lists',
+    ],
+    accommodations: [
+      'Use a template or pre-built checklist for recurring tasks',
+      'Externalize planning with a visible whiteboard or wall planner',
+      'Break any multi-step task into 3 visible steps only',
+      'Delegate or co-regulate planning with a body double',
+      'Use color-coding to visually sort priorities',
+    ]
+  },
+  {
+    id: 'working-memory',
+    name: 'Working Memory',
+    desc: 'Holding information in mind, remembering mid-task, tracking conversational threads.',
+    anchor0: '0 – Can hold and manipulate information reliably.',
+    anchor10: '10 – Constantly losing track; forget what you were doing mid-task.',
+    color: '#7A5C10',
+    signs: [
+      'Forgetting what you were doing mid-task',
+      'Losing track of instructions before completing them',
+      'Difficulty holding multiple things in mind at once',
+      'Re-reading the same information repeatedly',
+      'Losing your place in conversations or documents',
+    ],
+    accommodations: [
+      'Always write things down before starting — don\'t rely on memory',
+      'Use sticky notes or a scratch pad as an external "second brain"',
+      'Ask for written instructions rather than verbal',
+      'Repeat back key information aloud to encode it',
+      'Reduce task complexity — one thing at a time',
+    ]
+  },
+  {
+    id: 'task-initiation',
+    name: 'Task Initiation',
+    desc: 'Getting started, overcoming inertia, beginning tasks without external prompts.',
+    anchor0: '0 – Starting tasks is relatively easy.',
+    anchor10: '10 – Paralyzed by inertia; know what to do but can\'t begin.',
+    color: '#B85C38',
+    signs: [
+      'Knowing what to do but being unable to start',
+      'Spending hours "about to begin" without beginning',
+      'Needing external pressure (deadlines, others watching) to initiate',
+      'Avoidance that feels involuntary, not chosen',
+      'The task feels impossible until suddenly it\'s happening',
+    ],
+    accommodations: [
+      'Use "first action only" — commit to just the first 2 minutes',
+      'Body doubling (co-working in presence of another person)',
+      'Set an environmental cue: music, lighting, or location that signals "work mode"',
+      'Pair initiation with a preferred activity as a bridge',
+      'Remove activation energy barriers — pre-set the workspace',
+    ]
+  },
+  {
+    id: 'sustained-attention',
+    name: 'Sustained Attention',
+    desc: 'Staying focused, resisting distraction, finishing tasks once started.',
+    anchor0: '0 – Can maintain focus when needed.',
+    anchor10: '10 – Constant distraction; can\'t stay on task without enormous effort.',
+    color: '#5A4B7A',
+    signs: [
+      'Frequent task-switching before completion',
+      'Distraction by irrelevant stimuli (sounds, thoughts, movement)',
+      'Starting many tasks and finishing few',
+      'Hyperfocus on preferred tasks, shutdown on non-preferred',
+      'Losing thread within a single conversation or document',
+    ],
+    accommodations: [
+      'Use time-bounded work blocks (e.g. 20 min on, 5 min break)',
+      'Remove visible distractions — reduce the visual field',
+      'Use noise-cancelling headphones or white/brown noise',
+      'Keep tasks visible and physically in front of you',
+      'Use an external timer to maintain task awareness',
+    ]
+  },
+  {
+    id: 'flexibility',
+    name: 'Flexibility & Shifting',
+    desc: 'Changing plans, adapting to unexpected changes, switching between tasks.',
+    anchor0: '0 – Transitions and changes are manageable.',
+    anchor10: '10 – Plan changes are devastating; switching tasks is extremely costly.',
+    color: '#4A7A8A',
+    signs: [
+      'Intense distress when plans change unexpectedly',
+      'Difficulty switching contexts even when you want to',
+      'Getting "stuck" on one approach even when it\'s not working',
+      'Transition costs that outlast the actual transition',
+      'Perseverative thinking — same thoughts looping',
+    ],
+    accommodations: [
+      'Build transition time into all schedules — never back-to-back',
+      'Use advance warnings for upcoming changes ("in 10 minutes we\'re switching")',
+      'Create "closure rituals" to end tasks before starting new ones',
+      'Reduce same-day task variety when possible',
+      'Have a "re-entry" plan written in advance for common disruptions',
+    ]
+  },
+  {
+    id: 'emotional-regulation',
+    name: 'Emotional Regulation',
+    desc: 'Managing frustration, controlling impulses, modulating emotional reactions.',
+    anchor0: '0 – Can usually manage emotional responses.',
+    anchor10: '10 – Emotions overwhelm quickly; impulse control is very low.',
+    color: '#8A3350',
+    signs: [
+      'Emotional reactions that feel disproportionate or uncontrollable',
+      'Difficulty recovering once emotionally activated',
+      'Impulse behaviors that happen before awareness',
+      'Shame spirals following emotional episodes',
+      'Emotional responses to cognitive load (frustration, shutdown)',
+    ],
+    accommodations: [
+      'Build in proactive regulation (sleep, food, movement) before demand peaks',
+      'Create an exit plan: a pre-agreed signal to pause before escalation',
+      'Reduce unnecessary demand during high emotional load periods',
+      'Identify early warning signs and build a response protocol',
+      'Reduce shame: emotional dysregulation is neurological, not character',
+    ]
+  },
+  {
+    id: 'self-monitoring',
+    name: 'Self-Monitoring',
+    desc: 'Tracking your own progress, catching errors, adjusting your approach mid-task.',
+    anchor0: '0 – Can self-correct and notice when things go off track.',
+    anchor10: '10 – Don\'t notice errors; can\'t track own performance.',
+    color: '#6B5A3D',
+    signs: [
+      'Errors that feel invisible until pointed out by others',
+      'Difficulty knowing when a task is "done enough"',
+      'Can\'t detect when approach isn\'t working',
+      'Over- or under-estimating performance quality',
+      'Struggling to learn from mistakes in real-time',
+    ],
+    accommodations: [
+      'Use external checkpoints — someone else reviews at intervals',
+      'Create a written checklist to externalize the monitoring function',
+      'Build in mandatory pauses to review before submitting/finishing',
+      'Use rubrics or examples as external quality anchors',
+      'Record yourself (audio/video) as a self-monitoring tool',
+    ]
+  },
+  {
+    id: 'time-management',
+    name: 'Time Management',
+    desc: 'Estimating how long things take, pacing yourself, meeting deadlines.',
+    anchor0: '0 – Time estimates are mostly accurate; deadlines are manageable.',
+    anchor10: '10 – Time blindness; consistently underestimate duration; always late.',
+    color: '#3D5A8A',
+    signs: [
+      'Consistent underestimation of task duration ("it\'ll only take 5 minutes")',
+      'Sudden awareness that far more time has passed than expected',
+      'Missing deadlines despite best intentions',
+      'Difficulty starting early because "there\'s still time"',
+      'Being chronically late even when trying hard to be on time',
+    ],
+    accommodations: [
+      'Use visual timers — make time visible and concrete',
+      'Multiply time estimates by 2.5× as a calibration rule',
+      'Set alarms before deadlines, not just at them',
+      'Schedule reverse-engineered timelines from the deadline backward',
+      'Use external accountability checkpoints throughout long tasks',
+    ]
+  },
+];
+
+/* ═══════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════ */
+let scores = Object.fromEntries(DOMAINS.map(d => [d.id, 0]));
+let checkedAccomm = {};  // { domainId: [index, ...] }
+let generatedClientLink = '';
+let generatedResultURL = '';
+
+/* ═══════════════════════════════════════════════════
+   CRYPTO UTILITIES
+═══════════════════════════════════════════════════ */
+function pinToKey(pin) {
+  let p = String(pin).replace(/\D/g, '');
+  if (!p) p = '0'; // guard: empty string after stripping would cause infinite loop
+  let key = '';
+  while (key.length < 32) key += p;
+  return key.slice(0, 32);
+}
+
+function xorEncrypt(str, pin) {
+  // UTF-8 safe using TextEncoder
+  const utf8Bytes = Array.from(new TextEncoder().encode(str));
+  const key = pinToKey(pin);
+  const encrypted = utf8Bytes.map((b, i) => b ^ key.charCodeAt(i % key.length));
+  // Chunk to avoid call stack overflow on large payloads (spread limit ~65K args in some browsers)
+  let binary = '';
+  const chunkSize = 8192;
+  for (let i = 0; i < encrypted.length; i += chunkSize) {
+    binary += String.fromCharCode(...encrypted.slice(i, i + chunkSize));
+  }
+  return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+}
+
+function xorDecrypt(enc, pin) {
+  try {
+    const b64std = enc.replace(/-/g,'+').replace(/_/g,'/');
+    // Restore stripped '=' padding so atob() never rejects a valid payload
+    const b64 = b64std + '='.repeat((4 - b64std.length % 4) % 4);
+    const raw = atob(b64);
+    const key = pinToKey(pin);
+    const decryptedBytes = Uint8Array.from(raw.split('').map((c, i) =>
+      c.charCodeAt(0) ^ key.charCodeAt(i % key.length)
+    ));
+    return new TextDecoder().decode(decryptedBytes);
+  } catch(e) { return null; }
+}
+
+function hashPin(pin) {
+  // Simple non-cryptographic pin obfuscation for URL embedding
+  const p = String(pin).replace(/\D/g,'');
+  return btoa('nst-ef-' + p + '-load').replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+}
+
+/* ═══════════════════════════════════════════════════
+   WIZARD STATE
+═══════════════════════════════════════════════════ */
+let currentWizardStep = 1;
+const WIZARD_STEPS = 4;
+
+function goToStep(n) {
+  if (n < 1 || n > WIZARD_STEPS) return;
+
+  // Hide all panels
+  for (let i = 1; i <= WIZARD_STEPS; i++) {
+    const panel = document.getElementById('wpanel-' + i);
+    const btn   = document.getElementById('wbtn-' + i);
+    if (panel) panel.classList.remove('active');
+    if (btn) {
+      btn.classList.remove('active');
+      btn.removeAttribute('aria-current');
+      // Mark as done if already visited and earlier than target
+      if (i < n) btn.classList.add('done');
+      else btn.classList.remove('done');
+    }
+  }
+
+  // Activate target
+  const targetPanel = document.getElementById('wpanel-' + n);
+  const targetBtn   = document.getElementById('wbtn-' + n);
+  if (targetPanel) targetPanel.classList.add('active');
+  if (targetBtn) {
+    targetBtn.classList.add('active');
+    targetBtn.classList.remove('done');
+    targetBtn.setAttribute('aria-current', 'step');
+  }
+
+  // Update connectors
+  for (let i = 1; i < WIZARD_STEPS; i++) {
+    const con = document.getElementById('wcon-' + i + '-' + (i + 1));
+    if (con) con.classList.toggle('done', i < n);
+  }
+
+  currentWizardStep = n;
+
+  // Scroll to top of panel
+  const panelTop = document.getElementById('panel-client');
+  if (panelTop) panelTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Step 2: ensure radar is drawn when arriving
+  if (n === 2) {
+    setTimeout(() => {
+      drawRadar('radarChart', scores);
+      updatePatternTags('tags-hi','tags-mid','tags-low');
+      updateSRSummary();
+      if (deliveryMode === 'session') updateSessionResults();
+    }, 80);
+  }
+
+  // Step 3: refresh deep dives with current scores
+  if (n === 3) {
+    renderDeepDives();
+    updateAccommAutoList();
+  }
+
+  // Step 4: refresh accomm auto-list
+  if (n === 4) {
+    updateAccommAutoList();
+  }
+
+  // Update footer "domains rated" count on step 1
+  updateWizardFooterCount();
+
+  announcePolite('Step ' + n + ' of ' + WIZARD_STEPS + ': ' + ['Rate Domains','Your EF Load Shape','Deep Dives','Action Plan'][n - 1]);
+}
+
+function updateWizardFooterCount() {
+  const el = document.getElementById('wfooter-rated-count');
+  if (!el) return;
+  const moved = DOMAINS.filter(d => scores[d.id] > 0).length;
+  el.textContent = moved === DOMAINS.length
+    ? 'All ' + DOMAINS.length + ' domains rated ✓'
+    : moved + ' of ' + DOMAINS.length + ' domains rated';
+}
+
+
+let deliveryMode = null; // 'session' | 'remote'
+
+function selectDelivery(mode) {
+  deliveryMode = mode;
+
+  // Update card visual states
+  const cardSession = document.getElementById('card-session');
+  const cardRemote  = document.getElementById('card-remote');
+  cardSession.classList.toggle('selected-session', mode === 'session');
+  cardRemote.classList.toggle('selected-remote',   mode === 'remote');
+  cardSession.setAttribute('aria-pressed', mode === 'session' ? 'true' : 'false');
+  cardRemote.setAttribute('aria-pressed',  mode === 'remote'  ? 'true' : 'false');
+
+  // Show the matching sub-flow
+  document.getElementById('subflow-session').classList.toggle('hidden', mode !== 'session');
+  document.getElementById('subflow-remote').classList.toggle('hidden',  mode !== 'remote');
+
+  showToast(mode === 'session' ? 'In-Session Mode selected' : 'Send to Client mode selected');
+}
+
+function launchSessionMode() {
+  switchTab('client', true);
+  document.getElementById('session-mode-banner').classList.remove('hidden');
+  document.getElementById('session-live-results').classList.remove('hidden');
+  document.getElementById('generate-result-section').classList.add('hidden');
+  document.getElementById('tab-client').textContent = '🪑 In-Session Assessment';
+  goToStep(1);
+  updateSessionResults();
+}
+
+function resetSession() {
+  // Reset all scores and fields
+  DOMAINS.forEach(d => { scores[d.id] = 0; });
+  checkedAccomm = {};
+  generatedClientLink = '';
+  generatedResultURL = '';
+  document.getElementById('client-name').value = '';
+  document.getElementById('client-date').value = new Date().toISOString().slice(0, 10);
+  // Clear clinician PIN and hide generated link box
+  const pinEl = document.getElementById('clinician-pin');
+  if (pinEl) { pinEl.value = ''; pinEl.removeAttribute('aria-invalid'); }
+  const clinErrEl = document.getElementById('clinician-pin-error');
+  if (clinErrEl) { clinErrEl.textContent = ''; clinErrEl.classList.add('hidden'); }
+  const clientLinkBox = document.getElementById('client-link-result');
+  if (clientLinkBox) clientLinkBox.classList.add('hidden');
+  const copyConfirm = document.getElementById('copy-confirm');
+  if (copyConfirm) { copyConfirm.classList.remove('visible'); copyConfirm.textContent = ''; }
+  // Hide results URL box and clear its copy confirm
+  const resultUrlWrap = document.getElementById('result-url-wrap');
+  if (resultUrlWrap) resultUrlWrap.classList.add('hidden');
+  const copyConfirmResult = document.getElementById('copy-confirm-result');
+  if (copyConfirmResult) { copyConfirmResult.classList.remove('visible'); copyConfirmResult.textContent = ''; }
+  // Clear all 8 action plan fields
+  ['ap-highest','ap-strengths','ap-friction','ap-accomm','ap-one','ap-others','ap-therapist','ap-success'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  renderDomains();
+  deliveryMode = null;
+  currentWizardStep = 1;
+  goToStep(1);
+  document.getElementById('session-mode-banner').classList.add('hidden');
+  document.getElementById('session-live-results').classList.add('hidden');
+  document.getElementById('generate-result-section').classList.remove('hidden');
+  document.getElementById('tab-client').textContent = '📋 Client: Complete Assessment';
+  switchTab('clinician', true);
+  // Reset card selections
+  document.getElementById('card-session').classList.remove('selected-session');
+  document.getElementById('card-remote').classList.remove('selected-remote');
+  document.getElementById('card-session').setAttribute('aria-pressed','false');
+  document.getElementById('card-remote').setAttribute('aria-pressed','false');
+  document.getElementById('subflow-session').classList.add('hidden');
+  document.getElementById('subflow-remote').classList.add('hidden');
+  showToast('Session reset');
+}
+
+/* ═══════════════════════════════════════════════════
+   TAB SWITCHING
+═══════════════════════════════════════════════════ */
+const TAB_NAMES = ['clinician','client','decrypt'];
+
+function switchTab(name, userTriggered) {
+  TAB_NAMES.forEach(t => {
+    const tab = document.getElementById('tab-' + t);
+    const panel = document.getElementById('panel-' + t);
+    const isActive = t === name;
+    tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    tab.setAttribute('tabindex', isActive ? '0' : '-1');
+    panel.classList.toggle('active', isActive);
+  });
+  // Only move focus to panel when user explicitly activated the tab (not on initial page load)
+  if (userTriggered) {
+    const panel = document.getElementById('panel-' + name);
+    if (panel) {
+      panel.setAttribute('tabindex', '-1');
+      panel.focus({ preventScroll: false });
+    }
+  }
+  // Announce tab change to screen readers (polite — no toast, tab change is visually clear)
+  const labels = { clinician: 'Clinician: Generate Link', client: 'Client: Complete Assessment', decrypt: 'Clinician: View Results' };
+  announcePolite('Showing panel: ' + labels[name]);
+}
+
+// Arrow key navigation within the tablist
+function handleTablistKeys(e) {
+  const tablist = e.target.closest('[role="tablist"]');
+  if (!tablist) return;
+  const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+  const idx = tabs.indexOf(e.target);
+  if (idx < 0) return;
+  if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    const next = tabs[(idx + 1) % tabs.length];
+    next.focus();
+    switchTab(next.id.replace('tab-', ''), true);
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    const prev = tabs[(idx - 1 + tabs.length) % tabs.length];
+    prev.focus();
+    switchTab(prev.id.replace('tab-', ''), true);
+  } else if (e.key === 'Home') {
+    e.preventDefault();
+    tabs[0].focus();
+    switchTab(tabs[0].id.replace('tab-', ''), true);
+  } else if (e.key === 'End') {
+    e.preventDefault();
+    tabs[tabs.length - 1].focus();
+    switchTab(tabs[tabs.length - 1].id.replace('tab-', ''), true);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   CLINICIAN: GENERATE CLIENT LINK
+═══════════════════════════════════════════════════ */
+function generateClientLink() {
+  const pinEl = document.getElementById('clinician-pin');
+  const pin = pinEl.value.replace(/\D/g,'');
+  // Clear any prior error state
+  pinEl.removeAttribute('aria-invalid');
+  const errEl = document.getElementById('clinician-pin-error');
+  if (errEl) { errEl.textContent = ''; errEl.classList.add('hidden'); }
+
+  if (pin.length < 4) {
+    pinEl.setAttribute('aria-invalid', 'true');
+    if (errEl) { errEl.textContent = 'Please enter a 4–8 digit PIN.'; errEl.classList.remove('hidden'); }
+    showToast('Please enter a 4–8 digit PIN');
+    pinEl.focus();
+    return;
+  }
+  const pinHash = hashPin(pin);
+  const base = window.location.href.split('#')[0].split('?')[0];
+  generatedClientLink = base + '?mode=client#cl=' + encodeURIComponent(pinHash);
+  const box = document.getElementById('client-link-result');
+  const txt = document.getElementById('generated-link-text');
+  txt.textContent = generatedClientLink;
+  txt.setAttribute('aria-label', 'Client link: ' + generatedClientLink);
+  box.classList.remove('hidden');
+  txt.focus();
+}
+
+function copyGeneratedLink() {
+  if (!generatedClientLink) return;
+  const doFallback = () => {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = generatedClientLink;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      const c = document.getElementById('copy-confirm');
+      c.classList.add('visible');
+      c.textContent = '✔ Copied!';
+      showToast('Link copied to clipboard');
+      setTimeout(() => { c.classList.remove('visible'); c.textContent = ''; }, 2500);
+    } catch(e2) {
+      showToast('Could not copy — please select and copy the link manually');
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(generatedClientLink).then(() => {
+      const c = document.getElementById('copy-confirm');
+      c.classList.add('visible');
+      c.textContent = '✔ Copied!';
+      showToast('Link copied to clipboard');
+      setTimeout(() => { c.classList.remove('visible'); c.textContent = ''; }, 2500);
+    }).catch(doFallback);
+  } else {
+    doFallback();
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   DOMAIN SLIDER RENDERING
+═══════════════════════════════════════════════════ */
+function scoreColor(v) {
+  if (v >= 7) return 'var(--hi-ink)';
+  if (v >= 4) return 'var(--mid-ink)';
+  return 'var(--low-ink)';
+}
+function scoreLabel(v) {
+  if (v >= 7) return 'High strain';
+  if (v >= 4) return 'Moderate strain';
+  return 'Low strain';
+}
+
+function renderDomains() {
+  const list = document.getElementById('domain-list');
+  list.innerHTML = DOMAINS.map((d, idx) => {
+    const val = scores[d.id];
+    return `
+    <div class="domain-item" id="domain-item-${d.id}" role="group" aria-labelledby="domain-label-${d.id}">
+      <div class="domain-header">
+        <span class="domain-name" id="domain-label-${d.id}">${d.name}</span>
+        <span class="domain-score-badge" id="score-badge-${d.id}"
+          aria-live="polite" aria-atomic="true"
+          style="color:${scoreColor(val)};"
+          aria-label="${d.name} score: ${val} out of 10 — ${scoreLabel(val)}">
+          ${val}<span style="font-size:0.65em;font-family:'DM Sans',sans-serif;opacity:0.6;" aria-hidden="true">/10</span>
+        </span>
+      </div>
+      <p class="domain-desc" id="domain-desc-${d.id}">${d.desc}</p>
+      <div class="domain-anchors" aria-hidden="true">
+        <span>${d.anchor0}</span>
+        <span>${d.anchor10}</span>
+      </div>
+
+      <div class="slider-controls" role="group" aria-label="Rating controls for ${d.name}">
+        <button type="button" class="step-btn"
+          onclick="stepScore('${d.id}', -1)"
+          aria-label="Decrease ${d.name} rating by 1. Current value: ${val}"
+          id="dec-btn-${d.id}"
+          ${val <= 0 ? 'disabled' : ''}>−</button>
+
+        <input type="range"
+          id="slider-${d.id}"
+          min="0" max="10" step="1"
+          value="${val}"
+          aria-label="${d.name} strain rating"
+          aria-valuemin="0" aria-valuemax="10" aria-valuenow="${val}"
+          aria-valuetext="${val} out of 10 — ${scoreLabel(val)}"
+          aria-describedby="domain-desc-${d.id} anchor-hint-${d.id}"
+          oninput="updateScore('${d.id}', this.value)"
+        />
+
+        <button type="button" class="step-btn"
+          onclick="stepScore('${d.id}', 1)"
+          aria-label="Increase ${d.name} rating by 1. Current value: ${val}"
+          id="inc-btn-${d.id}"
+          ${val >= 10 ? 'disabled' : ''}>+</button>
+
+        <input type="number"
+          class="score-stepper"
+          id="num-${d.id}"
+          min="0" max="10" step="1"
+          value="${val}"
+          aria-label="${d.name} score — type a number between 0 and 10"
+          oninput="updateScore('${d.id}', Math.min(10, Math.max(0, parseInt(this.value)||0)))"
+          onchange="this.value = Math.min(10, Math.max(0, parseInt(this.value)||0)); updateScore('${d.id}', this.value)"
+        />
+      </div>
+      <p id="anchor-hint-${d.id}" class="sr-only">Scale from 0: ${d.anchor0} to 10: ${d.anchor10}</p>
+
+      <div class="domain-notes-toggle">
+        <button class="notes-toggle-btn" onclick="toggleNotes('${d.id}')"
+          aria-expanded="false" aria-controls="notes-${d.id}"
+          id="notes-btn-${d.id}" type="button">
+          ＋ Add notes for ${d.name}
+        </button>
+      </div>
+      <div class="domain-notes-field" id="notes-${d.id}" role="region" aria-label="Notes for ${d.name}">
+        <textarea placeholder="Optional: notes about your experience with ${d.name}…"
+          aria-label="Notes about your experience with ${d.name}"
+          oninput="scheduleUpdate()"
+        ></textarea>
+      </div>
+    </div>`;
+  }).join('');
+
+  renderDeepDives();
+  initFocusMode();
+  updateAccommAutoList();
+  updateAll();
+}
+
+function toggleNotes(domainId) {
+  const field = document.getElementById('notes-' + domainId);
+  const btn = document.getElementById('notes-btn-' + domainId);
+  const isOpen = field.classList.contains('open');
+  field.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+  btn.textContent = (isOpen ? '＋ Add notes for ' : '− Hide notes for ') + DOMAINS.find(d=>d.id===domainId).name;
+  if (!isOpen) {
+    const ta = field.querySelector('textarea');
+    if (ta) ta.focus();
+  }
+}
+
+function updateScore(domainId, value) {
+  const v = Math.min(10, Math.max(0, parseInt(value) || 0));
+  scores[domainId] = v;
+
+  const badge  = document.getElementById('score-badge-' + domainId);
+  const slider = document.getElementById('slider-' + domainId);
+  const numIn  = document.getElementById('num-' + domainId);
+  const decBtn = document.getElementById('dec-btn-' + domainId);
+  const incBtn = document.getElementById('inc-btn-' + domainId);
+  const domain = DOMAINS.find(d => d.id === domainId);
+
+  // Sync all controls
+  if (slider) slider.value = v;
+  if (numIn && document.activeElement !== numIn) numIn.value = v;
+
+  // ARIA on slider
+  if (slider) {
+    slider.setAttribute('aria-valuenow', v);
+    slider.setAttribute('aria-valuetext', v + ' out of 10 — ' + scoreLabel(v));
+  }
+
+  // Step button states
+  if (decBtn) { decBtn.disabled = v <= 0; decBtn.setAttribute('aria-label', `Decrease ${domain.name} rating by 1. Current value: ${v}`); }
+  if (incBtn) { incBtn.disabled = v >= 10; incBtn.setAttribute('aria-label', `Increase ${domain.name} rating by 1. Current value: ${v}`); }
+
+  // Badge
+  if (badge) {
+    badge.style.color = scoreColor(v);
+    badge.innerHTML = `${v}<span style="font-size:0.65em;font-family:'DM Sans',sans-serif;opacity:0.6;" aria-hidden="true">/10</span>`;
+    badge.setAttribute('aria-label', domain.name + ' score: ' + v + ' out of 10 — ' + scoreLabel(v));
+  }
+
+  // Slider track fill colour
+  if (slider) {
+    const pct = v * 10;
+    const hiC = v >= 7 ? '#B85C38' : v >= 4 ? '#C8921A' : '#3D6B4F';
+    slider.style.background = `linear-gradient(to right, ${hiC} ${pct}%, var(--border) ${pct}%)`;
+  }
+
+  // Polite announcement (debounced so it doesn't fire on every pixel)
+  clearTimeout(announceTimer);
+  announceTimer = setTimeout(() => {
+    announcePolite(`${domain.name}: ${v} out of 10. ${scoreLabel(v)}.`);
+  }, 600);
+
+  updateAll();
+}
+
+let announceTimer = null;
+
+function stepScore(domainId, delta) {
+  const current = scores[domainId] || 0;
+  updateScore(domainId, current + delta);
+  // Return focus to the slider for keyboard users
+  const slider = document.getElementById('slider-' + domainId);
+  if (slider) slider.focus();
+}
+
+function announceAssertive(msg) {
+  const el = document.getElementById('sr-announcer');
+  if (!el) return;
+  el.textContent = '';
+  requestAnimationFrame(() => { el.textContent = msg; });
+}
+function announcePolite(msg) {
+  const el = document.getElementById('sr-announcer-polite');
+  if (!el) return;
+  el.textContent = '';
+  requestAnimationFrame(() => { el.textContent = msg; });
+}
+
+let updateTimer = null;
+function scheduleUpdate() {
+  clearTimeout(updateTimer);
+  updateTimer = setTimeout(updateAll, 200);
+}
+
+function updateAll() {
+  updateProgressBar();
+  updatePatternTags('tags-hi','tags-mid','tags-low');
+  drawRadar('radarChart', scores);
+  updateSRSummary();
+  updateDeepDiveScores();
+  updateWizardFooterCount();
+  if (deliveryMode === 'session') updateSessionResults();
+}
+
+function updateSessionResults() {
+  // Bar chart
+  const grid = document.getElementById('session-bar-grid');
+  if (!grid) return;
+  const sorted = [...DOMAINS].sort((a, b) => scores[b.id] - scores[a.id]);
+  grid.innerHTML = sorted.map(d => {
+    const v = scores[d.id];
+    const barColor = v >= 7 ? 'var(--terra)' : v >= 4 ? 'var(--amber)' : 'var(--sage)';
+    const textColor = v >= 7 ? 'var(--hi-ink)' : v >= 4 ? 'var(--mid-ink)' : 'var(--low-ink)';
+    return `<div class="session-domain-row">
+      <span class="session-domain-name">${d.name}</span>
+      <div class="session-bar-wrap" role="presentation">
+        <div class="session-bar-fill" style="width:${v * 10}%;background:${barColor};" aria-hidden="true"></div>
+      </div>
+      <span class="session-score-num" style="color:${textColor};" aria-label="${d.name}: ${v} out of 10">${v}<span style="font-size:0.6em;opacity:0.6;">/10</span></span>
+    </div>`;
+  }).join('');
+
+  // Session radar
+  drawRadar('radarChartSession', scores);
+
+  // Session pattern tags
+  updatePatternTags('session-tags-hi', 'session-tags-mid', 'session-tags-low');
+}
+
+/* ═══════════════════════════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════════════════════════ */
+function updateProgressBar() {
+  // Measure how many sliders have been moved from 0
+  const moved = DOMAINS.filter(d => scores[d.id] > 0).length;
+  const pct = Math.round((moved / DOMAINS.length) * 100);
+  const fill = document.getElementById('progress-fill');
+  const wrap = document.getElementById('progress-wrap');
+  if (fill) {
+    fill.style.width = pct + '%';
+    wrap.setAttribute('aria-valuenow', pct);
+    wrap.setAttribute('aria-valuetext', moved + ' of ' + DOMAINS.length + ' domains rated');
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   PATTERN TAGS
+═══════════════════════════════════════════════════ */
+function updatePatternTags(hiId, midId, lowId) {
+  const hi = [], mid = [], low = [];
+  DOMAINS.forEach(d => {
+    const v = scores[d.id];
+    if (v >= 7) hi.push(d);
+    else if (v >= 4) mid.push(d);
+    else low.push(d);
+  });
+
+  const render = (items, cls) => items.length
+    ? items.map(d => `<span class="domain-tag ${cls}" role="listitem">${d.name} <strong>${scores[d.id]}</strong></span>`).join('')
+    : `<p class="empty-note">None in this range yet</p>`;
+
+  if(document.getElementById(hiId)) document.getElementById(hiId).innerHTML = render(hi, 'tag-hi');
+  if(document.getElementById(midId)) document.getElementById(midId).innerHTML = render(mid, 'tag-mid');
+  if(document.getElementById(lowId)) document.getElementById(lowId).innerHTML = render(low, 'tag-low');
+}
+
+/* ═══════════════════════════════════════════════════
+   RADAR CHART
+═══════════════════════════════════════════════════ */
+function drawRadar(svgId, scoreData) {
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+
+  const cx = 210, cy = 210, maxR = 150;
+  const n = DOMAINS.length;
+  const angles = DOMAINS.map((_, i) => (i / n) * Math.PI * 2 - Math.PI / 2);
+
+  function polarPt(angle, r) {
+    return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+  }
+
+  // Grid rings
+  const gridRings = [2, 4, 6, 8, 10].map(v => {
+    const pts = angles.map(a => polarPt(a, (v / 10) * maxR));
+    return `<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="var(--border)" stroke-width="${v===10?1.5:0.8}" opacity="0.8"/>`;
+  }).join('');
+
+  // Axis lines
+  const axisLines = angles.map((a, i) => {
+    return `<line x1="${cx}" y1="${cy}" x2="${polarPt(a, maxR)[0]}" y2="${polarPt(a, maxR)[1]}" stroke="var(--border)" stroke-width="1" opacity="0.7"/>`;
+  }).join('');
+
+  // Read current CSS custom property values so high-contrast and dark-mode are respected
+  const style = getComputedStyle(document.documentElement);
+  const colorHi   = style.getPropertyValue('--hi-ink').trim()  || '#8A3318';
+  const colorMid  = style.getPropertyValue('--mid-ink').trim() || '#7A5C10';
+  const colorLow  = style.getPropertyValue('--low-ink').trim() || '#2C5C3B';
+  const colorHiBg = style.getPropertyValue('--terra').trim()   || '#B85C38';
+  const colorMidBg= style.getPropertyValue('--amber').trim()   || '#C8921A';
+  const colorLowBg= style.getPropertyValue('--sage').trim()    || '#3D6B4F';
+
+  // Labels
+  const labels = DOMAINS.map((d, i) => {
+    const [x, y] = polarPt(angles[i], maxR + 24);
+    const anchor = x < cx - 10 ? 'end' : x > cx + 10 ? 'start' : 'middle';
+    const v = scoreData[d.id];
+    const fill = v >= 7 ? colorHi : v >= 4 ? colorMid : colorLow;
+    // Truncate name if needed
+    const shortName = d.name.length > 14 ? d.name.split(' ').slice(0,2).join(' ') : d.name;
+    return `<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="DM Sans, sans-serif" font-size="11" font-weight="600" fill="${fill}">${shortName}</text>`;
+  }).join('');
+
+  // Score polygon
+  const scorePts = DOMAINS.map((d, i) => {
+    const r = (scoreData[d.id] / 10) * maxR;
+    return polarPt(angles[i], r);
+  });
+
+  // Color the polygon based on average score
+  const avg = DOMAINS.reduce((s, d) => s + scoreData[d.id], 0) / DOMAINS.length;
+  const polyFill   = avg >= 7 ? `rgba(184,92,56,0.28)`   : avg >= 4 ? `rgba(200,146,26,0.22)` : `rgba(61,107,79,0.22)`;
+  const polyStroke = avg >= 7 ? colorHiBg : avg >= 4 ? colorMidBg : colorLowBg;
+
+  const scorePolygon = `<polygon points="${scorePts.map(p=>p.join(',')).join(' ')}" fill="${polyFill}" stroke="${polyStroke}" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+  // Score dots
+  const dots = DOMAINS.map((d, i) => {
+    const [x, y] = scorePts[i];
+    const v = scoreData[d.id];
+    const c = v >= 7 ? colorHiBg : v >= 4 ? colorMidBg : colorLowBg;
+    return `<circle cx="${x}" cy="${y}" r="5" fill="${c}" stroke="#fff" stroke-width="2">
+      <title>${d.name}: ${v}/10</title>
+    </circle>`;
+  }).join('');
+
+  // Ring labels (2,4,6,8,10)
+  const ringLabels = [2,4,6,8,10].map(v => {
+    const [x, y] = polarPt(-Math.PI / 2, (v / 10) * maxR);
+    return `<text x="${x + 4}" y="${y}" font-family="DM Sans" font-size="9" fill="var(--muted)" opacity="0.7">${v}</text>`;
+  }).join('');
+
+  svg.innerHTML = `
+    <g role="presentation">
+      ${gridRings}
+      ${axisLines}
+      ${ringLabels}
+      ${scorePolygon}
+      ${labels}
+      ${dots}
+    </g>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════
+   SCREEN READER SUMMARY
+═══════════════════════════════════════════════════ */
+function updateSRSummary() {
+  const el = document.getElementById('radar-sr-summary');
+  if (!el) return;
+  const sorted = [...DOMAINS].sort((a, b) => scores[b.id] - scores[a.id]);
+  el.textContent = 'Domain scores from highest to lowest: ' +
+    sorted.map(d => `${d.name}: ${scores[d.id]} out of 10`).join(', ') + '.';
+}
+
+/* ═══════════════════════════════════════════════════
+   DEEP DIVE RENDER
+═══════════════════════════════════════════════════ */
+function renderDeepDives() {
+  const grid = document.getElementById('deep-dive-grid');
+  if (!grid) return;
+
+  grid.innerHTML = DOMAINS.map((d, idx) => {
+    const v = scores[d.id];
+    const priorityClass = v >= 7 ? 'priority-hi' : v >= 4 ? 'priority-mid' : '';
+    const scoreC = v >= 7 ? 'score-hi' : v >= 4 ? 'score-mid' : 'score-low';
+
+    const accommList = d.accommodations.map((a, ai) => {
+      const checked = checkedAccomm[d.id] && checkedAccomm[d.id].includes(ai);
+      return `<li>
+        <input type="checkbox" id="accomm-${d.id}-${ai}" ${checked ? 'checked' : ''}
+          onchange="toggleAccomm('${d.id}', ${ai})"/>
+        <label for="accomm-${d.id}-${ai}">${a}</label>
+      </li>`;
+    }).join('');
+
+    return `
+    <div class="deep-dive-card ${priorityClass}" id="dive-${d.id}">
+      <button type="button" class="deep-dive-header"
+        onclick="toggleDeepDive('${d.id}')"
+        aria-expanded="false"
+        aria-controls="dive-body-${d.id}"
+        id="dive-btn-${d.id}">
+        <span class="deep-dive-title">${d.name}</span>
+        <span class="deep-dive-score ${scoreC}" aria-label="Score: ${v} out of 10">${v}/10</span>
+        <span class="deep-dive-arrow" aria-hidden="true">▼</span>
+      </button>
+      <div class="deep-dive-body" id="dive-body-${d.id}" role="region" aria-labelledby="dive-btn-${d.id}">
+        <p>${d.desc}</p>
+        <h4>Signs This Domain Is Strained</h4>
+        <ul>${d.signs.map(s => `<li>${s}</li>`).join('')}</ul>
+        <h4>Accommodation Ideas</h4>
+        <ul class="accomm-list" aria-label="Accommodation checkboxes for ${d.name}">
+          ${accommList}
+        </ul>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateDeepDiveScores() {
+  DOMAINS.forEach(d => {
+    const btn = document.getElementById('dive-btn-' + d.id);
+    const card = document.getElementById('dive-' + d.id);
+    if (!btn) return;
+    const v = scores[d.id];
+    const scoreEl = btn.querySelector('.deep-dive-score');
+    if (scoreEl) {
+      const cls = v >= 7 ? 'score-hi' : v >= 4 ? 'score-mid' : 'score-low';
+      scoreEl.className = 'deep-dive-score ' + cls;
+      scoreEl.textContent = v + '/10';
+      scoreEl.setAttribute('aria-label', 'Score: ' + v + ' out of 10');
+    }
+    if (card) {
+      card.className = 'deep-dive-card ' + (v >= 7 ? 'priority-hi' : v >= 4 ? 'priority-mid' : '');
+    }
+  });
+}
+
+function toggleDeepDive(domainId) {
+  const body = document.getElementById('dive-body-' + domainId);
+  const btn = document.getElementById('dive-btn-' + domainId);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+}
+
+function toggleAccomm(domainId, idx) {
+  if (!checkedAccomm[domainId]) checkedAccomm[domainId] = [];
+  const set = checkedAccomm[domainId];
+  const pos = set.indexOf(idx);
+  if (pos >= 0) set.splice(pos, 1);
+  else set.push(idx);
+  updateAccommAutoList();
+}
+
+function updateAccommAutoList() {
+  const container = document.getElementById('ap-accomm-auto');
+  if (!container) return;
+  const allSelected = [];
+  DOMAINS.forEach(d => {
+    const indices = checkedAccomm[d.id] || [];
+    indices.forEach(i => {
+      if (d.accommodations[i]) allSelected.push({ domain: d.name, text: d.accommodations[i] });
+    });
+  });
+  if (allSelected.length === 0) {
+    container.innerHTML = '<span class="accomm-auto-empty">Check accommodation boxes in the domain deep-dives above — your selections will appear here.</span>';
+  } else {
+    container.innerHTML = '<ul>' + allSelected.map(a =>
+      `<li><strong>${escHtml(a.domain)}:</strong> ${escHtml(a.text)}</li>`
+    ).join('') + '</ul>';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   RESULT URL GENERATION
+═══════════════════════════════════════════════════ */
+function getSessionPin() {
+  // Try to retrieve pin from URL hash (client mode)
+  const hash = window.location.hash;
+  const clMatch = hash.match(/cl=([^&]+)/);
+  if (clMatch) {
+    // The pin hash is embedded — for encryption we need the actual pin
+    // But since client doesn't know the pin, we use the hash itself as the key
+    return decodeURIComponent(clMatch[1]);
+  }
+  return 'nst-ef-default';
+}
+
+function collectClientData() {
+  const name = document.getElementById('client-name')?.value || '';
+  const date = document.getElementById('client-date')?.value || '';
+
+  // Notes per domain
+  const domainNotes = {};
+  DOMAINS.forEach(d => {
+    const ta = document.querySelector(`#notes-${d.id} textarea`);
+    if (ta && ta.value.trim()) domainNotes[d.id] = ta.value.trim();
+  });
+
+  // Action plan
+  const ap = {
+    highest:   document.getElementById('ap-highest')?.value || '',
+    strengths: document.getElementById('ap-strengths')?.value || '',
+    friction:  document.getElementById('ap-friction')?.value || '',
+    accomm:    document.getElementById('ap-accomm')?.value || '',
+    one:       document.getElementById('ap-one')?.value || '',
+    others:    document.getElementById('ap-others')?.value || '',
+    therapist: document.getElementById('ap-therapist')?.value || '',
+    success:   document.getElementById('ap-success')?.value || '',
+  };
+
+  return {
+    version: 2,
+    name, date,
+    scores,
+    notes: domainNotes,
+    accommodations: checkedAccomm,
+    actionPlan: ap,
+    timestamp: new Date().toISOString(),
+  };
+}
+
+function generateResultURL() {
+  const data = collectClientData();
+  const json = JSON.stringify(data);
+  const encKey = getSessionPin();
+  const encrypted = xorEncrypt(json, encKey);
+
+  const base = window.location.href.split('#')[0].split('?')[0];
+  generatedResultURL = base + '?mode=decrypt#re=' + encrypted;
+
+  const wrap = document.getElementById('result-url-wrap');
+  const display = document.getElementById('result-url-display');
+  display.textContent = generatedResultURL;
+  display.setAttribute('aria-label', 'Encrypted results URL: ' + generatedResultURL);
+  wrap.classList.remove('hidden');
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  showToast('Results link generated!');
+}
+
+function copyResultURL() {
+  if (!generatedResultURL) return;
+  const doFallback = () => {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = generatedResultURL;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      const c = document.getElementById('copy-confirm-result');
+      c.classList.add('visible');
+      c.textContent = '✔ Copied!';
+      showToast('Results link copied to clipboard');
+      setTimeout(() => { c.classList.remove('visible'); c.textContent = ''; }, 2500);
+    } catch(e2) {
+      showToast('Could not copy — please select and copy the link manually');
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(generatedResultURL).then(() => {
+      const c = document.getElementById('copy-confirm-result');
+      c.classList.add('visible');
+      c.textContent = '✔ Copied!';
+      showToast('Results link copied to clipboard');
+      setTimeout(() => { c.classList.remove('visible'); c.textContent = ''; }, 2500);
+    }).catch(doFallback);
+  } else {
+    doFallback();
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   CLINICIAN DECRYPT
+═══════════════════════════════════════════════════ */
+function decryptResults() {
+  const urlInput = document.getElementById('result-url-input').value.trim();
+  const pin = document.getElementById('decrypt-pin').value.trim().replace(/\D/g, '');
+  const errEl = document.getElementById('decrypt-error');
+  const display = document.getElementById('decrypted-display');
+
+  errEl.classList.add('hidden');
+  errEl.textContent = '';
+  document.getElementById('result-url-input').removeAttribute('aria-invalid');
+  document.getElementById('decrypt-pin').removeAttribute('aria-invalid');
+
+  if (!urlInput) {
+    errEl.textContent = 'Please paste the client\'s result URL.';
+    errEl.classList.remove('hidden');
+    const urlEl = document.getElementById('result-url-input');
+    urlEl.setAttribute('aria-invalid', 'true');
+    urlEl.focus();
+    return;
+  }
+  if (!pin || pin.length < 4) {
+    errEl.textContent = 'Please enter your 4–8 digit PIN (numbers only).';
+    errEl.classList.remove('hidden');
+    const pinEl = document.getElementById('decrypt-pin');
+    pinEl.setAttribute('aria-invalid', 'true');
+    pinEl.focus();
+    return;
+  }
+
+  // Extract encrypted payload
+  let encrypted = '';
+  const reMatch = urlInput.match(/[#&?]re=([^&#]+)/);
+  if (!reMatch) {
+    errEl.textContent = 'Could not find result data in this URL. Make sure you pasted the full link.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+  encrypted = reMatch[1];
+
+  // The client used the pinHash as the key (from their URL)
+  // We need to compute the same key: hashPin(pin) matches what was in the client's URL
+  const encKey = hashPin(pin);
+  const decrypted = xorDecrypt(encrypted, encKey);
+
+  if (!decrypted) {
+    errEl.textContent = 'Decryption failed. Check that the URL is complete and the PIN is correct.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  let data;
+  try { data = JSON.parse(decrypted); }
+  catch(e) {
+    errEl.textContent = 'Could not parse results. The PIN may be incorrect, or the URL may be corrupted.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  renderDecryptedResults(data);
+  display.classList.remove('hidden');
+  display.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  showToast('Results decrypted successfully');
+}
+
+function renderDecryptedResults(data) {
+  // Sanitize scores — clamp all values to 0-10 integers to prevent XSS or NaN in radar/tags
+  const safeScores = {};
+  DOMAINS.forEach(d => {
+    safeScores[d.id] = Math.min(10, Math.max(0, parseInt(data.scores?.[d.id]) || 0));
+  });
+  data = { ...data, scores: safeScores };
+  // Name/date
+  document.getElementById('dec-client-name-heading').textContent =
+    (data.name ? data.name + ' — ' : '') + 'Executive Function Load Map Results';
+  document.getElementById('dec-meta').textContent =
+    (data.date ? 'Assessment date: ' + data.date + ' · ' : '') +
+    'Completed: ' + (data.timestamp ? new Date(data.timestamp).toLocaleString() : 'Unknown');
+
+  // Radar
+  drawRadar('radarChartDec', data.scores);
+
+  // Domain scores
+  const domainList = document.getElementById('dec-domain-list');
+  domainList.innerHTML = [...DOMAINS]
+    .sort((a, b) => data.scores[b.id] - data.scores[a.id])
+    .map(d => {
+      const v = Math.min(10, Math.max(0, parseInt(data.scores[d.id]) || 0));
+      const cls = v >= 7 ? 'score-hi' : v >= 4 ? 'score-mid' : 'score-low';
+      const note = data.notes?.[d.id] ? `<div style="font-size:0.8rem;color:var(--muted);font-style:italic;margin-top:0.2rem;">${escHtml(String(data.notes[d.id]))}</div>` : '';
+      return `<div class="result-domain-row">
+        <div class="result-domain-name">
+          <strong>${d.name}</strong>${note}
+        </div>
+        <div class="result-domain-score ${cls}" aria-label="${d.name}: ${v} out of 10">${v}<span style="font-size:0.65em;opacity:0.6;">/10</span></div>
+      </div>`;
+    }).join('');
+
+  // Pattern
+  updatePatternTagsForData('dec-tags-hi','dec-tags-mid','dec-tags-low', data.scores);
+
+  // Action plan
+  const apFields = [
+    { key: 'highest',   label: 'Highest-strain domains — what external support would look like' },
+    { key: 'strengths', label: 'Strongest domains — how they compensate for weaker areas' },
+    { key: 'friction',  label: 'EF demand causing the most daily friction — the real cost' },
+    { key: 'accomm',    label: 'Additional accommodations chosen' },
+    { key: 'one',       label: 'One accommodation to start this week' },
+    { key: 'others',    label: 'What partner / employer / family needs to understand about EF load' },
+    { key: 'therapist', label: 'What the client needs from their therapist to support EF management' },
+    { key: 'success',   label: 'How they\'ll know it\'s working — what improvement looks like' },
+  ];
+  const apContainer = document.getElementById('dec-action-plan');
+  apContainer.innerHTML = apFields.map(f => {
+    const val = data.actionPlan?.[f.key];
+    if (!val) return '';
+    return `<div class="action-box">
+      <div class="action-box-title">${f.label}</div>
+      <div style="padding:0.7rem 0.9rem;font-size:0.9rem;background:var(--cream);color:var(--ink);white-space:pre-wrap;">${escHtml(val)}</div>
+    </div>`;
+  }).join('') || '<p style="color:var(--muted);font-size:0.9rem;">No action plan notes were provided.</p>';
+
+  // Accommodations
+  const accommContainer = document.getElementById('dec-accommodations');
+  const accData = data.accommodations || {};
+  const allChecked = [];
+  DOMAINS.forEach(d => {
+    const indices = accData[d.id];
+    if (indices && indices.length > 0) {
+      indices.forEach(i => {
+        if (d.accommodations[i]) allChecked.push({ domain: d.name, text: d.accommodations[i] });
+      });
+    }
+  });
+  accommContainer.innerHTML = allChecked.length
+    ? `<ul style="padding-left:1.2rem;line-height:1.8;">${allChecked.map(a => `<li><strong>${escHtml(a.domain)}:</strong> ${escHtml(a.text)}</li>`).join('')}</ul>`
+    : '<p style="color:var(--muted);">No accommodations were selected.</p>';
+}
+
+function updatePatternTagsForData(hiId, midId, lowId, scoreData) {
+  const hi = [], mid = [], low = [];
+  DOMAINS.forEach(d => {
+    const v = scoreData[d.id] ?? 0;
+    if (v >= 7) hi.push({ d, v });
+    else if (v >= 4) mid.push({ d, v });
+    else low.push({ d, v });
+  });
+
+  const render = (items, cls) => items.length
+    ? items.map(({ d, v }) => `<span class="domain-tag ${cls}" role="listitem">${d.name} <strong>${v}</strong></span>`).join('')
+    : `<p class="empty-note">None in this range</p>`;
+
+  if(document.getElementById(hiId)) document.getElementById(hiId).innerHTML = render(hi, 'tag-hi');
+  if(document.getElementById(midId)) document.getElementById(midId).innerHTML = render(mid, 'tag-mid');
+  if(document.getElementById(lowId)) document.getElementById(lowId).innerHTML = render(low, 'tag-low');
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════════════ */
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.setAttribute('title', 'Click to dismiss');
+  toast.setAttribute('tabindex', '0');
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => dismissToast(), 4000);
+}
+function dismissToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.remove('show');
+  toast.removeAttribute('tabindex');
+  clearTimeout(toastTimer);
+}
+
+/* ═══════════════════════════════════════════════════
+   PRINT REPORT
+═══════════════════════════════════════════════════ */
+function buildPrintReport() {
+  const name    = document.getElementById('client-name')?.value || '(Not provided)';
+  const date    = document.getElementById('client-date')?.value || new Date().toLocaleDateString();
+  const sorted  = [...DOMAINS].sort((a, b) => scores[b.id] - scores[a.id]);
+  const total   = DOMAINS.reduce((s, d) => s + scores[d.id], 0);
+  const avg     = (total / DOMAINS.length).toFixed(1);
+
+  // Pattern buckets
+  const hi  = DOMAINS.filter(d => scores[d.id] >= 7);
+  const mid = DOMAINS.filter(d => scores[d.id] >= 4 && scores[d.id] < 7);
+  const low = DOMAINS.filter(d => scores[d.id] < 4);
+
+  // Selected accommodations
+  const selAccomm = [];
+  DOMAINS.forEach(d => {
+    (checkedAccomm[d.id] || []).forEach(i => {
+      if (d.accommodations[i]) selAccomm.push({ domain: d.name, text: d.accommodations[i] });
+    });
+  });
+
+  // Action plan helper
+  const apVal = id => document.getElementById(id)?.value?.trim() || '';
+
+  // Domain score rows
+  const scoreRows = sorted.map(d => {
+    const v = scores[d.id];
+    const col = v >= 7 ? '#B85C38' : v >= 4 ? '#C8921A' : '#3D6B4F';
+    const label = v >= 7 ? 'High' : v >= 4 ? 'Moderate' : 'Low';
+    const pct = (v / 10 * 100).toFixed(0);
+    return `<tr>
+      <td><strong>${escHtml(d.name)}</strong></td>
+      <td style="text-align:center;font-weight:700;color:${col};">${v} / 10</td>
+      <td style="color:${col};">${label}</td>
+      <td style="width:120pt;">
+        <div class="print-domain-bar-wrap">
+          <div class="print-domain-bar-fill" style="width:${pct}%;background:${col};"></div>
+        </div>
+      </td>
+      <td style="font-size:9pt;">${escHtml(getDomainNote(d.id))}</td>
+    </tr>`;
+  }).join('');
+
+  // Action plan items
+  const apItems = [
+    { id: 'ap-highest',   label: 'Highest-strain EF domains — external support needed' },
+    { id: 'ap-strengths', label: 'Strongest EF domains — how they compensate for weaker areas' },
+    { id: 'ap-friction',  label: 'EF demand causing most daily friction — the real cost' },
+    { id: 'ap-accomm',    label: 'Additional accommodations (free text)' },
+    { id: 'ap-one',       label: 'One accommodation to start this week' },
+    { id: 'ap-others',    label: 'What partner / employer / family should understand' },
+    { id: 'ap-therapist', label: 'What client needs from therapist to support EF management' },
+    { id: 'ap-success',   label: 'How I\'ll know this is working — what improvement looks like' },
+  ].map(f => {
+    const val = apVal(f.id);
+    return `<div class="print-action-box">
+      <div class="print-action-label">${escHtml(f.label)}</div>
+      <div class="print-action-value">${val ? escHtml(val) : '<span style="color:#aaa;font-style:italic;">(Not completed)</span>'}</div>
+    </div>`;
+  }).join('');
+
+  // Accommodations chosen list
+  const accommHtml = selAccomm.length
+    ? '<ul style="padding-left:1rem;font-size:9.5pt;">' +
+        selAccomm.map(a => `<li><strong>${escHtml(a.domain)}:</strong> ${escHtml(a.text)}</li>`).join('') +
+      '</ul>'
+    : '<p style="font-size:9pt;color:#777;font-style:italic;">No accommodations checked in domain deep-dives.</p>';
+
+  const extraAccomm = apVal('ap-accomm');
+
+  // Pattern interpretation HTML
+  const patternHtml = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8pt;margin-bottom:8pt;">
+      <div style="background:#F7EDE8;border:1px solid #D4775A;border-radius:4pt;padding:6pt;">
+        <div style="font-size:8pt;font-weight:700;color:#8A3318;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4pt;">High Strain (7–10)</div>
+        ${hi.length ? hi.map(d=>`<span style="display:inline-block;background:rgba(184,92,56,.15);color:#8A3318;border-radius:3pt;padding:1pt 5pt;font-size:8.5pt;font-weight:600;margin:1pt;">${d.name} ${scores[d.id]}</span>`).join('') : '<span style="font-size:8pt;color:#777;font-style:italic;">None</span>'}
+      </div>
+      <div style="background:#FDF4E0;border:1px solid #C8921A;border-radius:4pt;padding:6pt;">
+        <div style="font-size:8pt;font-weight:700;color:#7A5C10;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4pt;">Moderate Strain (4–6)</div>
+        ${mid.length ? mid.map(d=>`<span style="display:inline-block;background:rgba(200,146,26,.15);color:#7A5C10;border-radius:3pt;padding:1pt 5pt;font-size:8.5pt;font-weight:600;margin:1pt;">${d.name} ${scores[d.id]}</span>`).join('') : '<span style="font-size:8pt;color:#777;font-style:italic;">None</span>'}
+      </div>
+      <div style="background:#EBF2EC;border:1px solid #5A8A6A;border-radius:4pt;padding:6pt;">
+        <div style="font-size:8pt;font-weight:700;color:#2C5C3B;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4pt;">Low Strain (0–3)</div>
+        ${low.length ? low.map(d=>`<span style="display:inline-block;background:rgba(61,107,79,.15);color:#2C5C3B;border-radius:3pt;padding:1pt 5pt;font-size:8.5pt;font-weight:600;margin:1pt;">${d.name} ${scores[d.id]}</span>`).join('') : '<span style="font-size:8pt;color:#777;font-style:italic;">None</span>'}
+      </div>
+    </div>
+    <div style="background:#FDF4E0;border-left:3px solid #C8921A;padding:5pt 8pt;font-size:9pt;border-radius:0 4pt 4pt 0;">
+      <strong>Key insight:</strong> Your radar shape matters more than your total score. Someone with three domains at 9 and five at 2 needs very different support than someone with all domains at 5. The spikes show where accommodation is most urgent. The valleys show where you can borrow strength.
+    </div>`;
+
+  // Get domain notes (uses module-level getDomainNote)
+  const report = `
+  <div style="font-family:'DM Sans',sans-serif;color:#1E1A14;max-width:100%;">
+
+    <!-- HEADER -->
+    <div style="background:#3D6B4F;color:#fff;padding:12pt 16pt;border-radius:6pt 6pt 0 0;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8pt;margin-bottom:2pt;">
+      <div>
+        <div style="font-size:10pt;opacity:.75;letter-spacing:.1em;text-transform:uppercase;font-weight:700;">Creative Solutions Coaching — NST Assessment</div>
+        <div style="font-family:'Playfair Display',serif;font-size:18pt;font-weight:700;line-height:1.2;margin-top:2pt;">Executive Function Load Map</div>
+        <div style="font-size:8.5pt;opacity:.75;margin-top:4pt;">This tool is not a diagnostic instrument. For clinical and educational use only.</div>
+      </div>
+      <div style="text-align:right;font-size:9pt;opacity:.85;">
+        <div><strong>Client:</strong> ${escHtml(name)}</div>
+        <div><strong>Date:</strong> ${escHtml(date)}</div>
+        <div style="margin-top:4pt;opacity:.7;">© 2026 Creative Solutions Coaching</div>
+        <div style="opacity:.7;">creativesolutionscoaching.com/nst</div>
+      </div>
+    </div>
+
+    <!-- SUMMARY BAR -->
+    <div style="background:#F3EFE6;border:1px solid #D9D0C0;padding:8pt 16pt;display:flex;gap:20pt;flex-wrap:wrap;margin-bottom:12pt;border-top:0;">
+      <span style="font-size:10pt;"><strong>Total domains rated:</strong> ${DOMAINS.length}/${DOMAINS.length}</span>
+      <span style="font-size:10pt;"><strong>Average load:</strong> ${avg}/10</span>
+      <span style="font-size:10pt;color:#8A3318;"><strong>High strain domains:</strong> ${hi.length}</span>
+      <span style="font-size:10pt;color:#7A5C10;"><strong>Moderate:</strong> ${mid.length}</span>
+      <span style="font-size:10pt;color:#2C5C3B;"><strong>Low strain:</strong> ${low.length}</span>
+    </div>
+
+    <!-- SECTION 1: DOMAIN SCORES -->
+    <div style="margin-bottom:14pt;">
+      <div style="font-size:8pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B85C38;margin-bottom:5pt;">Step 1 — Domain Scores</div>
+      <table class="print-score-table">
+        <thead>
+          <tr>
+            <th>Domain</th><th style="width:50pt;">Score</th><th style="width:60pt;">Strain Level</th>
+            <th style="width:120pt;">Load Bar</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>${scoreRows}</tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 2: RADAR + PATTERN -->
+    <div style="margin-bottom:14pt;display:grid;grid-template-columns:240pt 1fr;gap:14pt;align-items:start;">
+      <div>
+        <div style="font-size:8pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B85C38;margin-bottom:5pt;">Step 2 — EF Load Shape</div>
+        <svg id="radarChartPrint" viewBox="0 0 420 420" style="width:230pt;height:230pt;display:block;"></svg>
+      </div>
+      <div>
+        <div style="font-size:8pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B85C38;margin-bottom:5pt;">Step 3 — Pattern Interpretation</div>
+        ${patternHtml}
+      </div>
+    </div>
+
+    <!-- SECTION 3: ACTION PLAN -->
+    <div class="print-page-break" style="margin-bottom:14pt;">
+      <div style="font-size:8pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B85C38;margin-bottom:5pt;">Step 4 — Executive Function Action Plan</div>
+      ${apItems}
+    </div>
+
+    <!-- SECTION 4: ACCOMMODATIONS -->
+    <div style="margin-bottom:14pt;">
+      <div style="font-size:8pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B85C38;margin-bottom:5pt;">Selected Accommodations from Deep-Dives</div>
+      <div class="print-clinician-box">${accommHtml}
+        ${extraAccomm ? `<div style="margin-top:6pt;"><strong style="font-size:8.5pt;color:#3D6B4F;">Additional:</strong> <span style="font-size:9.5pt;">${escHtml(extraAccomm)}</span></div>` : ''}
+      </div>
+    </div>
+
+    <!-- SECTION 5: CLINICIAN NOTES -->
+    <div class="print-page-break" style="margin-bottom:12pt;">
+      <div style="font-size:8pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B85C38;margin-bottom:5pt;">Clinician Session Notes</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8pt;">
+        <div class="print-clinician-box">
+          <div class="print-action-label">Priority Domains This Session</div>
+          <div class="print-action-blank"></div><div class="print-action-blank"></div><div class="print-action-blank"></div>
+        </div>
+        <div class="print-clinician-box">
+          <div class="print-action-label">Patterns / Connections Noted</div>
+          <div class="print-action-blank"></div><div class="print-action-blank"></div><div class="print-action-blank"></div>
+        </div>
+        <div class="print-clinician-box">
+          <div class="print-action-label">Intervention Ideas / Next Steps</div>
+          <div class="print-action-blank"></div><div class="print-action-blank"></div><div class="print-action-blank"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: NST NOTES -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8pt;margin-bottom:10pt;">
+      <div style="background:#EBF2EC;border:1px solid #5A8A6A;border-radius:4pt;padding:8pt;font-size:8.5pt;">
+        <strong style="color:#2C5C3B;display:block;margin-bottom:4pt;">Track Over Time</strong>
+        Complete this assessment at intake and every 4–8 sessions. Comparing radar charts shows whether accommodations and scaffolding are reducing strain — and where new pressure may be building. EF load fluctuates with stress, sleep, health, and life demands. A domain that's low-strain today may spike next month.
+      </div>
+      <div style="background:#EBF2EC;border:1px solid #5A8A6A;border-radius:4pt;padding:8pt;font-size:8.5pt;">
+        <strong style="color:#2C5C3B;display:block;margin-bottom:4pt;">A Note About Executive Function</strong>
+        Executive function challenges aren't laziness, carelessness, or lack of motivation. They're neurological — your brain's management system is working differently, not failing. When specific EF domains are strained, the solution isn't "try harder" — it's targeted scaffolding. You don't need to fix your brain. You need environments and tools that work with it.
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="border-top:1px solid #D9D0C0;padding-top:6pt;font-size:8pt;color:#777;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4pt;">
+      <span>© 2026 Creative Solutions Coaching — All Rights Reserved</span>
+      <span>creativesolutionscoaching.com/nst | This tool is not a diagnostic instrument. For clinical and educational use only.</span>
+      <span>Page generated ${new Date().toLocaleDateString()}</span>
+    </div>
+  </div>`;
+
+  return report;
+}
+
+function getDomainNote(domainId) {
+  const el = document.querySelector(`#notes-${domainId} textarea`);
+  return el ? el.value.trim() : '';
+}
+
+function printReport() {
+  const container = document.getElementById('print-report');
+  if (!container) return;
+  container.innerHTML = buildPrintReport();
+  // Draw the print radar
+  setTimeout(() => {
+    drawRadar('radarChartPrint', scores);
+    window.print();
+  }, 150);
+}
+
+/* ═══════════════════════════════════════════════════
+   ACCESSIBILITY FUNCTIONS
+═══════════════════════════════════════════════════ */
+let a11yPrefs = {
+  textSize: 'md',
+  highContrast: false,
+  dyslexiaFont: false,
+  reduceMotion: false,
+  readingGuide: false,
+  focusMode: false,
+};
+let focusDomainIndex = 0;
+
+// Load saved prefs from sessionStorage (no persistent tracking)
+function loadA11yPrefs() {
+  try {
+    const saved = sessionStorage.getItem('nst-a11y');
+    if (saved) {
+      const p = JSON.parse(saved);
+      if (p.textSize)      setTextSize(p.textSize, true);
+      if (p.highContrast)  toggleA11y('high-contrast','btn-contrast', true);
+      if (p.dyslexiaFont)  toggleA11y('dyslexia-font','btn-dyslexia', true);
+      if (p.reduceMotion)  toggleA11y('reduce-motion','btn-motion', true);
+      if (p.readingGuide)  toggleA11y('reading-guide-on','btn-guide', true);
+      if (p.focusMode) {
+        a11yPrefs.focusMode = true;
+        const btn = document.getElementById('btn-focus-mode');
+        if (btn) { btn.classList.add('active'); btn.setAttribute('aria-pressed','true'); }
+        focusDomainIndex = 0;
+        applyFocusMode();
+      }
+    }
+  } catch(e) {}
+}
+function saveA11yPrefs() {
+  try { sessionStorage.setItem('nst-a11y', JSON.stringify(a11yPrefs)); } catch(e) {}
+}
+
+function setTextSize(size, silent) {
+  const sizes = ['sm','md','lg','xl'];
+  const classes = { sm:'text-sm', md:'', lg:'text-lg', xl:'text-xl' };
+  sizes.forEach(s => {
+    document.body.classList.remove('text-' + s);
+    const btn = document.getElementById('btn-text-' + s);
+    if (btn) { btn.classList.remove('active'); btn.setAttribute('aria-pressed','false'); }
+  });
+  if (classes[size]) document.body.classList.add(classes[size]);
+  const activeBtn = document.getElementById('btn-text-' + size);
+  if (activeBtn) { activeBtn.classList.add('active'); activeBtn.setAttribute('aria-pressed','true'); }
+  a11yPrefs.textSize = size;
+  saveA11yPrefs();
+  if (!silent) announcePolite('Text size set to ' + { sm:'small', md:'default', lg:'large', xl:'extra large' }[size]);
+}
+
+function toggleA11y(bodyClass, btnId, silent) {
+  const isOn = document.body.classList.toggle(bodyClass);
+  const btn = document.getElementById(btnId);
+  if (btn) { btn.classList.toggle('active', isOn); btn.setAttribute('aria-pressed', String(isOn)); }
+  // Track in prefs
+  const map = { 'high-contrast':'highContrast','dyslexia-font':'dyslexiaFont','reduce-motion':'reduceMotion','reading-guide-on':'readingGuide' };
+  if (map[bodyClass]) a11yPrefs[map[bodyClass]] = isOn;
+  saveA11yPrefs();
+  // Re-render radar when contrast changes so hardcoded SVG colors update
+  if (bodyClass === 'high-contrast') {
+    // Slight delay so CSS variables have applied
+    setTimeout(() => updateAll(), 50);
+  }
+  if (!silent) {
+    const labels = { 'high-contrast':'High contrast','dyslexia-font':'Dyslexia font','reduce-motion':'Reduced motion','reading-guide-on':'Reading guide' };
+    announcePolite((labels[bodyClass] || bodyClass) + (isOn ? ' on' : ' off'));
+  }
+}
+
+// Focus mode — one domain visible at a time
+function initFocusMode() {
+  if (!a11yPrefs.focusMode) return;
+  applyFocusMode();
+}
+
+function toggleFocusMode() {
+  a11yPrefs.focusMode = !a11yPrefs.focusMode;
+  const btn = document.getElementById('btn-focus-mode');
+  if (btn) { btn.classList.toggle('active', a11yPrefs.focusMode); btn.setAttribute('aria-pressed', String(a11yPrefs.focusMode)); }
+  saveA11yPrefs();
+  if (a11yPrefs.focusMode) {
+    focusDomainIndex = 0;
+    applyFocusMode();
+    announceAssertive('Focus mode on. Showing domain 1 of ' + DOMAINS.length + ': ' + DOMAINS[0].name + '. Use Alt+N for next, Alt+P for previous.');
+  } else {
+    DOMAINS.forEach(d => {
+      const el = document.getElementById('domain-item-' + d.id);
+      if (el) { el.classList.remove('focus-active','focus-done'); }
+    });
+    document.body.classList.remove('focus-mode');
+    announcePolite('Focus mode off. All domains visible.');
+  }
+}
+
+function applyFocusMode() {
+  document.body.classList.add('focus-mode');
+  DOMAINS.forEach((d, i) => {
+    const el = document.getElementById('domain-item-' + d.id);
+    if (!el) return;
+    el.classList.remove('focus-active','focus-done');
+    if (i === focusDomainIndex) el.classList.add('focus-active');
+    else if (i < focusDomainIndex) el.classList.add('focus-done');
+  });
+  // Scroll active domain into view and focus its slider
+  const active = document.getElementById('domain-item-' + DOMAINS[focusDomainIndex].id);
+  if (active) {
+    active.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      const slider = document.getElementById('slider-' + DOMAINS[focusDomainIndex].id);
+      if (slider) slider.focus();
+    }, 300);
+  }
+}
+
+function focusModeNext() {
+  if (!a11yPrefs.focusMode) return;
+  if (focusDomainIndex < DOMAINS.length - 1) {
+    focusDomainIndex++;
+    applyFocusMode();
+    announceAssertive('Domain ' + (focusDomainIndex + 1) + ' of ' + DOMAINS.length + ': ' + DOMAINS[focusDomainIndex].name);
+  } else {
+    announceAssertive('Last domain reached. All ' + DOMAINS.length + ' domains rated.');
+  }
+}
+function focusModePrev() {
+  if (!a11yPrefs.focusMode) return;
+  if (focusDomainIndex > 0) {
+    focusDomainIndex--;
+    applyFocusMode();
+    announceAssertive('Domain ' + (focusDomainIndex + 1) + ' of ' + DOMAINS.length + ': ' + DOMAINS[focusDomainIndex].name);
+  }
+}
+
+// Reading guide
+function initReadingGuide() {
+  const guide = document.getElementById('reading-guide');
+  if (!guide) return;
+  document.addEventListener('mousemove', e => {
+    if (document.body.classList.contains('reading-guide-on')) {
+      guide.style.top = (e.clientY - 1) + 'px';
+    }
+  });
+  document.addEventListener('touchmove', e => {
+    if (document.body.classList.contains('reading-guide-on') && e.touches.length > 0) {
+      guide.style.top = (e.touches[0].clientY - 1) + 'px';
+    }
+  }, { passive: true });
+  document.addEventListener('focusin', e => {
+    if (document.body.classList.contains('reading-guide-on')) {
+      const rect = e.target.getBoundingClientRect();
+      guide.style.top = (rect.top + rect.height / 2) + 'px';
+    }
+  });
+}
+
+// Keyboard shortcuts panel
+function openShortcuts() {
+  document.getElementById('shortcuts-panel').classList.add('open');
+  document.getElementById('shortcuts-overlay').classList.add('open');
+  document.querySelector('.shortcuts-close').focus();
+  announcePolite('Keyboard shortcuts panel open. Press Escape to close.');
+  document.addEventListener('keydown', trapShortcutsFocus);
+}
+function closeShortcuts() {
+  document.getElementById('shortcuts-panel').classList.remove('open');
+  document.getElementById('shortcuts-overlay').classList.remove('open');
+  document.removeEventListener('keydown', trapShortcutsFocus);
+  document.getElementById('btn-shortcuts')?.focus();
+}
+function trapShortcutsFocus(e) {
+  const panel = document.getElementById('shortcuts-panel');
+  if (!panel.classList.contains('open')) return;
+  if (e.key === 'Escape') { closeShortcuts(); return; }
+  if (e.key !== 'Tab') return;
+  const focusable = panel.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey) {
+    if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+  } else {
+    if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+}
+
+// Global keyboard shortcut handler
+function handleGlobalKeys(e) {
+  const alt = e.altKey;
+
+  // Close shortcuts on Escape only when the panel is open
+  if (e.key === 'Escape') {
+    const panel = document.getElementById('shortcuts-panel');
+    if (panel && panel.classList.contains('open')) { closeShortcuts(); }
+    return;
+  }
+
+  // ? key opens shortcuts (when not in a text field)
+  if (e.key === '?' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) {
+    e.preventDefault(); openShortcuts(); return;
+  }
+
+  if (!alt) return;
+
+  switch (e.key) {
+    case '1': e.preventDefault(); switchTab('clinician', true); break;
+    case '2': e.preventDefault(); switchTab('client', true); break;
+    case '3': e.preventDefault(); switchTab('decrypt', true); break;
+    case 'c': case 'C': e.preventDefault(); toggleA11y('high-contrast','btn-contrast'); break;
+    case 'd': case 'D': e.preventDefault(); toggleA11y('dyslexia-font','btn-dyslexia'); break;
+    case 'm': case 'M': e.preventDefault(); toggleA11y('reduce-motion','btn-motion'); break;
+    case 'f': case 'F': e.preventDefault(); toggleFocusMode(); break;
+    case 'g': case 'G': e.preventDefault(); toggleA11y('reading-guide-on','btn-guide'); break;
+    case 'n': case 'N': e.preventDefault(); focusModeNext(); break;
+    case 'p': case 'P': e.preventDefault(); focusModePrev(); break;
+    case '=': case '+': e.preventDefault(); {
+      const sizes = ['sm','md','lg','xl'];
+      const cur = a11yPrefs.textSize;
+      const next = sizes[Math.min(sizes.indexOf(cur) + 1, sizes.length - 1)];
+      setTextSize(next);
+    } break;
+    case '-': case '_': e.preventDefault(); {
+      const sizesD = ['sm','md','lg','xl'];
+      const curD = a11yPrefs.textSize;
+      const prev = sizesD[Math.max(sizesD.indexOf(curD) - 1, 0)];
+      setTextSize(prev);
+    } break;
+    case '0': e.preventDefault(); setTextSize('md'); break;
+  }
+}
+
+// Check system reduced-motion preference on load
+function applySystemPrefs() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.body.classList.add('reduce-motion');
+    const btn = document.getElementById('btn-motion');
+    if (btn) { btn.classList.add('active'); btn.setAttribute('aria-pressed','true'); }
+    a11yPrefs.reduceMotion = true;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   URL MODE DETECTION ON LOAD
+═══════════════════════════════════════════════════ */
+function detectMode() {
+  const params = new URLSearchParams(window.location.search);
+  const hash = window.location.hash;
+  const mode = params.get('mode');
+
+  if (mode === 'client' || hash.includes('cl=')) {
+    deliveryMode = 'remote';
+    switchTab('client');
+    document.getElementById('session-mode-banner').classList.add('hidden');
+    document.getElementById('session-live-results').classList.add('hidden');
+    document.getElementById('generate-result-section').classList.remove('hidden');
+    goToStep(1);
+  } else if (mode === 'decrypt' || hash.includes('re=')) {
+    switchTab('decrypt');
+    const urlInput = document.getElementById('result-url-input');
+    if (urlInput) urlInput.value = window.location.href;
+  } else {
+    switchTab('clinician');
+    document.getElementById('generate-result-section').classList.add('hidden');
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   KEYBOARD: CLINICIAN LINK GEN
+═══════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  // Set today's date
+  const dateInput = document.getElementById('client-date');
+  if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+
+  renderDomains();
+  detectMode();
+  loadA11yPrefs();
+  applySystemPrefs();
+  initReadingGuide();
+
+  // Global keyboard shortcuts
+  document.addEventListener('keydown', handleGlobalKeys);
+
+  // Arrow key navigation in tablist
+  const tablist = document.querySelector('[role="tablist"]');
+  if (tablist) tablist.addEventListener('keydown', handleTablistKeys);
+
+  // Toast: click or Enter/Space to dismiss
+  const toastEl = document.getElementById('toast');
+  if (toastEl) {
+    toastEl.addEventListener('click', dismissToast);
+    toastEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dismissToast(); }
+    });
+  }
+
+  // Enter key in PIN fields
+  document.getElementById('clinician-pin')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') generateClientLink();
+  });
+  document.getElementById('decrypt-pin')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') decryptResults();
+  });
+
+  // Slider: support Page Up/Down for step-2 and Home/End for min/max
+  document.addEventListener('keydown', e => {
+    const slider = document.activeElement;
+    if (slider && slider.type === 'range') {
+      const domainId = slider.id.replace('slider-','');
+      const v = scores[domainId] ?? 0;
+      if (e.key === 'PageUp')   { e.preventDefault(); updateScore(domainId, Math.min(10, v + 2)); }
+      if (e.key === 'PageDown') { e.preventDefault(); updateScore(domainId, Math.max(0, v - 2)); }
+      if (e.key === 'Home')     { e.preventDefault(); updateScore(domainId, 0); }
+      if (e.key === 'End')      { e.preventDefault(); updateScore(domainId, 10); }
+    }
+  });
+
+  // Initialize all slider tracks
+  DOMAINS.forEach(d => {
+    const slider = document.getElementById('slider-' + d.id);
+    if (slider) {
+      const v = scores[d.id];
+      const col = v >= 7 ? '#B85C38' : v >= 4 ? '#C8921A' : '#3D6B4F';
+      slider.style.background = `linear-gradient(to right, ${col} ${v * 10}%, var(--border) ${v * 10}%)`;
+    }
+  });
+
+  // Announce page load to screen readers
+  setTimeout(() => {
+    announcePolite('Executive Function Load Map loaded. Accessibility toolbar available at top of page. Press question mark for keyboard shortcuts.');
+  }, 800);
+});
+</script>
+</body>
+</html>
