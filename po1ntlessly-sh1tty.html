@@ -353,6 +353,7 @@ body.high-contrast footer { border-top-color: #000 !important; }
   <div class="tabs" role="tablist" aria-label="Games tabs">
     <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-game" id="tab-game" onclick="showTab('game','games',this)">🎯 Dot Clicker</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="panel-game2" id="tab-game2" onclick="showTab('game2','games',this)">📊 Stop the Bar</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-drawer" id="tab-drawer" onclick="showTab('drawer','games',this)">🗂 Drawer Sort</button>
   </div>
 
   <div class="panel active" id="panel-game" role="tabpanel" aria-labelledby="tab-game">
@@ -374,6 +375,13 @@ body.high-contrast footer { border-top-color: #000 !important; }
     <p class="hint">The zone shrinks every hit. There is no level cap.<br>It will become physically impossible before it ends.</p>
     <div class="btn-center" style="margin-top:14px;"><button class="btn" id="bar-btn" onclick="startBar()">Start Game</button></div>
   </div>
+
+  <div class="panel" id="panel-drawer" role="tabpanel" aria-labelledby="tab-drawer">
+    <div id="drawer-area" aria-label="Junk drawer. Drag items to arrange them." style="position:relative;width:100%;height:300px;background:#cdd4c4;border-radius:12px;border:1px solid #b8c0a8;overflow:hidden;cursor:default;user-select:none;touch-action:none;"></div>
+    <div id="drawer-count" style="font-size:0.75rem;color:#4a6060;text-align:center;margin-top:10px;">items arranged: 0</div>
+    <div class="btn-center" style="margin-top:10px;"><button class="btn" onclick="resetDrawer()">Tip It Out Again</button></div>
+    <p class="hint">there is no correct arrangement.<br>there has never been a correct arrangement.</p>
+  </div>
 </div>
 
 <!-- ════════════════ BRAIN ROT SECTION ════════════════ -->
@@ -383,6 +391,7 @@ body.high-contrast footer { border-top-color: #000 !important; }
   <div class="tabs" role="tablist" aria-label="Brain Rot tabs">
     <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-trivia" id="tab-trivia" onclick="showTab('trivia','brain',this)">❓ Chaotic Trivia</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="panel-adventure" id="tab-adventure" onclick="showTab('adventure','brain',this)">📖 Pointless Adventure</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-intrusive" id="tab-intrusive" onclick="showTab('intrusive','brain',this)">💭 Intrusive Thought</button>
   </div>
 
   <div class="panel active" id="panel-trivia" role="tabpanel" aria-labelledby="tab-trivia">
@@ -406,6 +415,18 @@ body.high-contrast footer { border-top-color: #000 !important; }
     <div id="adv-choices" aria-live="polite"></div>
     <div id="adv-meta"></div>
     <div class="btn-center"><button class="btn" id="adv-btn" onclick="startAdventure()">Begin</button></div>
+  </div>
+
+  <div class="panel" id="panel-intrusive" role="tabpanel" aria-labelledby="tab-intrusive">
+    <div id="intrusive-box" aria-live="polite" aria-atomic="true" style="
+      min-height:120px;background:#d8e2e2;border:1px solid #b8caca;
+      border-radius:12px;padding:28px 24px;margin-bottom:16px;
+      font-size:1.05rem;color:#1a2e2e;line-height:1.7;text-align:center;
+      display:flex;align-items:center;justify-content:center;
+    ">press the button.</div>
+    <div id="intrusive-count" style="font-size:0.75rem;color:#4a6060;text-align:center;margin-bottom:14px;">thoughts received: 0</div>
+    <div class="btn-center"><button class="btn" onclick="nextIntrusive()">Dismiss</button></div>
+    <p class="hint">it will come back.<br>a different one. then another.</p>
   </div>
 </div>
 
@@ -459,7 +480,7 @@ body.high-contrast footer { border-top-color: #000 !important; }
   <div class="tabs" role="tablist" aria-label="Stare At tabs">
     <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-screensaver" id="stare-tab-screensaver" onclick="showStareTab('screensaver',this)">🖥 Bad Screensaver</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="panel-fishtank" id="stare-tab-fishtank" onclick="showStareTab('fishtank',this)">🐟 Fish Tank</button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-fire" id="stare-tab-fire" onclick="showStareTab('fire',this)">🔥 Fake Fire</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-rain" id="stare-tab-rain" onclick="showStareTab('rain',this)">🌧 Rain Window</button>
   </div>
 
   <div class="panel active" id="panel-screensaver" role="tabpanel" aria-labelledby="stare-tab-screensaver">
@@ -473,9 +494,9 @@ body.high-contrast footer { border-top-color: #000 !important; }
     <p class="hint">six fish. one of them is upside down. it is fine.<br>they were like this before you arrived.</p>
   </div>
 
-  <div class="panel" id="panel-fire" role="tabpanel" aria-labelledby="stare-tab-fire">
-    <canvas id="fire-canvas" class="stare-canvas" style="background:#000;" aria-label="Animated pixel fire simulation"></canvas>
-    <p class="hint">technically a fire.<br>warm in the same way a photo of a fireplace is warm.</p>
+  <div class="panel" id="panel-rain" role="tabpanel" aria-labelledby="stare-tab-rain">
+    <canvas id="rain-canvas" class="stare-canvas" style="background:#1a1f2e; border-radius:12px;" aria-label="Animated rain on a window. Click or tap to add more rain."></canvas>
+    <p class="hint">it is raining. you are inside.<br>click to add more rain, as if there were not enough.</p>
   </div>
 </div>
 
@@ -646,6 +667,40 @@ const TB=[
   {q:"How many muscles coordinate to take a single step?",opts:["2","Around 200","12","50"],ans:1,fact:"Around 200 muscles. Your brain performs this calculation without asking you. You are welcome."},
   {q:"What is the speed of dark?",opts:["Faster than light","The same as light","There is no speed of dark","Zero"],ans:2,fact:"Darkness isn't a thing that moves — it's an absence. A shadow can appear to move faster than light across a surface, but no information is transmitted, so physics is fine with it."},
   {q:"Which country consumes the most chocolate per capita?",opts:["USA","Belgium","Germany","Switzerland"],ans:3,fact:"Switzerland, at roughly 10 kg per person per year. They have priorities and those priorities are correct."},
+  {q:"How long is a day on Venus?",opts:["12 hours","243 Earth days","30 Earth days","18 hours"],ans:1,fact:"A day on Venus is longer than its year. Venus also rotates backwards. It decided to be difficult from the start."},
+  {q:"What is the collective noun for a group of flamingos?",opts:["A blush","A flock","A pink","A parade"],ans:0,fact:"A flamboyance, technically. But 'a blush' is also accepted. Both are correct. This is rare in life."},
+  {q:"How many dimples does a regulation golf ball have?",opts:["108","336","500","212"],ans:1,fact:"336, typically. Each one exists to reduce drag. Someone spent their career on this. They were correct to do so."},
+  {q:"What is the shortest war in recorded history?",opts:["The Football War","The Anglo-Zanzibar War","The Pastry War","The Pig War"],ans:1,fact:"The Anglo-Zanzibar War lasted between 38 and 45 minutes in 1896. It is the shortest war on record. It had a winner."},
+  {q:"Which animal has rectangular pupils?",opts:["Cats","Horses","Goats","Owls"],ans:2,fact:"Goats have rectangular pupils that rotate to stay level with the ground when they tilt their heads. They are doing this right now."},
+  {q:"What percentage of your DNA do you share with a banana?",opts:["1%","25%","50%","60%"],ans:3,fact:"Approximately 60%. This fact is always met with discomfort. The banana does not know."},
+  {q:"How many teeth does an adult human have?",opts:["28","32","36","24"],ans:1,fact:"32, including wisdom teeth. Many people no longer have those. They are keeping them somewhere."},
+  {q:"Which planet rotates on its side?",opts:["Neptune","Saturn","Uranus","Mars"],ans:2,fact:"Uranus is tilted at 98 degrees, essentially rolling around the sun on its side. Scientists believe it was knocked over by something large. They have not found the something."},
+  {q:"What is the name of the fear of long words?",opts:["Verbophobia","Hippopotomonstrosesquippedaliophobia","Lexiphobia","Polysyllabophobia"],ans:1,fact:"Hippopotomonstrosesquippedaliophobia. The irony is deliberate. Whoever named it has not apologised."},
+  {q:"How many times does a hummingbird flap its wings per second?",opts:["10","30","50","80"],ans:2,fact:"Around 50 times per second. Their hearts beat over 1,200 times per minute when active. They are doing too much."},
+  {q:"What was the first toy advertised on television?",opts:["Barbie","Mr. Potato Head","Lego","Slinky"],ans:1,fact:"Mr. Potato Head, in 1952. You had to provide your own potato. This detail has since been removed."},
+  {q:"How long can a cockroach live without its head?",opts:["A few hours","One week","A few weeks","It can't"],ans:2,fact:"Several weeks. It dies of thirst eventually, not decapitation. The head also survives briefly on its own. Both parts have opinions about this."},
+  {q:"Which colour is a polar bear's skin?",opts:["White","Pink","Yellow","Black"],ans:3,fact:"Black. Their fur is translucent and appears white by reflecting light. They have been misleading people for centuries."},
+  {q:"How many bones does a shark have?",opts:["206","100","0","54"],ans:2,fact:"Zero. Sharks are made entirely of cartilage. They are soft on the inside. This information is never comforting."},
+  {q:"What is the most common street name in the United States?",opts:["Main Street","Oak Street","Second Street","Park Avenue"],ans:2,fact:"Second Street. First Street often gets renamed. No one has agreed on why this keeps happening."},
+  {q:"How long would it take to walk to the moon?",opts:["9 months","3 years","9 years","1 year"],ans:2,fact:"Roughly 9 years at a steady walking pace. No one has attempted this. The logistics are prohibitive."},
+  {q:"What is the loudest animal on Earth relative to body size?",opts:["Blue whale","Howler monkey","Sperm whale","Water boatman"],ans:3,fact:"The water boatman, a tiny aquatic insect, produces sound at 99 decibels relative to its size by rubbing its genitals against its abdomen. This was published in a scientific journal."},
+  {q:"Which country invented the Internet?",opts:["Japan","UK","USA","A committee"],ans:2,fact:"ARPANET, the precursor to the internet, was a US defence project. The World Wide Web was invented by a British man in Switzerland. Attribution is complicated."},
+  {q:"How much of the ocean has been explored?",opts:["50%","80%","20%","Less than 25%"],ans:3,fact:"Less than 25%. We have better maps of Mars than of our own ocean floor. The ocean is aware of this and has made peace with it."},
+  {q:"What is a group of crows called?",opts:["A murder","A flock","A conspiracy","A cawing"],ans:0,fact:"A murder. No one knows who decided this. They have not come forward."},
+  {q:"How long does it take for light from the sun to reach Earth?",opts:["30 seconds","8 minutes","1 hour","3 minutes"],ans:1,fact:"About 8 minutes and 20 seconds. The light you are experiencing right now left the sun before you made your most recent decision."},
+  {q:"What is the only letter not in any US state name?",opts:["X","Q","Z","B"],ans:1,fact:"Q. Every other letter appears in at least one state name. Q has never been selected. It has not been told."},
+  {q:"How many countries are there in the world?",opts:["192","193","195","197"],ans:2,fact:"195, by most counts — 193 UN members plus Vatican City and Kosovo. The number depends who you ask and what you consider a country. This is a larger problem than it appears."},
+  {q:"Which fruit is also a colour named after it?",opts:["Lemon","Orange","Strawberry","Lime"],ans:1,fact:"Orange. Before the fruit arrived in Europe, the colour was simply called 'yellow-red.' The fruit renamed the colour. This is unusual."},
+  {q:"What is the technical term for the smell after rain?",opts:["Geosmin","Petrichor","Ozone","Pluvius"],ans:1,fact:"Petrichor. It comes from oils released by plants and bacteria called geosmin. You have been smelling bacteria. You have always enjoyed it."},
+  {q:"How many hearts does an earthworm have?",opts:["1","2","5","10"],ans:2,fact:"Five pairs of aortic arches, which function like hearts. An earthworm has decided that one was not enough. It was correct."},
+  {q:"Which animal sleeps the most?",opts:["Sloth","Koala","Brown bat","Cat"],ans:2,fact:"The brown bat, sleeping up to 20 hours a day. The sloth is famously lazy but loses on actual hours. Both are content with this."},
+  {q:"What is the most stolen food in the world?",opts:["Meat","Cheese","Chocolate","Seafood"],ans:1,fact:"Cheese. Up to 4% of all cheese produced is stolen. Security has been increased. The cheese continues to be taken."},
+  {q:"How long can a snail sleep?",opts:["24 hours","3 years","6 months","1 week"],ans:1,fact:"Up to 3 years if conditions require it. A snail can simply stop until things improve. This is being studied as a life strategy."},
+  {q:"What percentage of your body is water?",opts:["40%","60%","80%","90%"],ans:1,fact:"Roughly 60%. Babies are about 75%. You have been slowly drying out your entire life. You are fine."},
+  {q:"Which animal cannot jump?",opts:["Tortoise","Elephant","Hippo","Sloth"],ans:1,fact:"Elephants are the only mammals that cannot jump. Their weight and bone structure prevent it. They have never seemed bothered by this."},
+  {q:"What is the national animal of Scotland?",opts:["Red deer","Golden eagle","Unicorn","Stag"],ans:2,fact:"The unicorn. It has been Scotland's national animal since the 12th century. It has not been located."},
+  {q:"How many languages are spoken in the world?",opts:["Around 2,000","Around 4,000","Around 7,000","Around 10,000"],ans:2,fact:"Around 7,000. About half are expected to disappear this century. Each one contains thoughts that cannot be translated into any other."},
+  {q:"What is the fingerprint equivalent for horses?",opts:["Hoofprint","Nose print","Ear shape","Eye pattern"],ans:1,fact:"Horses have unique nose prints, like human fingerprints. No horse has a duplicate. This database does not exist yet."},
 ];
 let tScore=0,tStreak=0,tCurrent=null,tAnswered=false,tPool=[],tUsed=[];
 function loadTrivia(){
@@ -915,7 +970,7 @@ function startStare(tab){
   stareActive=true;
   if(tab==='screensaver') startScreensaver();
   else if(tab==='fishtank') startFishtank();
-  else if(tab==='fire') startFire();
+  else if(tab==='rain') startRain();
 }
 
 function showStareTab(tab, btn){
@@ -1116,23 +1171,93 @@ function animFishtank(){
 }
 
 // ── FAKE FIRE ──
-let firePixels=null, fireW=0, fireH=0, fireFrameCount=0;
+// ── RAIN ──
+let rainDrops=[], rainStreaks=[], rainCanvas=null, rainCtx=null;
 
-function startFire(){
-  const c=document.getElementById('fire-canvas');
+function startRain(){
+  const c=document.getElementById('rain-canvas');
   c.width=c.offsetWidth||540; c.height=260;
-  fireW=Math.floor(c.width/3);
-  fireH=Math.floor(c.height/3);
-  firePixels=new Uint8Array(fireW*fireH);
-  animFire();
+  rainCanvas=c; rainCtx=c.getContext('2d');
+  rainDrops=[]; rainStreaks=[];
+  // seed initial drops
+  for(let i=0;i<40;i++) spawnDrop(true);
+  c.onclick=()=>{ for(let i=0;i<8;i++) spawnDrop(false); };
+  animRain();
 }
 
+function spawnDrop(randomY){
+  const x=Math.random()*rainCanvas.width;
+  const y=randomY ? Math.random()*rainCanvas.height : -10;
+  const speed=0.6+Math.random()*1.0;
+  const len=8+Math.random()*18;
+  const alpha=0.25+Math.random()*0.45;
+  rainDrops.push({x,y,speed,len,alpha,trail:[]});
+}
+
+function animRain(){
+  if(!stareActive)return;
+  const c=rainCanvas, ctx=rainCtx;
+  if(!c)return;
+
+  // draw background with slight fade for trail effect
+  ctx.fillStyle='rgba(26,31,46,0.45)';
+  ctx.fillRect(0,0,c.width,c.height);
+
+  // faint window pane lines
+  ctx.strokeStyle='rgba(255,255,255,0.03)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(c.width/2,0); ctx.lineTo(c.width/2,c.height); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,c.height/2); ctx.lineTo(c.width,c.height/2); ctx.stroke();
+
+  // update and draw drops
+  rainDrops.forEach((d,i)=>{
+    d.y+=d.speed;
+    d.trail.push({x:d.x,y:d.y});
+    if(d.trail.length>6) d.trail.shift();
+
+    // draw streak
+    ctx.beginPath();
+    ctx.moveTo(d.x, d.y - d.len);
+    ctx.lineTo(d.x, d.y);
+    ctx.strokeStyle=`rgba(174,210,230,${d.alpha})`;
+    ctx.lineWidth=1.2;
+    ctx.stroke();
+
+    // hit bottom — turn into a rivulet streak
+    if(d.y > c.height){
+      rainStreaks.push({x:d.x, y:c.height-4, w:0, alpha:d.alpha*0.7, life:1});
+      rainDrops.splice(i,1);
+      spawnDrop(false);
+    }
+  });
+
+  // draw rivulets at bottom
+  rainStreaks.forEach((s,i)=>{
+    s.w+=0.4; s.life-=0.008;
+    ctx.beginPath();
+    ctx.ellipse(s.x, s.y, s.w, s.w*0.3, 0, 0, Math.PI*2);
+    ctx.strokeStyle=`rgba(174,210,230,${s.alpha * s.life})`;
+    ctx.lineWidth=0.8;
+    ctx.stroke();
+    if(s.life<=0) rainStreaks.splice(i,1);
+  });
+
+  // occasional slow sliding streak down the glass
+  if(Math.random()<0.008){
+    rainStreaks.push({x:Math.random()*c.width, y:Math.random()*c.height*0.5, w:0, alpha:0.3, life:1, slide:true});
+  }
+
+  stareRaf=requestAnimationFrame(animRain);
+}
+
+// ── (old fire placeholder so resize handler doesn't break) ──
+let fireFrameCount=0;
+function startFire(){}
 function animFire(){
   if(!stareActive)return;
   const c=document.getElementById('fire-canvas');
   if(!c)return;
   const ctx=c.getContext('2d');
-
   fireFrameCount++;
   if(fireFrameCount%2!==0){stareRaf=requestAnimationFrame(animFire);return;}
 
@@ -1188,6 +1313,253 @@ function animFire(){
   stareRaf=requestAnimationFrame(animFire);
 }
 
+// ── DRAWER SORT ──
+const DRAWER_ITEMS = [
+  {e:'🔑', label:'a key\n(unknown)'},
+  {e:'🪤', label:'rubber band\n(snapped)'},
+  {e:'🪙', label:'foreign coin'},
+  {e:'🔩', label:'a screw'},
+  {e:'📎', label:'one paperclip'},
+  {e:'🧵', label:'a button'},
+  {e:'🕯', label:'half a birthday\ncandle'},
+  {e:'🪫', label:'dead battery'},
+  {e:'🩹', label:'single bandage\n(unwrapped)'},
+  {e:'🗝', label:'another key\n(different)'},
+  {e:'🖊', label:'pen\n(probably dry)'},
+  {e:'🧻', label:'a receipt\n(from 2019)'}
+];
+
+// [emojiRem, fontRem, padH, padV] — varies height, width, emoji scale
+const DRAWER_SIZES = [
+  [2.2, 0.72, 12, 10],
+  [3.4, 0.78, 14, 14],
+  [1.4, 0.65, 8,  6 ],
+  [4.0, 0.80, 10, 16],
+  [2.0, 0.70, 26, 8 ],
+  [4.8, 0.74, 12, 18],
+  [1.6, 0.64, 20, 5 ],
+];
+
+let drawerMoveCount=0, drawerDragging=null, drawerOffX=0, drawerOffY=0;
+
+function resetDrawer(){
+  const area=document.getElementById('drawer-area');
+  if(!area) return;
+  area.innerHTML='';
+  drawerMoveCount=0;
+  updateDrawerCount();
+  const aw=area.offsetWidth||300, ah=area.offsetHeight||300;
+  DRAWER_ITEMS.forEach(item=>{
+    const [emojiRem, fontRem, padH, padV] = DRAWER_SIZES[Math.floor(Math.random()*DRAWER_SIZES.length)];
+    const el=document.createElement('div');
+
+    const emojiEl=document.createElement('div');
+    emojiEl.textContent=item.e;
+    emojiEl.style.cssText=`font-size:${emojiRem}rem;line-height:1;text-align:center;`;
+
+    const labelEl=document.createElement('div');
+    labelEl.textContent=item.label.replace(/\\n/g,'\n');
+    labelEl.style.cssText=`font-size:${fontRem}rem;text-align:center;white-space:pre-line;line-height:1.3;margin-top:4px;`;
+
+    el.appendChild(emojiEl);
+    el.appendChild(labelEl);
+    el.setAttribute('draggable','false');
+    el.setAttribute('role','listitem');
+    el.setAttribute('aria-label','Draggable item: '+item.e+' '+item.label.replace(/\n/g,' '));
+    el.style.cssText=`
+      position:absolute;
+      left:${10+Math.random()*(aw-140)}px;
+      top:${10+Math.random()*(ah-90)}px;
+      background:#e8eedc;border:1px solid #a8b898;
+      border-radius:8px;padding:${padV}px ${padH}px;
+      color:#1a2e1a;
+      cursor:grab;
+      box-shadow:1px 2px 4px rgba(0,0,0,0.18);
+      transition:box-shadow 0.1s;
+      user-select:none;
+      display:flex;flex-direction:column;align-items:center;
+    `;
+    el.addEventListener('mousedown', drawerStartDrag);
+    el.addEventListener('touchstart', drawerTouchStart, {passive:true});
+    area.appendChild(el);
+  });
+}
+
+function drawerStartDrag(e){
+  drawerDragging=e.currentTarget;
+  drawerDragging.style.cursor='grabbing';
+  drawerDragging.style.boxShadow='3px 3px 10px rgba(0,0,0,0.3)';
+  drawerDragging.style.zIndex=999;
+  const rect=drawerDragging.getBoundingClientRect();
+  drawerOffX=e.clientX-rect.left;
+  drawerOffY=e.clientY-rect.top;
+  e.preventDefault();
+}
+
+function drawerTouchStart(e){
+  const t=e.touches[0];
+  drawerDragging=e.currentTarget;
+  drawerDragging.style.cursor='grabbing';
+  drawerDragging.style.boxShadow='3px 3px 10px rgba(0,0,0,0.3)';
+  drawerDragging.style.zIndex=999;
+  const rect=drawerDragging.getBoundingClientRect();
+  drawerOffX=t.clientX-rect.left;
+  drawerOffY=t.clientY-rect.top;
+}
+
+document.addEventListener('mousemove',e=>{
+  if(!drawerDragging)return;
+  const area=document.getElementById('drawer-area');
+  if(!area)return;
+  const ar=area.getBoundingClientRect();
+  const x=e.clientX-ar.left-drawerOffX;
+  const y=e.clientY-ar.top-drawerOffY;
+  drawerDragging.style.left=Math.max(0,Math.min(ar.width-drawerDragging.offsetWidth,x))+'px';
+  drawerDragging.style.top=Math.max(0,Math.min(ar.height-drawerDragging.offsetHeight,y))+'px';
+});
+
+document.addEventListener('touchmove',e=>{
+  if(!drawerDragging)return;
+  const area=document.getElementById('drawer-area');
+  if(!area)return;
+  const t=e.touches[0];
+  const ar=area.getBoundingClientRect();
+  const x=t.clientX-ar.left-drawerOffX;
+  const y=t.clientY-ar.top-drawerOffY;
+  drawerDragging.style.left=Math.max(0,Math.min(ar.width-drawerDragging.offsetWidth,x))+'px';
+  drawerDragging.style.top=Math.max(0,Math.min(ar.height-drawerDragging.offsetHeight,y))+'px';
+  e.preventDefault();
+},{passive:false});
+
+document.addEventListener('mouseup',()=>{
+  if(!drawerDragging)return;
+  drawerDragging.style.cursor='grab';
+  drawerDragging.style.boxShadow='1px 1px 3px rgba(0,0,0,0.15)';
+  drawerDragging.style.zIndex='';
+  drawerDragging=null;
+  drawerMoveCount++;
+  updateDrawerCount();
+});
+
+document.addEventListener('touchend',()=>{
+  if(!drawerDragging)return;
+  drawerDragging.style.cursor='grab';
+  drawerDragging.style.boxShadow='1px 1px 3px rgba(0,0,0,0.15)';
+  drawerDragging.style.zIndex='';
+  drawerDragging=null;
+  drawerMoveCount++;
+  updateDrawerCount();
+});
+
+function updateDrawerCount(){
+  const el=document.getElementById('drawer-count');
+  if(el) el.textContent='items arranged: '+drawerMoveCount;
+}
+
+// initialise when tab is first shown
+const _origShowTab=showTab;
+showTab=function(tab,sec,btn){
+  _origShowTab(tab,sec,btn);
+  if(tab==='drawer'){
+    const area=document.getElementById('drawer-area');
+    if(area && area.children.length===0) resetDrawer();
+  }
+};
+
+// ── INTRUSIVE THOUGHTS ──
+const INTRUSIVE = [
+  "what if you just said 'wet' in the middle of a meeting and then continued normally.",
+  "you have never verified that your knees bend the correct way.",
+  "what if birds are just keeping score.",
+  "the last time you were in a lift with a stranger, they are still thinking about you.",
+  "at some point you learned to tie your shoes and then you never thought about it again. what else have you done this to.",
+  "your skeleton has never seen anything.",
+  "what if you pronounced something wrong for thirty years and no one said anything because they also started pronouncing it wrong.",
+  "every chair you have ever sat in has been sat in by other people. this is technically fine.",
+  "you could just start going by a different name. not legally. just, socially. see how long it takes.",
+  "there is a version of every conversation you had today where you said something completely different and everything is now different.",
+  "what if your internal monologue has an accent you can't hear.",
+  "the moon does not know you exist. you also do not know the moon exists. you are assuming.",
+  "at some point today you forgot to think about your tongue and now you are thinking about it.",
+  "what if the word for a thing and the thing are not as related as everyone is pretending.",
+  "you could just walk into a different building and sit down and no one would say anything for a really long time.",
+  "every version of you that made a different decision is fine. probably. you don't know. you can't check.",
+  "what if your teeth are just very small.",
+  "you have never made eye contact with something that genuinely understood what eye contact is.",
+  "there is a fridge magnet you owned as a child that is now in a landfill. it is fine. why are you thinking about this.",
+  "what if stairs are just a suggestion.",
+  "you could just stop using one word. permanently. just retire it. no one would notice for months.",
+  "somewhere there is a photo of you that you have never seen and never will.",
+  "what if you have been exhaling slightly wrong this whole time.",
+  "every dog you have ever met has forgotten you. this is their nature. it is still a little upsetting.",
+  "the number of times you have said the word 'basically' is unknowable and this is correct.",
+  "what if clocks are just very confident.",
+  "you own things that will outlive you. the things do not care.",
+  "what if you have a tell and everyone can see it and no one has said anything because it is too late.",
+  "at some point someone described you to someone else and you will never know what they said.",
+  "your reflection is always slightly out of date.",
+  "what if you have been mispronouncing your own name slightly and so has everyone you know.",
+  "there is an email you sent in 2014 that was misunderstood. the person has not thought about it since. you're still holding it.",
+  "what if hats know something.",
+  "you have a favourite spoon but you have never admitted this to anyone.",
+  "every alarm you have ever set was set by a slightly different version of you who is now gone.",
+  "what if you have been holding your breath wrong.",
+  "somewhere a pigeon made a decision that directly affected your day and you will never know which one.",
+  "you are digesting something right now and you did not ask to be aware of this.",
+  "what if furniture has opinions but they are incredibly boring.",
+  "you have blinked thousands of times today. you were not present for any of them.",
+  "what if the word 'the' is doing too much and everyone just agreed not to mention it.",
+  "there is a version of your handwriting from age seven that no longer exists anywhere. it was yours.",
+  "you have never actually checked whether you are pronouncing your own thoughts correctly.",
+  "what if elevators are just rooms that pretend to move.",
+  "you have a go-to fake laugh and everyone you know has heard it. they have not said anything.",
+  "somewhere there is a object you touched exactly once and never thought about again. it remembers nothing either. this should be more comforting than it is.",
+  "what if some of your opinions are actually just the temperature of a room you were in once.",
+  "every time you have described yourself to someone it was slightly different and you believed all of them.",
+  "you cannot actually hear silence. you have never heard silence. you are always hearing something.",
+  "what if your sense of direction is just confidence with no basis.",
+  "there is a word you used incorrectly for years and the correction has not reached everyone yet.",
+  "you have made a face in the dark that no one has ever seen and that is probably fine.",
+  "what if the last thing you lost is in a completely obvious place and it always was.",
+  "every building you have ever walked past has been walked past by people who are now dead. this is just streets.",
+  "you have a neutral face and you do not know what it looks like.",
+  "what if water tastes like something and you just can't taste it.",
+  "at some point you decided how you load a dishwasher and you have not questioned it since.",
+  "you have been in rooms where something important was decided and you were just passing through.",
+  "what if your memory of a song and the actual song diverged years ago and no one corrected it because you never sang it out loud.",
+  "somewhere there is a voicemail you left that was kept. you do not know which one.",
+  "you have walked the same route enough times that some version of your footsteps is in the ground by now. this is not how physics works. you keep thinking it anyway.",
+  "what if birds can tell.",
+  "you have forgotten the names of people who remember yours.",
+  "every time you have estimated how long something will take you have been wrong in the same direction.",
+  "what if your posture has an opinion about you.",
+  "there is a smell that would take you somewhere specific and you will not know which smell until it happens.",
+  "you have put something down somewhere safe and that information is just gone.",
+  "what if the version of you that fell asleep last night and the version that woke up this morning are just agreeing to continue.",
+  "you have nodded along to something you did not hear and then that thing happened and you had agreed to it.",
+  "what if some of your muscles have never been used and they are just waiting.",
+  "there is a text you read and did not reply to and that person thinks about it sometimes.",
+  "you do not know what your voice sounds like to other people and the recording never sounds right and this is just something you live with.",
+  "what if the number of times you have said sorry today is either too many or not enough and you will never know which.",
+  "you have stood in a room and forgotten why and then remembered and that memory is now also gone.",
+  "what if your resting expression is sending a message you did not write.",
+  "somewhere there is a photo that would change how you think about yourself. you will probably never see it.",
+  "you have been described as 'fine' by someone who meant something more specific.",
+  "what if some of the decisions you made today were made by yesterday's tiredness and not you.",
+  "you will mispronounce something in front of someone today or you already have."
+];
+
+let intrusiveCount=0, intrusiveLast=-1;
+
+function nextIntrusive(){
+  let idx;
+  do { idx=Math.floor(Math.random()*INTRUSIVE.length); } while(idx===intrusiveLast && INTRUSIVE.length>1);
+  intrusiveLast=idx;
+  intrusiveCount++;
+  document.getElementById('intrusive-box').textContent=INTRUSIVE[idx];
+  document.getElementById('intrusive-count').textContent='thoughts received: '+intrusiveCount;
+}
+
 // ── ACCESSIBILITY ──
 let fontScale = 1;
 
@@ -1215,7 +1587,7 @@ function applyContrast(on) {
       stopStare(); stareActive=true;
       if(tab==='screensaver') startScreensaver();
       else if(tab==='fishtank') startFishtank();
-      else if(tab==='fire') startFire();
+      else if(tab==='rain') startRain();
     }
   }
   // Re-draw wheel if visible
