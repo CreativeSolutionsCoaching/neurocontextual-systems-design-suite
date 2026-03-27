@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="po1ntlessly sh1tty — a collection of purposeless games, trivia, and things to stare at. No objectives. No rewards. No reason to stop.">
+<title>po1ntlessly sh1tty</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #e8eeee; color: #1e2e2e;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex; flex-direction: column; align-items: center; padding: 24px 16px;
+}
+
+/* ── HUB ── */
+#hub { width: 100%; max-width: 600px; }
+#hub h1 { font-size: 1.8rem; color: #9a6800; text-align: center; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
+#hub .sub { font-size: 0.8rem; color: #3a5050; text-align: center; margin-bottom: 36px; }
+.hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.hub-card {
+  background: #d8e2e2; border: 1px solid #b8caca;
+  border-radius: 16px; padding: 28px 20px;
+  cursor: pointer; text-align: center;
+  transition: all 0.2s; user-select: none;
+}
+.hub-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.hub-card:active { transform: translateY(0); }
+.hub-card .icon { font-size: 2.4rem; margin-bottom: 10px; }
+.hub-card .label { font-size: 1rem; font-weight: 600; color: #2a3a3a; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.hub-card .desc { font-size: 0.75rem; color: #3a5050; line-height: 1.5; }
+.hub-card.games  { --accent: #9a6800; }
+.hub-card.brain  { --accent: #8a3a5a; }
+.hub-card.dopa   { --accent: #8a3a18; }
+.hub-card.stare  { --accent: #2a7845; }
+.hub-card.games:hover  .label { color: #9a6800; }
+.hub-card.brain:hover  .label { color: #8a3a5a; }
+.hub-card.dopa:hover   .label { color: #8a3a18; }
+.hub-card.stare:hover  .label { color: #2a7845; }
+#hub .footer { font-size: 0.72rem; color: #5a7070; text-align: center; margin-top: 28px; }
+
+/* ── SECTION WRAPPER ── */
+.section { display: none; width: 100%; max-width: 600px; }
+.section.active { display: block; }
+
+/* back button */
+.back-btn {
+  display: block; width: 100%; padding: 16px;
+  background: #cdd8d8; border: 2px solid #b8caca;
+  color: #5a7070; border-radius: 12px; cursor: pointer;
+  font-size: 1rem; text-align: center;
+  transition: all 0.2s; margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+.back-btn:hover { background: #c8d4d4; border-color: #4a6060; color: #2a3a3a; }
+.back-btn span { opacity: 0.5; font-size: 0.75rem; display: block; margin-top: 3px; }
+
+/* section header */
+.sec-header { text-align: center; margin-bottom: 20px; }
+.sec-header h2 { font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; }
+.sec-header p { font-size: 0.75rem; color: #3a5050; margin-top: 4px; }
+
+/* tabs inside sections */
+.tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+.tab { background: #cdd8d8; border: 1px solid #b8caca; color: #3a5050; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+.tab:hover { color: #2a3a3a; border-color: #4a6060; }
+.tab.active { background: #9a680022; border-color: #9a6800; color: #9a6800; }
+.panel { display: none; background: #d8e2e2; border: 1px solid #b8caca; border-radius: 16px; padding: 28px; }
+.panel.active { display: block; }
+
+/* ── GAME 1: DOT CLICKER ── */
+#dot-arena { width: 100%; height: 260px; background: #d0dcdc; border-radius: 12px; position: relative; overflow: hidden; cursor: crosshair; margin-bottom: 16px; border: 1px solid #b8caca; }
+.dot { border-radius: 50%; position: absolute; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; user-select: none; font-weight: bold; }
+.dot:hover { transform: scale(1.15); }
+#score-display { font-size: 1.4rem; color: #9a6800; text-align: center; margin-bottom: 8px; }
+#miss-bar { width: 100%; height: 8px; background: #e8eeee; border-radius: 4px; margin-bottom: 16px; overflow: hidden; }
+#miss-fill { height: 100%; background: #e05555; border-radius: 4px; transition: width 0.3s; width: 0%; }
+
+/* ── GAME 2: STOP THE BAR ── */
+#bar-wrap { width: 100%; background: #d0dcdc; border-radius: 12px; padding: 24px 16px; margin-bottom: 16px; border: 1px solid #b8caca; cursor: pointer; }
+#bar-track { position: relative; height: 20px; background: #cdd8d8; border-radius: 10px; overflow: hidden; }
+#bar-target { position: absolute; top: 0; height: 100%; background: #9a680033; border-left: 2px solid #9a680066; border-right: 2px solid #9a680066; transition: left 0.3s, width 0.3s; }
+#bar-slider { position: absolute; top: 0; width: 12px; height: 100%; background: #9a6800; border-radius: 6px; box-shadow: none; }
+#bar-score { font-size: 1.4rem; color: #9a6800; text-align: center; margin-bottom: 4px; }
+#bar-lives { font-size: 0.9rem; color: #e05555; text-align: center; margin-bottom: 6px; min-height: 22px; }
+#bar-level { font-size: 0.75rem; color: #4a6060; text-align: center; margin-bottom: 10px; }
+#bar-feedback { font-size: 1.1rem; text-align: center; min-height: 28px; margin-bottom: 12px; font-weight: bold; }
+
+/* ── TRIVIA ── */
+.trivia-q { font-size: 1rem; line-height: 1.5; margin-bottom: 20px; color: #2a3a3a; min-height: 48px; }
+.trivia-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.trivia-opt { background: #cdd8d8; border: 1px solid #b8caca; color: #2a3a3a; padding: 12px 16px; border-radius: 10px; cursor: pointer; text-align: left; font-size: 0.9rem; transition: all 0.2s; }
+.trivia-opt:hover:not(:disabled) { border-color: #d48fa8; color: #1e2e2e; }
+.trivia-opt.correct { background: #1a3a1a; border-color: #4caf50; color: #90ee90; }
+.trivia-opt.wrong { background: #3a1a1a; border-color: #e05555; color: #ff9090; }
+.trivia-opt:disabled { cursor: default; }
+#trivia-feedback { font-size: 0.85rem; min-height: 24px; color: #5a7070; margin-bottom: 16px; line-height: 1.5; }
+#trivia-score { font-size: 0.85rem; color: #4a6060; margin-bottom: 6px; }
+#trivia-progress { font-size: 0.75rem; color: #4a6060; margin-bottom: 14px; }
+
+/* ── ADVENTURE ── */
+#adv-text { font-size: 0.95rem; line-height: 1.7; color: #2a3a3a; margin-bottom: 22px; min-height: 80px; }
+#adv-choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+#adv-meta { font-size: 0.75rem; color: #4a6060; margin-bottom: 14px; min-height: 16px; }
+
+/* ── SCRATCH ── */
+#scratch-wrap { position: relative; width: 100%; max-width: 340px; margin: 0 auto 20px; border-radius: 12px; overflow: hidden; }
+#scratch-prize { width: 100%; height: 140px; background: #d8e2e2; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+#scratch-prize-text { font-size: 1.05rem; color: #9a6800; text-align: center; padding: 0 16px; line-height: 1.5; }
+#scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; border-radius: 12px; touch-action: none; }
+#scratch-reveal { font-size: 0.8rem; color: #4a6060; text-align: center; margin-bottom: 14px; }
+#scratch-count { font-size: 0.75rem; color: #4a6060; text-align: center; margin-bottom: 12px; }
+
+/* ── WHEEL ── */
+#wheel-canvas { display: block; margin: 0 auto 12px; cursor: pointer; max-width: 100%; }
+#wheel-result { font-size: 0.95rem; color: #9a6800; text-align: center; min-height: 44px; margin-bottom: 10px; line-height: 1.5; }
+#wheel-count { font-size: 0.75rem; color: #4a6060; text-align: center; margin-bottom: 12px; }
+
+/* ── SHITART ── */
+#shitart-canvas { width: 100%; height: 240px; border-radius: 12px; margin-bottom: 10px; display: block; }
+#shitart-title { font-size: 0.9rem; color: #5a7070; letter-spacing: 1px; text-align: center; margin-bottom: 4px; min-height: 22px; }
+#shitart-review { font-size: 0.78rem; color: #4a6060; text-align: center; margin-bottom: 14px; min-height: 20px; font-style: italic; }
+#shitart-count { font-size: 0.72rem; color: #4a6060; text-align: center; margin-bottom: 12px; }
+
+/* ── STARE AT ── */
+.stare-canvas { width: 100%; height: 260px; border-radius: 12px; display: block; }
+#ss-caption { font-size: 0.78rem; color: #4a6060; text-align: center; margin-top: 8px; min-height: 20px; }
+
+/* shared */
+.btn { background: #9a680022; border: 1px solid #9a6800; color: #9a6800; padding: 10px 22px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; display: inline-block; }
+.btn:hover { background: #9a680044; }
+.btn-center { text-align: center; }
+.hint { font-size: 0.76rem; color: #383838; text-align: center; margin-top: 12px; line-height: 1.5; }
+
+/* ── ACCESSIBILITY ── */
+:root {
+  --font-scale: 1;
+  --bg-primary: #e8eeee;
+  --bg-card: #d8e2e2;
+  --bg-element: #cdd8d8;
+  --text-primary: #1e2e2e;
+  --text-muted: #4a6060;
+  --border-color: #b8caca;
+}
+body { font-size: calc(1rem * var(--font-scale)); }
+
+/* Focus indicators */
+:focus-visible {
+  outline: 3px solid #9a6800;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduce motion */
+body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* High contrast */
+body.high-contrast {
+  --bg-primary: #ffffff;
+  --bg-card: #f0f0f0;
+  --bg-element: #e0e0e0;
+  --text-primary: #000000;
+  --text-muted: #333333;
+  --border-color: #000000;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+body.high-contrast .hub-card,
+body.high-contrast .panel,
+body.high-contrast .back-btn,
+body.high-contrast .tab,
+body.high-contrast .trivia-opt,
+body.high-contrast .btn {
+  background: #f0f0f0 !important;
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+body.high-contrast .tab.active,
+body.high-contrast .hub-card:hover .label { color: #000000 !important; }
+
+/* Dark mode */
+body.dark-mode {
+  background: #1a1a1a !important;
+  color: #e0e0e0 !important;
+}
+body.dark-mode .hub-card,
+body.dark-mode .panel,
+body.dark-mode .back-btn { background: #242424 !important; border-color: #3a3a3a !important; }
+body.dark-mode .tab { background: #242424 !important; border-color: #3a3a3a !important; color: #888 !important; }
+body.dark-mode .tab.active { background: #9a680022 !important; border-color: #9a6800 !important; color: #e8a830 !important; }
+body.dark-mode .hub-card .label { color: #ccc !important; }
+body.dark-mode .hub-card .desc,
+body.dark-mode .sec-header p,
+body.dark-mode .back-btn { color: #888 !important; }
+body.dark-mode .trivia-opt { background: #242424 !important; border-color: #3a3a3a !important; color: #ccc !important; }
+body.dark-mode .btn { color: #e8a830 !important; border-color: #9a6800 !important; }
+body.dark-mode #adv-text, body.dark-mode .trivia-q { color: #ddd !important; }
+
+/* A11y panel dark mode */
+body.dark-mode #a11y-panel {
+  background: #242424 !important;
+  border-color: #3a3a3a !important;
+  color: #e0e0e0 !important;
+}
+body.dark-mode #a11y-panel h3 { color: #aaa !important; }
+body.dark-mode .a11y-row label { color: #e0e0e0 !important; }
+body.dark-mode .font-btn { background: #333 !important; border-color: #555 !important; color: #e0e0e0 !important; }
+body.dark-mode #font-size-label { color: #aaa !important; }
+
+/* Wheel keyboard focus */
+#wheel-btn { background: none; border: none; padding: 0; cursor: pointer; display: block; margin: 0 auto 12px; }
+#wheel-btn:focus-visible { outline: 3px solid #9a6800; outline-offset: 4px; border-radius: 8px; }
+
+/* Bar wrap keyboard */
+#bar-wrap { width: 100%; background: #d0dcdc; border-radius: 12px; padding: 24px 16px; margin-bottom: 16px; border: 1px solid #b8caca; cursor: pointer; }
+#bar-wrap:focus-visible { outline: 3px solid #9a6800; outline-offset: 2px; }
+
+/* Hub card button reset */
+.hub-card-btn {
+  background: #d8e2e2; border: 1px solid #b8caca;
+  border-radius: 16px; padding: 28px 20px;
+  cursor: pointer; text-align: center;
+  transition: all 0.2s; user-select: none;
+  width: 100%; font-family: inherit;
+}
+.hub-card-btn:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.hub-card-btn:active { transform: translateY(0); }
+.hub-card-btn .icon { font-size: 2.4rem; margin-bottom: 10px; }
+.hub-card-btn .label { font-size: 1rem; font-weight: 600; color: #2a3a3a; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.hub-card-btn .desc { font-size: 0.75rem; color: #3a5050; line-height: 1.5; }
+.hub-card-btn.games  { --accent: #9a6800; }
+.hub-card-btn.brain  { --accent: #8a3a5a; }
+.hub-card-btn.dopa   { --accent: #8a3a18; }
+.hub-card-btn.stare  { --accent: #2a7845; }
+.hub-card-btn.games:hover  .label { color: #9a6800; }
+.hub-card-btn.brain:hover  .label { color: #8a3a5a; }
+.hub-card-btn.dopa:hover   .label { color: #8a3a18; }
+.hub-card-btn.stare:hover  .label { color: #2a7845; }
+body.dark-mode .hub-card-btn { background: #242424 !important; border-color: #3a3a3a !important; }
+body.dark-mode .hub-card-btn .label { color: #ccc !important; }
+body.dark-mode .hub-card-btn .desc { color: #888 !important; }
+body.high-contrast .hub-card-btn { background: #f0f0f0 !important; border-color: #000 !important; color: #000 !important; }
+body.high-contrast .hub-card-btn:hover .label { color: #000 !important; }
+
+/* Site footer */
+body footer { color: #5a7070; }
+body.dark-mode footer { border-top-color: #3a3a3a !important; }
+body.dark-mode footer p, body.dark-mode footer a { color: #666 !important; }
+body.high-contrast footer p, body.high-contrast footer a { color: #333 !important; }
+body.high-contrast footer { border-top-color: #000 !important; }
+
+/* Scratch reveal button */
+#scratch-kb-btn { margin: 0 auto 8px; display: block; }
+
+#a11y-btn {
+  position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #9a6800; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: transform 0.15s;
+}
+#a11y-btn:hover { transform: scale(1.1); }
+#a11y-btn:focus-visible { outline: 3px solid #1e2e2e; outline-offset: 2px; }
+
+/* A11y panel */
+#a11y-panel {
+  position: fixed; bottom: 78px; right: 20px; z-index: 999;
+  background: #f0f5f5; border: 1.5px solid #b8caca; border-radius: 14px;
+  padding: 20px; width: 260px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  display: none;
+}
+#a11y-panel.open { display: block; }
+#a11y-panel h3 { font-size: 0.8rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #4a6060; margin-bottom: 16px; }
+.a11y-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.a11y-row label { font-size: 0.85rem; color: #1e2e2e; font-weight: 500; }
+.a11y-row:last-child { margin-bottom: 0; }
+
+/* Toggle switch */
+.toggle { position: relative; width: 42px; height: 24px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0; background: #b8caca;
+  border-radius: 24px; cursor: pointer; transition: background 0.2s;
+}
+.toggle-slider::before {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; left: 3px; top: 3px;
+  background: white; border-radius: 50%; transition: transform 0.2s;
+}
+.toggle input:checked + .toggle-slider { background: #9a6800; }
+.toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+.toggle input:focus-visible + .toggle-slider { outline: 3px solid #9a6800; outline-offset: 2px; border-radius: 24px; }
+
+/* Font size control */
+.font-ctrl { display: flex; align-items: center; gap: 8px; }
+.font-btn {
+  width: 28px; height: 28px; border-radius: 6px;
+  border: 1px solid #b8caca; background: #e8eeee;
+  cursor: pointer; font-size: 1rem; font-weight: 600; color: #1e2e2e;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.font-btn:hover { background: #d8e2e2; }
+.font-btn:focus-visible { outline: 3px solid #9a6800; outline-offset: 2px; }
+#font-size-label { font-size: 0.8rem; color: #4a6060; min-width: 28px; text-align: center; }
+
+</style>
+</head>
+<body>
+<noscript><div style="padding:40px;text-align:center;font-family:sans-serif;color:#333"><h1>po1ntlessly sh1tty</h1><p style="margin-top:12px">JavaScript is required to run this. Enable it to proceed with achieving nothing.</p></div></noscript>
+<div aria-live="polite" aria-atomic="true" id="a11y-announce" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;"></div>
+
+<!-- ════════════════ HUB ════════════════ -->
+<main id="main-content">
+<div id="hub">
+  <p style="font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:#7aabab;text-align:center;margin-bottom:10px;font-weight:600;">NSDS</p>
+  <h1>⚙ po1ntlessly sh1tty</h1>
+  <p class="sub">no objectives · no rewards · no reason to stop</p>
+  <div class="hub-grid">
+    <button class="hub-card-btn games" onclick="goSection('games')" aria-label="Games section">
+      <div class="icon">🎮</div>
+      <div class="label">Games</div>
+      <div class="desc">You can lose these.<br>It still means nothing.</div>
+    </button>
+    <button class="hub-card-btn brain" onclick="goSection('brain')" aria-label="Brain Rot section">
+      <div class="icon">🧠</div>
+      <div class="label">Brain Rot</div>
+      <div class="desc">Trivia and a story.<br>Neither goes anywhere good.</div>
+    </button>
+    <button class="hub-card-btn dopa" onclick="goSection('dopa')" aria-label="Dopamine section">
+      <div class="icon">⚡</div>
+      <div class="label">Dopamine</div>
+      <div class="desc">Scratch cards, wheels,<br>and a fine art generator.</div>
+    </button>
+    <button class="hub-card-btn stare" onclick="goSection('stare')" aria-label="Stare At section">
+      <div class="icon">🌀</div>
+      <div class="label">Stare At</div>
+      <div class="desc">Three things to look at.<br>None of them are impressive.</div>
+    </button>
+  </div>
+  <p class="footer">you are going in a loop. this is the loop.</p>
+</div>
+
+<!-- ════════════════ GAMES SECTION ════════════════ -->
+<div class="section" id="section-games">
+  <button class="back-btn" onclick="goHub()" aria-label="Back to hub">← Back to Hub<span>you are going in a loop. this is the loop.</span></button>
+  <div class="sec-header"><h2 style="color:#9a6800;">🎮 Games</h2><p>winnable in points. unwinnable in spirit.</p></div>
+  <div class="tabs" role="tablist" aria-label="Games tabs">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-game" id="tab-game" onclick="showTab('game','games',this)">🎯 Dot Clicker</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-game2" id="tab-game2" onclick="showTab('game2','games',this)">📊 Stop the Bar</button>
+  </div>
+
+  <div class="panel active" id="panel-game" role="tabpanel" aria-labelledby="tab-game">
+    <div id="score-display" aria-live="polite" aria-atomic="true">Score: 0</div>
+    <div id="miss-bar" role="progressbar" aria-label="Misses" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5"><div id="miss-fill"></div></div>
+    <div id="dot-arena" onclick="handleMiss(event)" aria-label="Dot clicker arena" aria-live="off"></div>
+    <p class="hint">Click the dots. Don't miss. That's it. That's the game.<br>5 misses and it's over. The number you get means nothing.</p>
+    <div class="btn-center" style="margin-top:14px;"><button class="btn" id="game-btn" onclick="startGame()">Start Game</button></div>
+  </div>
+
+  <div class="panel" id="panel-game2" role="tabpanel" aria-labelledby="tab-game2">
+    <div id="bar-score" aria-live="polite" aria-atomic="true">Score: 0</div>
+    <div id="bar-lives" aria-live="polite"></div>
+    <div id="bar-level">Level 1 — target: wide</div>
+    <div id="bar-wrap" onclick="stopBar()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();stopBar();}" tabindex="0" role="button" aria-label="Stop the bar — press to stop">
+      <div id="bar-track"><div id="bar-target"></div><div id="bar-slider"></div></div>
+    </div>
+    <div id="bar-feedback" aria-live="polite" aria-atomic="true" style="color:#aaa;">Click or press Space/Enter to stop inside the zone.</div>
+    <p class="hint">The zone shrinks every hit. There is no level cap.<br>It will become physically impossible before it ends.</p>
+    <div class="btn-center" style="margin-top:14px;"><button class="btn" id="bar-btn" onclick="startBar()">Start Game</button></div>
+  </div>
+</div>
+
+<!-- ════════════════ BRAIN ROT SECTION ════════════════ -->
+<div class="section" id="section-brain">
+  <button class="back-btn" onclick="goHub()" aria-label="Back to hub">← Back to Hub<span>you are going in a loop. this is the loop.</span></button>
+  <div class="sec-header"><h2 style="color:#8a3a5a;">🧠 Brain Rot</h2><p>trivia and narrative. both pointless. one has an ending. it is the same ending.</p></div>
+  <div class="tabs" role="tablist" aria-label="Brain Rot tabs">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-trivia" id="tab-trivia" onclick="showTab('trivia','brain',this)">❓ Chaotic Trivia</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-adventure" id="tab-adventure" onclick="showTab('adventure','brain',this)">📖 Pointless Adventure</button>
+  </div>
+
+  <div class="panel active" id="panel-trivia" role="tabpanel" aria-labelledby="tab-trivia">
+    <div id="trivia-score" aria-live="polite">Score: 0 | Streak: 0 🔥</div>
+    <div id="trivia-progress"></div>
+    <div class="trivia-q" id="trivia-q" aria-live="polite">Press start to receive chaotic trivia.</div>
+    <div class="trivia-opts" id="trivia-opts" role="group" aria-label="Answer options"></div>
+    <div id="trivia-feedback" aria-live="polite" aria-atomic="true"></div>
+    <div class="btn-center"><button class="btn" id="trivia-btn" onclick="loadTrivia()">Start Trivia</button></div>
+    <p class="hint" style="margin-top:14px;">35 questions. No prize. No leaderboard. No one is coming to tell you that you did well.<br>The score resets if you leave. Enjoy.</p>
+  </div>
+
+  <div class="panel" id="panel-adventure" role="tabpanel" aria-labelledby="tab-adventure">
+    <div id="adv-disclaimer" style="font-size:0.8rem;color:#444;margin-bottom:18px;line-height:1.7;border-left:2px solid #b8caca;padding-left:12px;">
+      Every path leads to the same ending.<br>
+      The ending is not good or bad. It is just the ending.<br>
+      This is disclosed upfront so you cannot be disappointed.<br>
+      You will probably still be disappointed.
+    </div>
+    <div id="adv-text" aria-live="polite"></div>
+    <div id="adv-choices" aria-live="polite"></div>
+    <div id="adv-meta"></div>
+    <div class="btn-center"><button class="btn" id="adv-btn" onclick="startAdventure()">Begin</button></div>
+  </div>
+</div>
+
+<!-- ════════════════ DOPAMINE SECTION ════════════════ -->
+<div class="section" id="section-dopa">
+  <button class="back-btn" onclick="goHub()" aria-label="Back to hub">← Back to Hub<span>you are going in a loop. this is the loop.</span></button>
+  <div class="sec-header"><h2 style="color:#8a3a18;">⚡ Dopamine</h2><p>engineered to feel like something. it is not something.</p></div>
+  <div class="tabs" role="tablist" aria-label="Dopamine tabs">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-scratch" id="tab-scratch" onclick="showTab('scratch','dopa',this)">🎟 Scratch Card</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-wheel" id="tab-wheel" onclick="showTab('wheel','dopa',this)">🎡 Spin the Wheel</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-shitart" id="tab-shitart" onclick="showTab('shitart','dopa',this)">🖼 Fine Art</button>
+  </div>
+
+  <div class="panel active" id="panel-scratch" role="tabpanel" aria-labelledby="tab-scratch">
+    <div id="scratch-wrap">
+      <div id="scratch-prize" aria-live="polite"><div id="scratch-prize-text">???</div></div>
+      <canvas id="scratch-canvas" aria-hidden="true"></canvas>
+    </div>
+    <div id="scratch-reveal" aria-live="polite">Scratch to reveal your prize.</div>
+    <div id="scratch-count">Cards scratched: 0</div>
+    <div class="btn-center">
+      <button class="btn" id="scratch-kb-btn" onclick="revealScratch()" aria-label="Reveal prize (keyboard)">Reveal Prize</button>
+      <button class="btn" onclick="newScratch()" style="margin-left:8px;">New Card</button>
+    </div>
+    <p class="hint">You always win. The prizes are non-transferable, non-redeemable,<br>and largely conceptual.</p>
+  </div>
+
+  <div class="panel" id="panel-wheel" role="tabpanel" aria-labelledby="tab-wheel">
+    <button id="wheel-btn" onclick="spinWheel()" aria-label="Spin the wheel">
+      <canvas id="wheel-canvas" width="280" height="280" aria-hidden="true"></canvas>
+    </button>
+    <div id="wheel-result" aria-live="polite" aria-atomic="true">Click or press Enter on the wheel to spin.</div>
+    <div id="wheel-count">Times spun: 0</div>
+    <p class="hint">Every outcome is equally meaningless.<br>The wheel does not know this.</p>
+  </div>
+
+  <div class="panel" id="panel-shitart" role="tabpanel" aria-labelledby="tab-shitart">
+    <canvas id="shitart-canvas" aria-hidden="true"></canvas>
+    <div id="shitart-title" aria-live="polite"></div>
+    <div id="shitart-review" aria-live="polite"></div>
+    <div id="shitart-count">Masterpieces generated: 0</div>
+    <div class="btn-center"><button class="btn" onclick="makeShitArt()">Generate Masterpiece</button></div>
+    <p class="hint">AI-powered. The AI is trying its best.<br>That is all that can be said.</p>
+  </div>
+</div>
+
+<!-- ════════════════ STARE AT SECTION ════════════════ -->
+<div class="section" id="section-stare">
+  <button class="back-btn" onclick="goHub()" aria-label="Back to hub">← Back to Hub<span>you are going in a loop. this is the loop.</span></button>
+  <div class="sec-header"><h2 style="color:#2a7845;">🌀 Stare At</h2><p>three things. none of them are trying very hard.</p></div>
+  <div class="tabs" role="tablist" aria-label="Stare At tabs">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-screensaver" id="stare-tab-screensaver" onclick="showStareTab('screensaver',this)">🖥 Bad Screensaver</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-fishtank" id="stare-tab-fishtank" onclick="showStareTab('fishtank',this)">🐟 Fish Tank</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-fire" id="stare-tab-fire" onclick="showStareTab('fire',this)">🔥 Fake Fire</button>
+  </div>
+
+  <div class="panel active" id="panel-screensaver" role="tabpanel" aria-labelledby="stare-tab-screensaver">
+    <canvas id="ss-canvas" class="stare-canvas" style="background:#000;" aria-label="Animated screensaver with bouncing text boxes"></canvas>
+    <div id="ss-caption" aria-live="polite">corners hit: 0</div>
+    <p class="hint">it will eventually hit a corner. this is as meaningful as it sounds.<br>the word changes when it bounces. no one decided what it means.</p>
+  </div>
+
+  <div class="panel" id="panel-fishtank" role="tabpanel" aria-labelledby="stare-tab-fishtank">
+    <canvas id="ft-canvas" class="stare-canvas" style="background:#0a1520;" aria-label="Animated fish tank with six fish, one of whom is upside down and fine"></canvas>
+    <p class="hint">six fish. one of them is upside down. it is fine.<br>they were like this before you arrived.</p>
+  </div>
+
+  <div class="panel" id="panel-fire" role="tabpanel" aria-labelledby="stare-tab-fire">
+    <canvas id="fire-canvas" class="stare-canvas" style="background:#000;" aria-label="Animated pixel fire simulation"></canvas>
+    <p class="hint">technically a fire.<br>warm in the same way a photo of a fireplace is warm.</p>
+  </div>
+</div>
+
+<script>
+// ════ NAVIGATION ════
+function goHub(){
+  stopStare();
+  document.getElementById('hub').style.display='block';
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+}
+function goSection(name){
+  document.getElementById('hub').style.display='none';
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  const sec = document.getElementById('section-'+name);
+  sec.classList.add('active');
+  // Reset tab state: re-activate first tab and first panel
+  const tabs = sec.querySelectorAll('.tab');
+  const panels = sec.querySelectorAll('.panel');
+  tabs.forEach((t,i) => { t.classList.toggle('active', i===0); t.setAttribute('aria-selected', i===0 ? 'true' : 'false'); });
+  panels.forEach((p,i) => p.classList.toggle('active', i===0));
+  if(name==='stare') setTimeout(()=>startStare('screensaver'), 60);
+  if(name==='dopa') { newScratch(); initWheel(); }
+  // Reset adventure button visibility
+  if(name==='brain') {
+    document.getElementById('adv-btn').style.display='inline-block';
+    document.getElementById('adv-text').textContent='';
+    document.getElementById('adv-choices').innerHTML='';
+    document.getElementById('adv-meta').textContent='';
+  }
+}
+function showTab(panelName, sectionName, el){
+  const section = document.getElementById('section-'+sectionName);
+  section.querySelectorAll('.panel').forEach(p=>{ p.classList.remove('active'); });
+  section.querySelectorAll('.tab').forEach(t=>{ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+  document.getElementById('panel-'+panelName).classList.add('active');
+  el.classList.add('active');
+  el.setAttribute('aria-selected','true');
+  if(panelName==='wheel') initWheel();
+  if(panelName==='scratch') newScratch();
+  if(panelName==='shitart') { if(shitartCount===0) makeShitArt(); }
+}
+
+// ════ GAME 1: DOT CLICKER ════
+let g1Score=0,g1Misses=0,g1MaxMiss=5,g1Active=false,g1Timers=[],g1Spawn=null;
+const DC=['#e8a830','#f0c060','#e05555','#90d090','#c090e0','#ff9055'];
+const DE=['★','●','♦','▲','✿','⬟'];
+function startGame(){
+  g1Score=0;g1Misses=0;g1Active=true;
+  const btn=document.getElementById('game-btn');
+  btn.textContent='Reset';btn.onclick=()=>{stopGame1();startGame();};
+  document.getElementById('score-display').textContent='Score: 0';
+  document.getElementById('miss-fill').style.width='0%';
+  document.getElementById('dot-arena').innerHTML='';
+  g1Timers.forEach(clearTimeout);g1Timers=[];clearInterval(g1Spawn);
+  spawnDot();g1Spawn=setInterval(()=>{if(g1Active)spawnDot();},1200);
+}
+function stopGame1(){g1Active=false;clearInterval(g1Spawn);g1Timers.forEach(clearTimeout);}
+function spawnDot(){
+  const arena=document.getElementById('dot-arena');
+  const dot=document.createElement('div');dot.className='dot';
+  const sz=36+Math.random()*20;
+  dot.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*(arena.offsetWidth-sz)}px;top:${Math.random()*(arena.offsetHeight-sz)}px;background:${DC[Math.floor(Math.random()*DC.length)]};font-size:${sz*.45}px;color:#e8eeee;`;
+  dot.textContent=DE[Math.floor(Math.random()*DE.length)];
+  dot.onclick=e=>{e.stopPropagation();if(!g1Active)return;g1Score++;document.getElementById('score-display').textContent='Score: '+g1Score;dot.remove();};
+  arena.appendChild(dot);
+  const t=setTimeout(()=>{if(dot.parentNode){dot.remove();g1Misses++;document.getElementById('miss-fill').style.width=(g1Misses/g1MaxMiss*100)+'%';document.getElementById('miss-bar').setAttribute('aria-valuenow',g1Misses);if(g1Misses>=g1MaxMiss)gameOver1();}},Math.max(900,2500-g1Score*40));
+  g1Timers.push(t);
+}
+function handleMiss(e){
+  if(!g1Active||e.target.id!=='dot-arena')return;
+  g1Misses++;
+  const pct = g1Misses/g1MaxMiss*100;
+  document.getElementById('miss-fill').style.width=pct+'%';
+  document.getElementById('miss-bar').setAttribute('aria-valuenow', g1Misses);
+  if(g1Misses>=g1MaxMiss)gameOver1();
+}
+function gameOver1(){
+  stopGame1();
+  document.getElementById('dot-arena').innerHTML=`<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;"><div style="font-size:1.8rem;color:#9a6800;">GAME OVER</div><div style="color:#aaa;margin-top:8px;">You scored ${g1Score}. This meant nothing.</div></div>`;
+  const b=document.getElementById('game-btn');b.textContent='Play Again';b.onclick=startGame;
+}
+
+// ════ GAME 2: STOP THE BAR ════
+let g2Score=0,g2Lives=3,g2Active=false,g2Pos=0,g2Dir=1,g2Speed=0.35,g2Anim=null,g2Wait=false;
+let g2TL2=35,g2TW2=28;
+function g2GetTW(){return Math.max(5,28-g2Score*1.4);}
+function g2GetTL(){return 8+Math.random()*60;}
+function startBar(){
+  g2Score=0;g2Lives=3;g2Active=true;g2Pos=0;g2Dir=1;g2Speed=0.35;g2Wait=false;
+  g2TL2=g2GetTL();g2TW2=g2GetTW();
+  const b=document.getElementById('bar-btn');b.textContent='Reset';b.onclick=()=>{cancelAnimationFrame(g2Anim);startBar();};
+  renderBar();cancelAnimationFrame(g2Anim);animBar();
+}
+function animBar(){
+  if(g2Active&&!g2Wait){
+    g2Pos+=g2Dir*g2Speed;
+    if(g2Pos>=100){g2Pos=100;g2Dir=-1;}
+    if(g2Pos<=0){g2Pos=0;g2Dir=1;}
+    const tw=document.getElementById('bar-track').offsetWidth||540;
+    document.getElementById('bar-slider').style.left=(g2Pos/100*(tw-12))+'px';
+  }
+  g2Anim=requestAnimationFrame(animBar);
+}
+function stopBar(){
+  if(!g2Active||g2Wait)return;
+  const hit=(g2Pos>=g2TL2&&g2Pos<=(g2TL2+g2TW2));
+  const fb=document.getElementById('bar-feedback');
+  if(hit){
+    g2Score++;const pct=Math.abs(g2Pos-(g2TL2+g2TW2/2))/(g2TW2/2);
+    fb.textContent=pct<0.15?'🎯 PERFECT!':pct<0.4?'✓ NICE!':'✓ IN ZONE';
+    fb.style.color='#90d090';g2Speed=Math.min(3.8,0.35+g2Score*.2);
+  }else{
+    g2Lives--;fb.style.color='#e05555';
+    if(g2Lives<=0){
+      fb.textContent='☠ GAME OVER — Final Score: '+g2Score;
+      g2Active=false;cancelAnimationFrame(g2Anim);
+      const b=document.getElementById('bar-btn');b.textContent='Play Again';b.onclick=startBar;
+      renderBar();return;
+    }
+    fb.textContent='✗ MISS';
+  }
+  g2TL2=g2GetTL();g2TW2=g2GetTW();g2Wait=true;renderBar();
+  setTimeout(()=>{g2Wait=false;},450);
+}
+function renderBar(){
+  document.getElementById('bar-score').textContent='Score: '+g2Score;
+  document.getElementById('bar-lives').textContent='Lives: '+'❤️'.repeat(Math.max(0,g2Lives));
+  const tw=g2GetTW();
+  document.getElementById('bar-level').textContent=`Level ${g2Score+1} — target: ${tw>20?'wide':tw>13?'medium':tw>8?'narrow':'brutal'}`;
+  document.getElementById('bar-target').style.left=g2TL2+'%';
+  document.getElementById('bar-target').style.width=g2TW2+'%';
+}
+
+// ════ TRIVIA ════
+const TB=[
+  {q:"What is the only mammal capable of true flight?",opts:["Flying squirrel","Sugar glider","Bat","Flying fish"],ans:2,fact:"Flying squirrels and sugar gliders only glide — bats actually fly. They also have echolocation, because they decided to overachieve."},
+  {q:"How many hearts does an octopus have?",opts:["1","2","3","4"],ans:2,fact:"Three. Two pump blood to the gills; one to the body. When an octopus swims, the main heart stops beating. This is why they prefer crawling."},
+  {q:"What is the longest word typeable using only the top keyboard row?",opts:["Typewriter","Proprietary","Pepperoni","Trowel"],ans:0,fact:"TYPEWRITER. Ten letters, all on the top row. This was almost certainly intentional by whoever designed the layout."},
+  {q:"Which planet now has the most confirmed moons?",opts:["Jupiter","Saturn","Uranus","Neptune"],ans:1,fact:"Saturn leads with over 140 confirmed moons. Jupiter used to hold the record. It has not taken this well."},
+  {q:"In what year did France last use the guillotine?",opts:["1939","1961","1977","1945"],ans:2,fact:"1977. Star Wars came out the same year. Both events were significant. Only one was irreversible."},
+  {q:"What color is a polar bear's skin?",opts:["White","Pink","Black","Translucent"],ans:2,fact:"Black. The fur is transparent and hollow — it appears white due to light scattering. Polar bears are a visual illusion on legs."},
+  {q:"Which country has the most natural lakes?",opts:["Russia","USA","Finland","Canada"],ans:3,fact:"Canada has over 3 million lakes — roughly 60% of the world's total. They are doing fine up there."},
+  {q:"What is the technical name for the fear of long words?",opts:["Megalophobia","Hippopotomonstrosesquippedaliophobia","Verbophobia","Lexiphobia"],ans:1,fact:"Hippopotomonstrosesquippedaliophobia. They named the fear of long words with the longest possible word. Psychology contains multitudes."},
+  {q:"A group of crows is called a...",opts:["Pack","Flock","Murder","Conspiracy"],ans:2,fact:"A murder. A group of ravens is a 'conspiracy.' Corvids have exceptional PR."},
+  {q:"How long does light take to travel from the Sun to Earth?",opts:["8 seconds","8 minutes","8 hours","8 days"],ans:1,fact:"About 8 minutes 20 seconds. The Sun you see is 8 minutes in the past. You have never seen the present Sun. You never will."},
+  {q:"What percentage of your DNA do you share with a banana?",opts:["6%","25%","50%","60%"],ans:3,fact:"About 60%. You and a banana share more than half your DNA. Genetic identity is humbling."},
+  {q:"Oxford University is older than which civilization?",opts:["Roman Empire","Byzantine Empire","Aztec Empire","Han Dynasty"],ans:2,fact:"Oxford started teaching around 1096. The Aztec Empire was founded in 1428. Oxford predates the Aztecs by over 300 years."},
+  {q:"How did the inventor of the Pringles can want to be buried?",opts:["At a Pringles factory","Inside a Pringles can","In a Pringles-shaped coffin","Surrounded by Pringles"],ans:1,fact:"Fred Baur patented the can in 1975. His family buried part of his ashes in one in 2008. His children debated this at the funeral home while buying snacks."},
+  {q:"Which animal produces cube-shaped poop?",opts:["Capybara","Wombat","Manatee","Echidna"],ans:1,fact:"Wombats. The only animals on Earth to do this. Scientists spent years figuring out how. The answer involves unusually elastic intestines. This was funded research."},
+  {q:"Nintendo was founded in what year?",opts:["1952","1889","1921","1947"],ans:1,fact:"1889. They made playing cards. They have been in business for 135+ years. The Game Boy was not their first pivot."},
+  {q:"Cleopatra lived closer in time to which event?",opts:["The Great Pyramid being built","The Moon landing","Birth of Julius Caesar","Eruption of Pompeii"],ans:1,fact:"The Moon landing was about 2,000 years after Cleopatra. The Great Pyramid was built 2,500 years before her. She is closer in time to us than to the pyramids."},
+  {q:"What is the fear of being watched by a duck called?",opts:["Ornithophobia","Anatidaephobia","Aviphobia","Quackophobia"],ans:1,fact:"Anatidaephobia: the fear that somewhere, a duck is watching you. The duck doesn't have to be present. That's the point."},
+  {q:"How many bones does a shark have?",opts:["206","400+","0","52"],ans:2,fact:"Zero. Sharks' skeletons are made entirely of cartilage. They have been boneless for 450 million years, which predates trees."},
+  {q:"What is the name for the dot above a lowercase 'i' or 'j'?",opts:["Tittle","Serif","Glyph","Apex"],ans:0,fact:"A tittle. This is the actual typographic term. You now know the word 'tittle.' Use it responsibly."},
+  {q:"How long did the shortest war in recorded history last?",opts:["2 hours","38 minutes","6 days","1 day"],ans:1,fact:"The Anglo-Zanzibar War of 1896 lasted 38-45 minutes. Britain then sent Zanzibar a bill for the ammunition used against them."},
+  {q:"How long can a cockroach live without its head?",opts:["A few seconds","A few hours","Up to a week","Up to a month"],ans:2,fact:"Up to a week. Cockroaches breathe through holes in their body segments. They eventually die of dehydration. This is not comforting."},
+  {q:"Which country has a city called Batman?",opts:["USA","Turkey","Romania","South Korea"],ans:1,fact:"Batman, Turkey. In 2008 the mayor attempted to sue Christopher Nolan for using the name. The case did not succeed."},
+  {q:"What is a 'jiffy' in physics?",opts:["One millisecond","One nanosecond","The time light takes to cross a femtometer","The time between heartbeats"],ans:2,fact:"A jiffy is the time it takes light to cross one femtometer — about 3×10⁻²⁴ seconds. 'Back in a jiffy' is a physical impossibility."},
+  {q:"Which animal has the highest blood pressure of any creature?",opts:["Blue whale","Giraffe","Elephant","Hippopotamus"],ans:1,fact:"A giraffe needs blood pressure roughly twice that of humans just to get blood up its neck to its brain. Its heart is the size of a basketball. Engineering-wise, the giraffe is a disaster that works."},
+  {q:"What is the collective noun for a group of flamingos?",opts:["Colony","Flock","Flamboyance","Flutter"],ans:2,fact:"A flamboyance. Whoever named it understood the assignment completely."},
+  {q:"What is petrichor?",opts:["A type of crystal","The smell of rain on dry earth","A geological era","A rare pigment"],ans:1,fact:"Petrichor is the smell of rain on dry earth. The word was coined in 1964 by scientists who felt the concept deserved a name. They were correct."},
+  {q:"How many dimples does a regulation golf ball have?",opts:["108","336","500","212"],ans:1,fact:"Most have 336 dimples. The dimples reduce drag. A smooth golf ball travels about half as far. The ugliness is structural."},
+  {q:"How old is the oldest known edible honey ever found?",opts:["500 years","1,000 years","3,000 years","10,000 years"],ans:2,fact:"About 3,000 years, found in Egyptian tombs. Still edible. Honey's chemistry makes it essentially immortal. Bees accidentally solved food preservation."},
+  {q:"What is a group of jellyfish called?",opts:["Bloom","Swarm","Cloud","Gaggle"],ans:0,fact:"A bloom — or also 'a smack.' Both are accepted. A smack of jellyfish. This naming committee had range."},
+  {q:"What does the chemical symbol W stand for?",opts:["Wolfram (Tungsten)","Warinium","Wickinium","Websterium"],ans:0,fact:"Tungsten, from its German name Wolfram, meaning 'wolf's froth.' Miners hated it for devouring tin during smelting."},
+  {q:"A tardigrade can survive which of these?",opts:["Mild cold only","Low radiation only","The vacuum of space","None of the above"],ans:2,fact:"Tardigrades survive vacuum, radiation, extreme temperatures, and dehydration. They can be revived after decades frozen. They are microscopic and they are winning."},
+  {q:"Which element is liquid at room temperature besides mercury?",opts:["Gallium","Bromine","Cesium","Francium"],ans:1,fact:"Bromine. It is extremely toxic and smells terrible. It is not recommended as a novelty."},
+  {q:"How many muscles coordinate to take a single step?",opts:["2","Around 200","12","50"],ans:1,fact:"Around 200 muscles. Your brain performs this calculation without asking you. You are welcome."},
+  {q:"What is the speed of dark?",opts:["Faster than light","The same as light","There is no speed of dark","Zero"],ans:2,fact:"Darkness isn't a thing that moves — it's an absence. A shadow can appear to move faster than light across a surface, but no information is transmitted, so physics is fine with it."},
+  {q:"Which country consumes the most chocolate per capita?",opts:["USA","Belgium","Germany","Switzerland"],ans:3,fact:"Switzerland, at roughly 10 kg per person per year. They have priorities and those priorities are correct."},
+];
+let tScore=0,tStreak=0,tCurrent=null,tAnswered=false,tPool=[],tUsed=[];
+function loadTrivia(){
+  tAnswered=false;document.getElementById('trivia-feedback').textContent='';
+  if(tPool.length===0){tPool=[...TB].sort(()=>Math.random()-0.5);tUsed=[];}
+  const q=tPool.pop();tUsed.push(q);tCurrent=q;
+  document.getElementById('trivia-q').textContent=q.q;
+  document.getElementById('trivia-progress').textContent=`Question ${tUsed.length} of ${TB.length}`;
+  const el=document.getElementById('trivia-opts');el.innerHTML='';
+  q.opts.forEach((opt,i)=>{const b=document.createElement('button');b.className='trivia-opt';b.textContent=opt;b.onclick=()=>answerTrivia(i,b);el.appendChild(b);});
+  document.getElementById('trivia-btn').textContent='Next Question →';
+  document.getElementById('trivia-btn').onclick=loadTrivia;
+  // A11: move focus to first answer option
+  setTimeout(()=>{ const first=el.querySelector('.trivia-opt'); if(first) first.focus(); }, 50);
+}
+function answerTrivia(idx,btn){
+  if(tAnswered)return;tAnswered=true;
+  document.querySelectorAll('.trivia-opt').forEach(o=>o.disabled=true);
+  if(idx===tCurrent.ans){btn.classList.add('correct');tScore++;tStreak++;document.getElementById('trivia-feedback').textContent='✓ Correct. '+tCurrent.fact;}
+  else{btn.classList.add('wrong');document.querySelectorAll('.trivia-opt')[tCurrent.ans].classList.add('correct');tStreak=0;document.getElementById('trivia-feedback').textContent='✗ Wrong. '+tCurrent.fact;}
+  document.getElementById('trivia-score').textContent=`Score: ${tScore} | Streak: ${tStreak} 🔥`;
+}
+
+// ════ ADVENTURE ════
+const STORY={
+  start:{text:`You wake up. This is not technically the beginning — the beginning was a long time ago — but this is where the story starts.\n\nYou are in a bed. The bed is fine. Outside, the world is doing its thing without your input, which it has been doing your whole life.`,choices:[{label:"Get up immediately with purpose",next:"purposeful"},{label:"Lie there for a bit first",next:"horizontal"}]},
+  purposeful:{text:`You get up immediately. This says something about you. The something is unclear.\n\nYou go to the kitchen with the energy of someone who has decided that today is a day. It is, in fact, a day. You were right about that.`,choices:[{label:"Make coffee",next:"coffee"},{label:"Drink water and feel briefly superior about it",next:"water"}]},
+  horizontal:{text:`You lie there. The ceiling is the same ceiling it always is. Your thoughts are the usual thoughts — some valid, some not, all temporary.\n\nEventually, by your own choice or by gravity or by nothing in particular, you get up.`,choices:[{label:"You are hungry",next:"hungry"},{label:"You are not hungry but the kitchen seems like a destination",next:"kitchen_drift"}]},
+  coffee:{text:`The coffee is fine. It is always fine.\n\nYou drink it standing at the counter, which you do every day, which means either nothing or everything depending on who you ask. No one is asking.`,choices:[{label:"Go outside",next:"outside_a"},{label:"Stay in and do various things",next:"inside_a"}]},
+  water:{text:`You drink a large glass of water. You feel briefly superior. The feeling fades in approximately forty seconds, which is the correct amount of time for that feeling to last.\n\nYou stand in the kitchen.`,choices:[{label:"Go outside",next:"outside_a"},{label:"Stay in and do various things",next:"inside_a"}]},
+  hungry:{text:`You make something to eat. It is adequate. You eat it while looking at a middle distance that contains nothing of significance.\n\nThis is already more than some mornings.`,choices:[{label:"Go outside after",next:"outside_b"},{label:"Stay in",next:"inside_b"}]},
+  kitchen_drift:{text:`You stand in the kitchen. You open the refrigerator. You look at its contents. You close it.\n\nYou have not taken anything. You have not put anything back. You stand there for a moment, which is, legally, fine.`,choices:[{label:"Go outside",next:"outside_b"},{label:"Stay in",next:"inside_b"}]},
+  outside_a:{text:`You go outside. The world is there, as advertised. There is weather of some kind. There are other people doing their own things, which have nothing to do with yours.\n\nYou walk. The walking is neither meaningful nor meaningless. It is walking.`,choices:[{label:"Walk somewhere specific",next:"destination"},{label:"Walk without a plan",next:"no_destination"}]},
+  inside_a:{text:`You stay inside. The light is acceptable. You do several things — some useful, some displacement activity, some that you will not remember doing.\n\nThe morning becomes an afternoon without you making a formal decision about it.`,choices:[{label:"Eventually go outside",next:"destination"},{label:"Stay inside the whole day",next:"full_inside"}]},
+  outside_b:{text:`You go outside. It is the same outside that it always is. The world has not adjusted itself to reflect your morning choices.\n\nThis is consistent with how the world has always worked.`,choices:[{label:"Walk somewhere specific",next:"destination"},{label:"Walk without a plan",next:"no_destination"}]},
+  inside_b:{text:`You stay inside. You do things. The things are of medium importance. Some of them will matter later; you cannot tell which ones yet, and you never can.\n\nThe day proceeds.`,choices:[{label:"Go outside in the afternoon anyway",next:"no_destination"},{label:"Stay in entirely",next:"full_inside"}]},
+  destination:{text:`You go somewhere with a destination in mind. You arrive. It is the place you thought it would be, more or less.\n\nYou do the thing. Or a version of the thing. Close enough.\n\nNow it is time to leave.`,choices:[{label:"Go home",next:"pre_end"},{label:"Sit somewhere first",next:"pre_end"}]},
+  no_destination:{text:`You walk without a plan. This means the walk is a technical success regardless of outcome, because there was no outcome to miss.\n\nYou go in some direction. The direction becomes a route. The route becomes a loop. You end up approximately where you started, which is where most things end up.`,choices:[{label:"Go back inside",next:"pre_end"},{label:"Sit outside for a while first",next:"pre_end"}]},
+  full_inside:{text:`You spend the whole day inside. Morning becomes afternoon becomes evening in one continuous indoor experience.\n\nThis is not a failure. Some of the best days are exactly this. No one gave you a badge for going outside, and no one is taking one away.\n\nYou sit down.`,choices:[{label:"Continue sitting",next:"pre_end"},{label:"Sit somewhere slightly different",next:"pre_end"}]},
+  pre_end:{text:`You arrive somewhere — a chair, a couch, a bench, a specific spot you've claimed without formally claiming it.\n\nYou sit. The day is somewhere between beginning and ending. There is nothing urgent. There has never been anything urgent, when you think about it.\n\nYou are here.`,choices:[{label:"Keep going",next:"end"}]},
+  end:{text:`You are in a waiting room.\n\nThere is no appointment scheduled. The chairs are acceptable. There is a magazine from three years ago but you are not curious about it. There is a plant that is doing fine without your concern.\n\nYou are not unhappy. You are not particularly happy. You are here, which is, technically, something.\n\nEvery path led to this room. You could go back and make different choices. The room would be here when you arrived. It is always here.\n\nThe adventure is over.\n\nIt was always going to be this.`,choices:[]},
+};
+let advChoices=0,advCurrent='start';
+function startAdventure(){
+  advChoices=0;advCurrent='start';
+  document.getElementById('adv-btn').style.display='none';
+  renderAdventure();
+}
+function renderAdventure(){
+  const node=STORY[advCurrent];
+  document.getElementById('adv-text').innerHTML=node.text.replace(/\n/g,'<br>');
+  const ce=document.getElementById('adv-choices');ce.innerHTML='';
+  const me=document.getElementById('adv-meta');
+  if(node.choices.length===0){
+    me.textContent=`You made ${advChoices} decision${advChoices!==1?'s':''} to get here. They all led here. All roads do.`;
+    const b=document.getElementById('adv-btn');b.style.display='inline-block';b.textContent='Start Over (same ending)';b.onclick=startAdventure;
+    setTimeout(()=>b.focus(), 50);
+  }else{
+    me.textContent=advChoices>0?`Decisions made so far: ${advChoices}`:'';
+    node.choices.forEach(c=>{const b=document.createElement('button');b.className='trivia-opt';b.textContent=c.label;b.onclick=()=>{advChoices++;advCurrent=c.next;renderAdventure();};ce.appendChild(b);});
+    // A11: move focus to first choice
+    setTimeout(()=>{ const first=ce.querySelector('.trivia-opt'); if(first) first.focus(); }, 50);
+  }
+}
+
+// ════ SCRATCH CARD ════
+const PRIZES=["one (1) unit of validation, non-specific","the concept of a Tuesday afternoon you haven't had yet","a brief sense that things might be fine","acknowledgment that you exist and are doing okay","17 seconds of ambient satisfaction","one free pass on a thought you were about to spiral on","a nod from a stranger that means nothing and somehow everything","the smell of a library you've never been to","three seconds of genuinely not thinking about anything","a parking spot, somewhere, eventually","the sound of rain on a window you are not responsible for","mild but real pride in something small","an unexpected refund of $0.00 from the universe","one (1) dog sighting, redeemable within the next 48 hours","the feeling that the song came on at exactly the right time","a compliment you gave yourself and forgot about","permission to eat the thing","a soft landing after a bad week","confirmation that the weird noise the car was making has stopped","one free instance of being correct about something nobody can verify"];
+let scratchCount=0,scratchDone=false,scratchDrawing=false,scratchThrottleTimer=null;
+function newScratch(){
+  scratchDone=false;
+  document.getElementById('scratch-prize-text').textContent=PRIZES[Math.floor(Math.random()*PRIZES.length)];
+  document.getElementById('scratch-reveal').textContent='Scratch to reveal your prize.';
+  const wrap=document.getElementById('scratch-wrap');
+  const canvas=document.getElementById('scratch-canvas');
+  canvas.width=wrap.offsetWidth||340;canvas.height=140;
+  const ctx=canvas.getContext('2d');
+  const cols=['#3a2a4a','#2a3a4a','#4a3a2a','#2a4a3a'];
+  ctx.fillStyle=cols[Math.floor(Math.random()*cols.length)];ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.globalAlpha=0.12;
+  for(let i=0;i<80;i++){ctx.fillStyle='#fff';ctx.font='10px monospace';ctx.fillText('✦ SCRATCH ✦',Math.random()*canvas.width-20,Math.random()*canvas.height);}
+  ctx.globalAlpha=1;ctx.fillStyle='#ffffff22';ctx.font='bold 15px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('SCRATCH TO REVEAL',canvas.width/2,canvas.height/2+6);
+  canvas.onmousedown=e=>{scratchDrawing=true;doScratch(e);};
+  canvas.onmousemove=e=>{if(scratchDrawing)doScratch(e);};
+  canvas.onmouseup=()=>{scratchDrawing=false;};canvas.onmouseleave=()=>{scratchDrawing=false;};
+  canvas.ontouchstart=e=>{e.preventDefault();scratchDrawing=true;doScratch(e.touches[0]);};
+  canvas.ontouchmove=e=>{e.preventDefault();if(scratchDrawing)doScratch(e.touches[0]);};
+  canvas.ontouchend=()=>{scratchDrawing=false;};
+}
+function revealScratch(){
+  if(scratchDone) return;
+  scratchDone=true; scratchCount++;
+  const canvas=document.getElementById('scratch-canvas');
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  document.getElementById('scratch-reveal').textContent='🎉 WINNER! (see above)';
+  document.getElementById('scratch-count').textContent=`Cards scratched: ${scratchCount}`;
+}
+function doScratch(e){
+  if(scratchDone)return;
+  const canvas=document.getElementById('scratch-canvas');
+  const ctx=canvas.getContext('2d');
+  const r=canvas.getBoundingClientRect();
+  const x=(e.clientX-r.left)*(canvas.width/r.width),y=(e.clientY-r.top)*(canvas.height/r.height);
+  ctx.globalCompositeOperation='destination-out';
+  ctx.beginPath();ctx.arc(x,y,22,0,Math.PI*2);ctx.fill();
+  // Throttle expensive pixel check to every 200ms
+  if(scratchThrottleTimer) return;
+  scratchThrottleTimer = setTimeout(()=>{
+    scratchThrottleTimer = null;
+    if(scratchDone) return;
+    const d=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    let cl=0;for(let i=3;i<d.length;i+=4)if(d[i]===0)cl++;
+    if(cl/(canvas.width*canvas.height)>0.45){ revealScratch(); }
+  }, 200);
+}
+
+// ════ SPIN THE WHEEL ════
+const WS=[{label:'Nothing',color:'#1e1a10'},{label:'Also Nothing',color:'#221a0e'},{label:'Try Again',color:'#1a2010'},{label:'Wow!',color:'#221e0e'},{label:'A Feeling',color:'#1c1a12'},{label:'Free Spin',color:'#201a12'},{label:'Interesting.',color:'#1a1e12'},{label:'Sure.',color:'#281810'},{label:'OK!',color:'#182410'},{label:'Noted.',color:'#1c180e'},{label:'Grand Prize*',color:'#201e14'},{label:'Spin Again',color:'#1a1e18'}];
+const WF={'Nothing':'exactly as described.','Also Nothing':'which, to be fair, is consistent.','Try Again':'you tried again. results pending.','Wow!':'...is what someone might say.','A Feeling':'it passed.','Free Spin':'of the same wheel. that has the same outcomes.','Interesting.':'the wheel has no further comment.','Sure.':'the wheel is not enthusiastic but is not opposed.','OK!':'the wheel has accepted this.','Noted.':'by no one in particular.','Grand Prize*':'*the grand prize is the spinning itself. conditions apply. conditions are that there are no conditions because there is no grand prize.','Spin Again':'okay. here we are again.'};
+let wSpins=0,wSpinning=false,wAngle=0,wVel=0,wRaf=null;
+function initWheel(){
+  const c=document.getElementById('wheel-canvas');
+  if(!c)return;
+  drawWheel(c,wAngle);
+}
+function drawWheel(c,angle){
+  const ctx=c.getContext('2d'),cx=c.width/2,cy=c.height/2,r=cx-8,seg=WS.length,arc=(Math.PI*2)/seg;
+  ctx.clearRect(0,0,c.width,c.height);
+  WS.forEach((s,i)=>{
+    const st=angle+i*arc,en=st+arc;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,st,en);ctx.closePath();
+    ctx.fillStyle=s.color;ctx.fill();ctx.strokeStyle='#0a0a0f';ctx.lineWidth=2;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(st+arc/2);
+    ctx.textAlign='right';ctx.fillStyle='#bbb';ctx.font=`${s.label.length>8?'9':'11'}px Segoe UI`;
+    ctx.fillText(s.label,r-6,4);ctx.restore();
+  });
+  ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.fillStyle='#0a0a0f';ctx.fill();ctx.strokeStyle='#e8a830';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx+r+2,cy);ctx.lineTo(cx+r-14,cy-8);ctx.lineTo(cx+r-14,cy+8);ctx.closePath();ctx.fillStyle='#f0c060';ctx.fill();
+}
+function spinWheel(){
+  if(wSpinning)return;wSpinning=true;wSpins++;
+  wVel=0.18+Math.random()*0.22;
+  const c=document.getElementById('wheel-canvas');
+  document.getElementById('wheel-result').textContent='...';
+  document.getElementById('wheel-count').textContent=`Times spun: ${wSpins}`;
+  function frame(){
+    wAngle+=wVel;wVel*=0.985;drawWheel(c,wAngle);
+    if(wVel>0.003){wRaf=requestAnimationFrame(frame);}
+    else{
+      wSpinning=false;
+      const arc=(Math.PI*2)/WS.length;
+      const norm=((Math.PI*2)-(wAngle%(Math.PI*2)))%(Math.PI*2);
+      const winner=WS[Math.floor(norm/arc)%WS.length];
+      document.getElementById('wheel-result').textContent=`▶ ${winner.label} — ${WF[winner.label]}`;
+    }
+  }
+  frame();
+}
+
+// ════ SHITTY ART ════
+const SAT=[["UNTITLED #",""],["STUDY IN ",""],["COMPOSITION WITH ",""],["THE ",""],["PORTRAIT OF ",""],["LANDSCAPE: ",""],["AFTER ",""],["","(UNFINISHED)"],["",", PROBABLY"],["THEORY OF ",""]];
+const SAW=["GRIEF","WIFI","MONDAYS","NOTHING","HORSES","TIME","ANXIETY","LUNCH","MOTION","THE VOID","COLOR","FEELING","SPACE","TUESDAY","CATS"];
+const SAR=["A bold statement about nothing in particular.","The artist clearly felt something. Unclear what.","Reminiscent of a printer error, but intentional.","Critics are divided. Both of them.","Described by one viewer as 'art.'","The negative space is doing a lot of work here.","Raw. Unfiltered. Possibly unfinished.","You can feel the effort, or its absence.","This piece asks questions. They are the wrong questions.","The composition challenges the viewer to continue looking.","Technically, this is an image.","Evocative of something you saw once and forgot.","The colors were chosen. That much is clear.","A meditation on shapes, if shapes had given up.","Part of a series. The rest were not better.","Inspired by a dream the artist cannot fully remember.","Made in approximately 40 milliseconds."];
+let shitartCount=0;
+function makeShitArt(){
+  shitartCount++;
+  const c=document.getElementById('shitart-canvas');c.width=c.offsetWidth||540;c.height=240;
+  const ctx=c.getContext('2d');
+  const bgs=[['#ff6b6b','#ffd93d'],['#a8e6cf','#dcedc1'],['#ffaaa5','#ff8b94'],['#6c5ce7','#a29bfe'],['#fd79a8','#fdcb6e'],['#2d3436','#636e72']];
+  const bg=bgs[Math.floor(Math.random()*bgs.length)];
+  const gr=ctx.createLinearGradient(0,0,c.width,c.height);gr.addColorStop(0,bg[0]);gr.addColorStop(1,bg[1]);
+  ctx.fillStyle=gr;ctx.fillRect(0,0,c.width,c.height);
+  const style=Math.floor(Math.random()*6);
+  if(style===0)shitStick(ctx,c);else if(style===1)shitAbstract(ctx,c);else if(style===2)shitLandscape(ctx,c);else if(style===3)shitPortrait(ctx,c);else if(style===4)shitGeo(ctx,c);else shitWords(ctx,c);
+  ctx.globalAlpha=0.06;ctx.fillStyle='#000';ctx.font='bold 56px Impact';ctx.textAlign='center';ctx.fillText('ART',c.width/2,c.height/2+20);ctx.globalAlpha=1;
+  const t=SAT[Math.floor(Math.random()*SAT.length)];
+  document.getElementById('shitart-title').textContent=(t[0]+(t[0].includes('#')?(Math.floor(Math.random()*900)+100):SAW[Math.floor(Math.random()*SAW.length)])+t[1]).toUpperCase();
+  document.getElementById('shitart-review').textContent=SAR[Math.floor(Math.random()*SAR.length)];
+  document.getElementById('shitart-count').textContent=`Masterpieces generated: ${shitartCount}`;
+}
+function shitStick(ctx,c){
+  const x=c.width/2,y=c.height/2;ctx.strokeStyle='#000';ctx.lineWidth=3+Math.random()*3;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(x+Math.random()*10-5,y-55,22+Math.random()*8,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x,y-33);ctx.lineTo(x+Math.random()*6-3,y+10);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x,y-20);ctx.lineTo(x-40-Math.random()*20,y-5+Math.random()*20);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x,y-20);ctx.lineTo(x+30+Math.random()*20,y-15+Math.random()*20);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x,y+10);ctx.lineTo(x-20-Math.random()*15,y+55+Math.random()*10);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x,y+10);ctx.lineTo(x+15+Math.random()*20,y+50+Math.random()*15);ctx.stroke();
+  const ey=y-58,ex=x+Math.random()*6-3;ctx.fillStyle='#000';
+  ctx.beginPath();ctx.arc(ex-8,ey,2,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(ex+8,ey,3,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(ex,ey+9,7,0.2,Math.PI-0.2);ctx.stroke();
+}
+function shitAbstract(ctx,c){
+  const pal=['#e74c3c','#3498db','#2ecc71','#f1c40f','#9b59b6','#e67e22','#1abc9c','#000'];
+  for(let i=0;i<12+Math.random()*8;i++){
+    ctx.fillStyle=pal[Math.floor(Math.random()*pal.length)];ctx.globalAlpha=0.5+Math.random()*0.5;
+    const x=Math.random()*c.width,y=Math.random()*c.height,s=20+Math.random()*80,sh=Math.floor(Math.random()*3);
+    if(sh===0)ctx.fillRect(x,y,s,s*0.5+Math.random()*s);
+    else if(sh===1){ctx.beginPath();ctx.arc(x,y,s/2,0,Math.PI*2);ctx.fill();}
+    else{ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+s,y+Math.random()*40-20);ctx.lineTo(x+s/2,y-s);ctx.closePath();ctx.fill();}
+  }ctx.globalAlpha=1;
+}
+function shitLandscape(ctx,c){
+  ctx.fillStyle='#f1c40f';ctx.globalAlpha=0.9;ctx.beginPath();ctx.arc(c.width*.75+Math.random()*30,50+Math.random()*20,28+Math.random()*10,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+  ctx.fillStyle='#27ae60';ctx.fillRect(0,c.height*.6,c.width,c.height);
+  for(let i=0;i<3+Math.floor(Math.random()*3);i++){
+    const tx=50+Math.random()*(c.width-100),th=60+Math.random()*50;
+    ctx.fillStyle='#8B4513';ctx.fillRect(tx-6,c.height*.6-th*.4,12,th*.4+10);
+    ctx.fillStyle=`hsl(${100+Math.random()*40},${50+Math.random()*30}%,${25+Math.random()*15}%)`;
+    ctx.beginPath();ctx.arc(tx+Math.random()*16-8,c.height*.6-th*.4,25+Math.random()*20,0,Math.PI*2);ctx.fill();
+  }
+  for(let i=0;i<2+Math.floor(Math.random()*3);i++){
+    ctx.fillStyle='rgba(255,255,255,0.7)';const cx2=Math.random()*c.width,cy2=20+Math.random()*80;
+    for(let j=0;j<4;j++){ctx.beginPath();ctx.arc(cx2+j*18-27,cy2+Math.sin(j)*8,16+Math.random()*8,0,Math.PI*2);ctx.fill();}
+  }
+}
+function shitPortrait(ctx,c){
+  const x=c.width/2,y=c.height/2-10;
+  ctx.fillStyle=['#000','#8B4513','#DAA520','#FF6347'][Math.floor(Math.random()*4)];
+  ctx.beginPath();ctx.ellipse(x,y-48,38+Math.random()*8,28+Math.random()*10,0,Math.PI,0);ctx.fill();
+  ctx.fillStyle='#FDBCB4';ctx.beginPath();ctx.ellipse(x,y,40+Math.random()*6,52+Math.random()*6,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#c0907a';ctx.lineWidth=1.5;ctx.stroke();
+  [[x-14,y-12],[x+14,y-14]].forEach((e,i)=>{
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(e[0],e[1],10+i*3,7+i*2,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#333';ctx.beginPath();ctx.arc(e[0]+Math.random()*4-2,e[1],4+i,0,Math.PI*2);ctx.fill();
+  });
+  ctx.fillStyle='#c0907a';ctx.beginPath();ctx.arc(x+Math.random()*4-2,y+8,4,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#c05050';ctx.lineWidth=2.5;const mx=x+Math.random()*10-5;
+  ctx.beginPath();ctx.moveTo(mx-14,y+24);ctx.quadraticCurveTo(mx,y+34+Math.random()*10-5,mx+14,y+24);ctx.stroke();
+  ctx.fillStyle=['#e74c3c','#3498db','#2ecc71','#f1c40f'][Math.floor(Math.random()*4)];ctx.fillRect(x-38,y+52,76,50);
+}
+function shitGeo(ctx,c){
+  const pal=['#e74c3c','#3498db','#2ecc71','#f1c40f','#9b59b6','#e67e22','#fff','#000'];ctx.globalAlpha=0.85;
+  for(let i=0;i<20+Math.random()*10;i++){
+    ctx.fillStyle=pal[Math.floor(Math.random()*pal.length)];ctx.strokeStyle=pal[Math.floor(Math.random()*pal.length)];ctx.lineWidth=1+Math.random()*3;
+    const x=Math.random()*c.width,y=Math.random()*c.height,s=10+Math.random()*60,n=Math.floor(Math.random()*4);
+    if(n===0){ctx.fillRect(x,y,s,s);ctx.strokeRect(x,y,s,s);}
+    else if(n===1){ctx.beginPath();ctx.arc(x,y,s/2,0,Math.PI*2);ctx.fill();ctx.stroke();}
+    else if(n===2){ctx.beginPath();ctx.moveTo(x,y-s/2);ctx.lineTo(x+s/2,y+s/2);ctx.lineTo(x-s/2,y+s/2);ctx.closePath();ctx.fill();ctx.stroke();}
+    else{ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+s,y);ctx.stroke();}
+  }ctx.globalAlpha=1;
+}
+function shitWords(ctx,c){
+  const ws=['WOW','YES','NO','FEELING','VOID','OK','COLOR','ART','TIME','THING','SHAPE','NICE','BOLD','MOVEMENT'];
+  const pal=['#e74c3c','#3498db','#2ecc71','#f1c40f','#9b59b6','#fff','#000'];
+  for(let i=0;i<8+Math.random()*6;i++){
+    ctx.fillStyle=pal[Math.floor(Math.random()*pal.length)];
+    ctx.font=`${Math.random()>.5?'bold':''}${14+Math.random()*40}px ${Math.random()>.5?'Comic Sans MS, cursive':'Impact, sans-serif'}`;
+    ctx.textAlign=['left','center','right'][Math.floor(Math.random()*3)];
+    ctx.save();ctx.translate(Math.random()*c.width,30+Math.random()*(c.height-40));ctx.rotate((Math.random()-.5)*.8);
+    ctx.fillText(ws[Math.floor(Math.random()*ws.length)],0,0);ctx.restore();
+  }
+}
+
+// ════ STARE AT ════
+let stareActive=false, stareRaf=null;
+
+function stopStare(){
+  stareActive=false;
+  cancelAnimationFrame(stareRaf);
+}
+
+function startStare(tab){
+  stopStare();
+  stareActive=true;
+  if(tab==='screensaver') startScreensaver();
+  else if(tab==='fishtank') startFishtank();
+  else if(tab==='fire') startFire();
+}
+
+function showStareTab(tab, btn){
+  stopStare();
+  document.getElementById('section-stare').querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('section-stare').querySelectorAll('.tab').forEach(t=>{ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+  document.getElementById('panel-'+tab).classList.add('active');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
+  // Reset ssCorners when switching back to screensaver
+  if(tab==='screensaver') ssCorners=0;
+  setTimeout(()=>startStare(tab), 60);
+}
+
+// ── BAD SCREENSAVER ──
+const SS_WORDS=['SCREENSAVER','LOADING...','HELLO','PLEASE WAIT','SCREEN SAVER','...','OK','COMPUTING','STANDBY','SCREENSAVER.EXE','DO NOT TURN OFF','SAVING SCREEN','STILL HERE','YES'];
+const SS_COLORS=['#e8a830','#d97a5a','#d48fa8','#7ec894','#e05555','#ff9055','#c8c8c8'];
+let ssBoxes=[], ssCorners=0;
+
+function startScreensaver(){
+  const c=document.getElementById('ss-canvas');
+  c.width=c.offsetWidth||540; c.height=260;
+  ssBoxes=[];
+  for(let i=0;i<5;i++){
+    const w=70+Math.random()*80, h=26+Math.random()*16;
+    ssBoxes.push({
+      x:Math.random()*(c.width-w), y:Math.random()*(c.height-h),
+      vx:(Math.random()>0.5?1:-1)*(0.16+Math.random()*0.22),
+      vy:(Math.random()>0.5?1:-1)*(0.10+Math.random()*0.16),
+      w, h,
+      color:SS_COLORS[Math.floor(Math.random()*SS_COLORS.length)],
+      word:SS_WORDS[Math.floor(Math.random()*SS_WORDS.length)],
+    });
+  }
+  animScreensaver();
+}
+
+function animScreensaver(){
+  if(!stareActive)return;
+  const c=document.getElementById('ss-canvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#000';
+  ctx.fillRect(0,0,c.width,c.height);
+
+  ssBoxes.forEach(box=>{
+    box.x+=box.vx; box.y+=box.vy;
+    let hit=false;
+    if(box.x<=0){box.x=0;box.vx=Math.abs(box.vx);hit=true;}
+    if(box.x+box.w>=c.width){box.x=c.width-box.w;box.vx=-Math.abs(box.vx);hit=true;}
+    if(box.y<=0){box.y=0;box.vy=Math.abs(box.vy);hit=true;}
+    if(box.y+box.h>=c.height){box.y=c.height-box.h;box.vy=-Math.abs(box.vy);hit=true;}
+    if(hit){
+      box.color=SS_COLORS[Math.floor(Math.random()*SS_COLORS.length)];
+      box.word=SS_WORDS[Math.floor(Math.random()*SS_WORDS.length)];
+      ssCorners++;
+      document.getElementById('ss-caption').textContent=`corners hit: ${ssCorners}`;
+    }
+    ctx.fillStyle=box.color+'22';
+    ctx.fillRect(box.x,box.y,box.w,box.h);
+    ctx.strokeStyle=box.color;
+    ctx.lineWidth=1;
+    ctx.strokeRect(box.x,box.y,box.w,box.h);
+    ctx.fillStyle=box.color;
+    ctx.font='bold 10px monospace';
+    ctx.textAlign='center';
+    ctx.fillText(box.word,box.x+box.w/2,box.y+box.h/2+4);
+  });
+
+  stareRaf=requestAnimationFrame(animScreensaver);
+}
+
+// ── TERRIBLE FISH TANK ──
+const FISH_NAMES=['Gerald','Fish 2','The Other One','Kevin','Unnamed','Barry'];
+const FISH_COLORS=['#e8a830','#d97a5a','#d48fa8','#7ec894','#c090e0','#ff9055'];
+let fishList=[], ftBubbles=[];
+
+function startFishtank(){
+  const c=document.getElementById('ft-canvas');
+  c.width=c.offsetWidth||540; c.height=260;
+  fishList=[]; ftBubbles=[];
+  for(let i=0;i<6;i++){
+    fishList.push({
+      x:Math.random()*c.width,
+      y:30+Math.random()*(c.height-80),
+      vx:(Math.random()>0.5?1:-1)*(0.06+Math.random()*0.18),
+      vy:(Math.random()-0.5)*0.04,
+      size:12+Math.random()*14,
+      color:FISH_COLORS[i],
+      name:FISH_NAMES[i],
+      upside: i===3,
+      reverseTimer:80+Math.random()*300,
+    });
+  }
+  animFishtank();
+}
+
+function animFishtank(){
+  if(!stareActive)return;
+  const c=document.getElementById('ft-canvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+
+  // background
+  ctx.fillStyle='#0a1520';
+  ctx.fillRect(0,0,c.width,c.height);
+
+  // subtle water gradient
+  const wg=ctx.createLinearGradient(0,0,0,c.height);
+  wg.addColorStop(0,'rgba(0,60,100,0.3)');
+  wg.addColorStop(1,'rgba(0,20,40,0.5)');
+  ctx.fillStyle=wg;
+  ctx.fillRect(0,0,c.width,c.height);
+
+  // floor
+  ctx.fillStyle='#1a1008';
+  ctx.fillRect(0,c.height-22,c.width,22);
+
+  // rocks (rectangles, as god intended)
+  ctx.fillStyle='#2a2a2a';
+  ctx.fillRect(35,c.height-34,32,14);
+  ctx.fillRect(190,c.height-30,22,10);
+  ctx.fillRect(390,c.height-38,44,18);
+  ctx.fillRect(290,c.height-28,18,8);
+
+  // bubbles
+  if(Math.random()<0.06){
+    ftBubbles.push({x:30+Math.random()*(c.width-60),y:c.height-22,r:1.5+Math.random()*3.5,speed:0.12+Math.random()*0.22,wobble:Math.random()*Math.PI*2});
+  }
+  ftBubbles=ftBubbles.filter(b=>b.y>-10);
+  ftBubbles.forEach(b=>{
+    b.y-=b.speed;
+    b.wobble+=0.015;
+    b.x+=Math.sin(b.wobble)*0.12;
+    ctx.beginPath();
+    ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+    ctx.strokeStyle='rgba(150,200,255,0.35)';
+    ctx.lineWidth=1;
+    ctx.stroke();
+  });
+
+  // fish
+  fishList.forEach(fish=>{
+    fish.reverseTimer--;
+    if(fish.reverseTimer<=0){
+      if(Math.random()<0.25) fish.vx*=-1;
+      fish.reverseTimer=80+Math.random()*350;
+    }
+    fish.x+=fish.vx;
+    fish.y+=fish.vy;
+    if(fish.x<-fish.size*1.5) fish.x=c.width+fish.size;
+    if(fish.x>c.width+fish.size*1.5) fish.x=-fish.size;
+    if(fish.y<25){fish.y=25;fish.vy=Math.abs(fish.vy);}
+    if(fish.y>c.height-32){fish.y=c.height-32;fish.vy=-Math.abs(fish.vy);}
+
+    ctx.save();
+    ctx.translate(fish.x,fish.y);
+    if(fish.upside) ctx.scale(1,-1);
+    if(fish.vx<0) ctx.scale(-1,1);
+
+    // body
+    ctx.fillStyle=fish.color;
+    ctx.beginPath();
+    ctx.moveTo(fish.size,0);
+    ctx.lineTo(-fish.size*0.5,-fish.size*0.55);
+    ctx.lineTo(-fish.size*0.5,fish.size*0.55);
+    ctx.closePath();
+    ctx.fill();
+
+    // tail
+    ctx.beginPath();
+    ctx.moveTo(-fish.size*0.5,0);
+    ctx.lineTo(-fish.size*1.3,-fish.size*0.45);
+    ctx.lineTo(-fish.size*1.3,fish.size*0.45);
+    ctx.closePath();
+    ctx.fill();
+
+    // eye
+    ctx.fillStyle='#111';
+    ctx.beginPath();
+    ctx.arc(fish.size*0.35,-fish.size*0.1,fish.size*0.18,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.5)';
+    ctx.beginPath();
+    ctx.arc(fish.size*0.38,-fish.size*0.14,fish.size*0.07,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.restore();
+
+    // name label
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.font='9px monospace';
+    ctx.textAlign='center';
+    ctx.fillText(fish.upside ? fish.name+' (fine)' : fish.name, fish.x, fish.y - fish.size - 5);
+  });
+
+  stareRaf=requestAnimationFrame(animFishtank);
+}
+
+// ── FAKE FIRE ──
+let firePixels=null, fireW=0, fireH=0, fireFrameCount=0;
+
+function startFire(){
+  const c=document.getElementById('fire-canvas');
+  c.width=c.offsetWidth||540; c.height=260;
+  fireW=Math.floor(c.width/3);
+  fireH=Math.floor(c.height/3);
+  firePixels=new Uint8Array(fireW*fireH);
+  animFire();
+}
+
+function animFire(){
+  if(!stareActive)return;
+  const c=document.getElementById('fire-canvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+
+  fireFrameCount++;
+  if(fireFrameCount%2!==0){stareRaf=requestAnimationFrame(animFire);return;}
+
+  // seed bottom row
+  for(let x=0;x<fireW;x++){
+    firePixels[(fireH-1)*fireW+x]=180+Math.floor(Math.random()*75);
+  }
+
+  // propagate upward with drift and cooling
+  for(let y=0;y<fireH-1;y++){
+    for(let x=0;x<fireW;x++){
+      const src=(y+1)*fireW + ((x + Math.floor(Math.random()*3)-1+fireW)%fireW);
+      const decay=Math.floor(Math.random()*14);
+      firePixels[y*fireW+x]=Math.max(0, firePixels[src]-decay);
+    }
+  }
+
+  // draw scaled up
+  const img=ctx.createImageData(c.width,c.height);
+  const scale=3;
+  for(let y=0;y<fireH;y++){
+    for(let x=0;x<fireW;x++){
+      const v=firePixels[y*fireW+x];
+      let r,g,b;
+      if(v<64){r=Math.floor(v*4);g=0;b=0;}
+      else if(v<128){r=255;g=Math.floor((v-64)*4);b=0;}
+      else if(v<200){r=255;g=255;b=Math.floor((v-128)*3.6);}
+      else{r=255;g=255;b=255;}
+      for(let dy=0;dy<scale;dy++){
+        for(let dx=0;dx<scale;dx++){
+          const py=y*scale+dy, px=x*scale+dx;
+          if(py<c.height&&px<c.width){
+            const i=(py*c.width+px)*4;
+            img.data[i]=r; img.data[i+1]=g; img.data[i+2]=b; img.data[i+3]=255;
+          }
+        }
+      }
+    }
+  }
+  ctx.putImageData(img,0,0);
+
+  // logs (brown rectangles doing their best)
+  ctx.fillStyle='#3a1a05';
+  ctx.fillRect(55,c.height-26,90,20);
+  ctx.fillRect(175,c.height-22,110,18);
+  ctx.fillRect(340,c.height-28,80,22);
+
+  // log grain lines
+  ctx.strokeStyle='rgba(0,0,0,0.3)';
+  ctx.lineWidth=1;
+  [70,90,110].forEach(lx=>{ctx.beginPath();ctx.moveTo(lx,c.height-26);ctx.lineTo(lx+5,c.height-6);ctx.stroke();});
+
+  stareRaf=requestAnimationFrame(animFire);
+}
+
+// ── ACCESSIBILITY ──
+let fontScale = 1;
+
+function toggleA11yPanel() {
+  const panel = document.getElementById('a11y-panel');
+  const btn = document.getElementById('a11y-btn');
+  const open = panel.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+  if (open) { const first = panel.querySelector('input,button'); if(first) first.focus(); }
+}
+
+function applyDark(on) {
+  document.body.classList.toggle('dark-mode', on);
+  announce(on ? 'Dark mode on' : 'Dark mode off');
+}
+
+function applyContrast(on) {
+  document.body.classList.toggle('high-contrast', on);
+  announce(on ? 'High contrast on' : 'High contrast off');
+  // Re-render any active canvas-based visuals so they don't disappear
+  if(stareActive) {
+    const activePanel = document.querySelector('#section-stare .panel.active');
+    if(activePanel) {
+      const tab = activePanel.id.replace('panel-','');
+      stopStare(); stareActive=true;
+      if(tab==='screensaver') startScreensaver();
+      else if(tab==='fishtank') startFishtank();
+      else if(tab==='fire') startFire();
+    }
+  }
+  // Re-draw wheel if visible
+  const wc = document.getElementById('wheel-canvas');
+  if(wc && document.getElementById('panel-wheel').classList.contains('active')) drawWheel(wc, wAngle);
+  // Re-generate shitart if visible
+  if(document.getElementById('panel-shitart') && document.getElementById('panel-shitart').classList.contains('active') && shitartCount>0) makeShitArt();
+}
+
+function applyMotion(on) {
+  document.body.classList.toggle('reduce-motion', on);
+  announce(on ? 'Reduce motion on' : 'Reduce motion off');
+}
+
+function changeFont(dir) {
+  fontScale = Math.min(1.5, Math.max(0.8, +(fontScale + dir * 0.1).toFixed(1)));
+  document.documentElement.style.setProperty('--font-scale', fontScale);
+  document.getElementById('font-size-label').textContent = Math.round(fontScale * 100) + '%';
+  announce('Font size ' + Math.round(fontScale * 100) + '%');
+}
+
+function announce(msg) {
+  const el = document.getElementById('a11y-announce');
+  el.textContent = '';
+  setTimeout(() => { el.textContent = msg; }, 50);
+}
+
+document.addEventListener('click', e => {
+  const panel = document.getElementById('a11y-panel');
+  const btn = document.getElementById('a11y-btn');
+  if (panel && panel.classList.contains('open') && !panel.contains(e.target) && e.target !== btn) {
+    panel.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const panel = document.getElementById('a11y-panel');
+    if (panel && panel.classList.contains('open')) {
+      panel.classList.remove('open');
+      const btn = document.getElementById('a11y-btn');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.focus();
+    }
+  }
+});
+
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.body.classList.add('reduce-motion');
+  const el = document.getElementById('toggle-motion');
+  if (el) el.checked = true;
+}
+</script>
+
+<button id="a11y-btn" aria-label="Accessibility settings" aria-expanded="false" aria-controls="a11y-panel" onclick="toggleA11yPanel()">♿</button>
+
+<div id="a11y-panel" role="dialog" aria-label="Accessibility settings">
+  <h3>Accessibility</h3>
+  <div class="a11y-row">
+    <label for="toggle-dark">Dark mode</label>
+    <label class="toggle">
+      <input type="checkbox" id="toggle-dark" onchange="applyDark(this.checked)">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="a11y-row">
+    <label for="toggle-contrast">High contrast</label>
+    <label class="toggle">
+      <input type="checkbox" id="toggle-contrast" onchange="applyContrast(this.checked)">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="a11y-row">
+    <label for="toggle-motion">Reduce motion</label>
+    <label class="toggle">
+      <input type="checkbox" id="toggle-motion" onchange="applyMotion(this.checked)">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="a11y-row">
+    <label>Font size</label>
+    <div class="font-ctrl">
+      <button class="font-btn" onclick="changeFont(-1)" aria-label="Decrease font size">−</button>
+      <span id="font-size-label" aria-live="polite">100%</span>
+      <button class="font-btn" onclick="changeFont(1)" aria-label="Increase font size">+</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer style="width:100%;max-width:600px;margin-top:36px;padding:20px 16px 28px;text-align:center;border-top:1px solid #b8caca;">
+  <p style="font-size:0.72rem;color:#5a7070;letter-spacing:0.5px;line-height:2;margin-bottom:4px;">
+    Part of the <em>Neurocontextual Systems Design Suite</em> (NSDS)
+  </p>
+  <p style="font-size:0.70rem;color:#5a7070;line-height:2;">
+    &copy; 2026 Creative Solutions Coaching &nbsp;&middot;&nbsp; Elizabeth Morrison, Developer &nbsp;&middot;&nbsp; <a href="https://www.creativesolutionscoaching.com" style="color:#5a7070;text-decoration:underline;text-underline-offset:3px;" target="_blank" rel="noopener">www.creativesolutionscoaching.com</a>
+  </p>
+  <p style="font-size:0.68rem;color:#5a7070;line-height:2;margin-top:2px;">
+    No data is stored on any server &nbsp;&middot;&nbsp; Not a diagnostic instrument &nbsp;&middot;&nbsp; Licensed for individual, clinical, and educational use only &nbsp;&middot;&nbsp; Not for redistribution
+  </p>
+</footer>
+
+</body>
+</html>
