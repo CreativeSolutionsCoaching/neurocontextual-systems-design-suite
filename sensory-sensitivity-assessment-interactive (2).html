@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1A3150">
+<title>Sensory Sensitivity Assessment Tool · NSDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@300;400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'OpenDyslexic';src:url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/OpenDyslexic-Regular.otf') format('opentype');font-weight:400}
+@font-face{font-family:'OpenDyslexic';src:url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/OpenDyslexic-Bold.otf') format('opentype');font-weight:700}
+:root{--navy:#1A3150;--teal:#1D8A9A;--teal-mid:#229FB0;--teal-pale:#D0EEF2;--aqua:#2BBCCE;--aqua-light:#6CD5E3;--aqua-pale:#D6F0F4;--green:#62D48A;--green-mid:#4CB878;--green-pale:#D4F4E2;--cream:#F6F3EE;--cream-mid:#ECE8E0;--cream-dark:#DDD8CE;--amber:#C8903A;--amber-pale:#FBF1DE;--rose:#C05060;--rose-pale:#FAE6EA;--plum:#7B5EA8;--plum-pale:#EDE8F8;--white:#FDFBF7;--ink:#1E2A3A;--charcoal:#1A2530;--warm-grey:#7A8595;--shadow-sm:0 2px 8px rgba(26,49,80,.1);--shadow-md:0 4px 20px rgba(26,49,80,.15);--radius:12px;--radius-sm:8px}
+html.fs-sm{font-size:12px}html.fs-md{font-size:14px}html.fs-lg{font-size:17px}html.fs-xl{font-size:20px}html.fs-xxl{font-size:24px}
+body.font-dyslexic,body.font-dyslexic *{font-family:'OpenDyslexic',sans-serif!important;letter-spacing:.05em;word-spacing:.18em;line-height:2!important}
+body.font-hyperlegible,body.font-hyperlegible *{font-family:'Atkinson Hyperlegible',sans-serif!important}
+body.high-contrast{--navy:#000;--teal:#00FFFF;--teal-mid:#00DDDD;--teal-pale:#003333;--aqua:#00FFFF;--aqua-light:#00DDDD;--aqua-pale:#003333;--green:#00FF66;--green-mid:#00CC44;--green-pale:#003311;--cream:#000;--cream-mid:#111;--cream-dark:#333;--amber:#FFD700;--amber-pale:#332200;--rose:#FF4466;--rose-pale:#330011;--plum:#CC88FF;--plum-pale:#220033;--white:#000;--ink:#FFF;--charcoal:#FFF;--warm-grey:#CCC;background:#000!important;color:#FFF!important}
+body.high-contrast .card{background:#111!important;border-color:#444!important}
+body.high-contrast header{background:#000!important;border-bottom:2px solid #00FFFF!important}
+body.high-contrast footer{background:#000!important;border-top:2px solid #00FFFF!important}
+body.high-contrast input,body.high-contrast textarea{background:#111!important;color:#FFF!important;border-color:#00FFFF!important}
+body.high-contrast .rate-btn{background:#111!important;color:#FFF!important;border-color:#555!important}
+body.high-contrast .rate-btn[aria-pressed="true"]{background:#00FFFF!important;color:#000!important;border-color:#00FFFF!important}
+body.high-contrast .rate-btn[aria-pressed="true"] .rn{color:#000!important}
+body.high-contrast .btn-primary{background:#00FFFF!important;color:#000!important}
+body.high-contrast .btn-ghost{background:#222!important;color:#FFF!important;border-color:#888!important}
+body.high-contrast .btn-green{background:#00FF66!important;color:#000!important}
+body.high-contrast .btn-amber{background:#FFD700!important;color:#000!important}
+body.high-contrast .mode-card{background:#111!important;border-color:#00FFFF!important}
+body.high-contrast .tab-btn.active{color:#00FFFF!important;border-bottom-color:#00FFFF!important}
+body.high-contrast .tab-badge.complete{background:#00FF66!important;color:#000!important}
+body.high-contrast .tab-badge.partial{background:#FFD700!important;color:#000!important}
+body.high-contrast .ss{background:#111!important;border-color:#444!important}
+body.high-contrast .info-box{background:#003333!important;border-color:#00FFFF!important}
+body.high-contrast .alert-teal{background:#003333!important;color:#00FFFF!important}
+body.high-contrast .alert-rose{background:#330011!important;color:#FF4466!important}
+body.colorblind-safe{--teal:#0077BB;--aqua:#33AADD;--aqua-pale:#CCEEFF;--teal-pale:#CCEEFF;--green:#009988;--green-pale:#CCEEEE;--rose:#EE7733;--rose-pale:#FFEECC;--amber:#CCBB44;--amber-pale:#FAFACC;--plum:#AA3377;--plum-pale:#F0CCDD}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+body.large-targets .btn{min-height:52px!important;padding:.9rem 1.4rem!important}
+body.large-targets .rate-btn{min-height:52px!important}
+body.large-targets input{padding:.9rem 1.1rem!important;min-height:52px!important}
+body.simplified .domain-desc,.simplified .about-detail,.simplified .info-box{display:none!important}
+#a11y-settings-btn{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:50px;padding:.45rem .9rem .45rem .7rem;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:background .18s;white-space:nowrap;margin-left:auto}
+#a11y-settings-btn:hover{background:rgba(255,255,255,.28)}
+#a11y-panel{position:fixed;top:4rem;right:1rem;z-index:7999;background:var(--white);border:1.5px solid var(--cream-dark);border-radius:var(--radius);padding:1.25rem;box-shadow:var(--shadow-md);width:300px;max-height:85vh;overflow-y:auto}
+#a11y-panel h3{font-size:.95rem;font-weight:700;margin:0 0 1rem;color:var(--teal)}
+.a11y-group{margin-bottom:1rem}
+.a11y-group-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--warm-grey);margin-bottom:.5rem}
+.a11y-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+.a11y-row label{font-size:.88rem;color:var(--ink)}
+.a11y-toggle{position:relative;display:inline-block;width:40px;height:22px}
+.a11y-toggle input{opacity:0;width:0;height:0}
+.a11y-slider{position:absolute;cursor:pointer;inset:0;background:var(--cream-dark);border-radius:22px;transition:background .2s}
+.a11y-slider::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s}
+.a11y-toggle input:checked+.a11y-slider{background:var(--teal)}
+.a11y-toggle input:checked+.a11y-slider::before{transform:translateX(18px)}
+.a11y-font-row{display:flex;gap:.4rem;flex-wrap:wrap}
+.a11y-font-btn{padding:.35rem .7rem;border:1.5px solid var(--cream-dark);border-radius:var(--radius-sm);background:var(--white);font-size:.82rem;cursor:pointer;transition:all .15s;color:var(--ink);font-family:inherit}
+.a11y-font-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.a11y-font-btn[data-font="dyslexic"]{font-family:'OpenDyslexic',sans-serif}
+.a11y-font-btn[data-font="hyperlegible"]{font-family:'Atkinson Hyperlegible',sans-serif}
+.a11y-fs-row{display:flex;align-items:center;gap:.6rem}
+.a11y-fs-btn{width:32px;height:32px;border:1.5px solid var(--cream-dark);border-radius:var(--radius-sm);background:var(--white);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;color:var(--ink);font-family:inherit}
+.a11y-fs-btn:hover{background:var(--teal-pale);border-color:var(--teal)}
+#fs-label{font-size:.88rem;color:var(--ink);min-width:60px;text-align:center}
+.a11y-close-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--cream-mid)}
+#a11y-close-btn{background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--warm-grey);padding:.25rem;border-radius:4px}
+#a11y-reset-btn{font-size:.78rem;color:var(--warm-grey);background:none;border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:.25rem .6rem;cursor:pointer;font-family:inherit}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65;min-height:100vh}
+header{background:var(--charcoal);color:var(--cream);padding:.9rem 1.5rem;display:flex;align-items:center;gap:.75rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hbadge{background:linear-gradient(135deg,var(--teal),var(--aqua));color:#fff;font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.hdiv{width:1px;height:2rem;background:rgba(255,255,255,.2);flex-shrink:0}
+.htitle{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--cream);line-height:1.2}
+.hsub{font-size:.7rem;color:rgba(247,243,235,.55);margin-top:.1rem}
+.vwrap{max-width:820px;margin:0 auto;padding:1.75rem 1rem 5rem}
+.card{background:var(--white);border-radius:var(--radius);padding:1.75rem 2rem;box-shadow:var(--shadow-sm);border:1px solid var(--cream-mid)}
+h1{font-family:'Lora',serif;font-size:1.75rem;font-weight:700;color:var(--charcoal);line-height:1.2;margin-bottom:.25rem}
+h2{font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:var(--charcoal);margin-bottom:.75rem}
+h3{font-family:'Lora',serif;font-size:1.05rem;font-weight:600;color:var(--charcoal);margin-bottom:.6rem}
+p{margin-bottom:.7rem}p:last-child{margin-bottom:0}
+.info-box{background:var(--teal-pale);border-left:4px solid var(--teal);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0}
+.info-box p{font-size:.9rem;margin-bottom:0}
+.info-amber{background:var(--amber-pale);border-left:4px solid var(--amber);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0}
+.info-amber p{font-size:.9rem;margin-bottom:0}
+.info-rose{background:var(--rose-pale);border-left:4px solid var(--rose);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0}
+.info-rose p{font-size:.9rem;margin-bottom:0}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.25rem;border-radius:50px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;border:none;transition:all .18s}
+.btn:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.btn-primary{background:linear-gradient(135deg,var(--teal),var(--aqua));color:#fff}
+.btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 4px 14px rgba(29,138,154,.35)}
+.btn-green{background:var(--green);color:var(--charcoal)}.btn-green:hover{background:var(--green-mid);transform:translateY(-1px)}
+.btn-amber{background:var(--amber);color:#fff}.btn-amber:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1.5px solid var(--cream-dark);color:var(--ink)}.btn-ghost:hover{border-color:var(--warm-grey);background:var(--cream-mid)}
+.btn-danger{background:transparent;border:1.5px solid var(--rose);color:var(--rose)}.btn-danger:hover{background:var(--rose-pale)}
+.btn-lg{padding:.75rem 1.6rem;font-size:1rem}
+.btn-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
+.btn-group{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem}
+.mc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1rem;margin-bottom:1.5rem}
+@media(max-width:660px){.mc-grid{grid-template-columns:1fr}}
+.mode-card{border-radius:var(--radius);padding:1.75rem 1.5rem;text-align:center;cursor:pointer;border:2.5px solid transparent;transition:all .2s;background:var(--white);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;gap:.55rem;font-family:inherit}
+.mode-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.mode-card:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.mc-ind{border-color:var(--aqua-light)}.mc-ind:hover{border-color:var(--aqua)}
+.mc-ins{border-color:var(--green)}.mc-ins:hover{border-color:var(--green-mid)}
+.mc-rem{border-color:var(--plum)}.mc-rem:hover{border-color:var(--plum)}
+.mc-icon{font-size:2.4rem;line-height:1;margin-bottom:.2rem}
+.mc-title{font-family:'Lora',serif;font-size:1.15rem;font-weight:700;color:var(--charcoal)}
+.mc-desc{font-size:.85rem;color:var(--warm-grey);line-height:1.55}
+.mc-tag{display:inline-block;padding:.2rem .65rem;border-radius:20px;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-top:.2rem}
+.mt-a{background:var(--aqua-pale);color:var(--teal)}.mt-g{background:var(--green-pale);color:var(--green-mid)}.mt-p{background:var(--plum-pale);color:var(--plum)}
+.setup-teal{border-left:4px solid var(--teal);background:var(--teal-pale)}
+.setup-green{border-left:4px solid var(--green);background:var(--green-pale)}
+.setup-amber{border-left:4px solid var(--amber);background:var(--amber-pale)}
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-weight:700;font-size:.9rem;margin-bottom:.4rem;color:var(--ink)}
+.form-group input{width:100%;padding:.55rem .85rem;border:1.5px solid var(--cream-dark);border-radius:var(--radius-sm);font-family:inherit;font-size:.93rem;background:var(--white);color:var(--ink)}
+.form-group input:focus{border-color:var(--teal);outline:2px solid var(--teal-pale)}
+.hint{font-size:.8rem;color:var(--warm-grey);font-weight:400}
+.url-box{background:var(--white);border:1.5px solid var(--cream-dark);border-radius:var(--radius-sm);padding:.75rem 1rem;font-size:.82rem;word-break:break-all;color:var(--ink);user-select:all;margin:.75rem 0;min-height:2.5rem;line-height:1.5;cursor:text}
+.alert{display:flex;gap:.75rem;padding:.9rem 1rem;border-radius:var(--radius-sm);font-size:.88rem;align-items:flex-start;margin:.75rem 0}
+.alert-icon{font-size:1.1rem;flex-shrink:0;line-height:1.4}
+.alert-teal{background:var(--teal-pale);color:var(--teal)}.alert-rose{background:var(--rose-pale);color:var(--rose)}
+.tbo{position:sticky;top:56px;z-index:90;background:var(--white);border-bottom:2px solid var(--cream-dark);box-shadow:0 2px 8px rgba(26,49,80,.06)}
+.tab-bar{display:flex;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{padding:.6rem .85rem;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--warm-grey);border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .18s,border-color .18s;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:.3rem}
+.tab-btn:hover{color:var(--teal);background:var(--cream)}.tab-btn.active{color:var(--navy);border-bottom-color:var(--teal)}
+.tab-btn:focus-visible{outline:3px solid var(--amber);outline-offset:-2px}
+.tbadge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:9px;background:var(--cream-dark);font-size:.65rem;font-weight:800;padding:0 3px;transition:background .2s}
+.tbadge.complete{background:var(--green);color:#fff}.tbadge.partial{background:var(--amber);color:#fff}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.tbody{max-width:820px;margin:0 auto;padding:1.5rem 1rem 2rem}
+.domain-card{border-top:4px solid var(--dc,var(--teal))}
+.domain-hdr{display:flex;align-items:flex-start;gap:1rem;margin-bottom:.75rem}
+.dicon{font-size:2rem;line-height:1;flex-shrink:0;margin-top:.2rem}
+.dtitle{font-family:'Lora',serif;font-size:1.2rem;font-weight:700;color:var(--charcoal);margin-bottom:.2rem}
+.dmeta{font-size:.82rem;color:var(--warm-grey);display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+.dmeta strong{color:var(--ink)}
+.sband{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.78rem;font-weight:800;background:var(--cream-mid);color:var(--warm-grey);transition:all .3s}
+.ddesc{font-size:.88rem;color:var(--warm-grey);font-style:italic;margin-bottom:1rem;padding:.65rem .9rem;background:var(--cream);border-radius:var(--radius-sm)}
+.dpbar{height:5px;background:var(--cream-dark);border-radius:3px;margin-bottom:1.25rem;overflow:hidden}
+.dpfill{height:100%;background:linear-gradient(90deg,var(--teal),var(--aqua));border-radius:3px;transition:width .3s}
+.items-list{display:flex;flex-direction:column;gap:0}
+.item-block{padding:.9rem 0;border-bottom:1px solid var(--cream-mid)}
+.item-block:last-child{border-bottom:none}
+.item-text{font-size:.93rem;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:.6rem}
+.inum{font-size:.72rem;color:var(--warm-grey);font-weight:700;margin-right:.35rem}
+.likert-wrap{display:flex;align-items:center;gap:.5rem}
+.likert-end{font-size:.68rem;font-weight:700;color:var(--warm-grey);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;flex-shrink:0;width:38px}
+.likert-end:first-child{text-align:right}
+.likert-end:last-child{text-align:left}
+.rate-row{display:grid;grid-template-columns:repeat(6,1fr);gap:.3rem;flex:1;min-width:0}
+.rate-btn{padding:.55rem .1rem;background:var(--white);border:1.5px solid var(--cream-dark);border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit;min-height:44px}
+.rate-btn:hover{border-color:var(--teal);background:var(--teal-pale)}
+.rate-btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.rate-btn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy)}
+.rate-btn[aria-pressed="true"] .rn{color:#fff}
+.rn{font-size:1rem;font-weight:800;color:var(--navy);line-height:1}
+.radar-wrap{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.radar-outer{width:100%;max-width:480px}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;width:100%}
+@media(max-width:500px){.sgrid{grid-template-columns:repeat(2,1fr)}}
+.stile{background:var(--cream);border-radius:var(--radius-sm);padding:.55rem .65rem;text-align:center;border-top:3px solid var(--cream-dark);transition:border-color .3s}
+.stile-l{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--warm-grey);margin-bottom:.15rem}
+.stile-n{font-size:1.35rem;font-weight:800;font-family:'Lora',serif;color:var(--ink);line-height:1}
+.stile-b{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-top:.15rem}
+#finish-bar{background:var(--white);border-top:2px solid var(--cream-dark);padding:1.25rem 1.5rem;text-align:center}
+#finish-bar p{font-size:.9rem;color:var(--warm-grey);margin-bottom:.75rem}
+.ss{background:var(--white);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.1rem;border:1.5px solid var(--cream-mid);break-inside:avoid}
+.ss h3{color:var(--teal);border-bottom:1px solid var(--cream-mid);padding-bottom:.5rem;margin-bottom:.9rem}
+.srow{display:grid;grid-template-columns:180px 1fr;gap:.4rem .75rem;padding:.35rem 0;border-bottom:1px solid var(--cream);font-size:.9rem;align-items:baseline}
+.srow:last-child{border-bottom:none}
+@media(max-width:480px){.srow{grid-template-columns:1fr}}
+.srl{font-weight:700;color:var(--warm-grey)}.srv{color:var(--charcoal)}
+.pblock{background:var(--cream);border-radius:var(--radius-sm);padding:.85rem 1rem;font-size:.88rem;color:var(--ink);line-height:1.65;margin-bottom:.65rem}
+.pblock:last-child{margin-bottom:0}
+.print-card{border-radius:var(--radius);padding:1.25rem 1.5rem;margin-top:1.25rem;background:var(--teal-pale);border:1.5px solid var(--teal)}
+.print-card h3{color:var(--teal);margin-top:0}
+#save-ind{text-align:center;font-size:.82rem;color:var(--green-mid);padding:.4rem;opacity:0;transition:opacity .4s}
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(8px);background:var(--charcoal);color:#fff;padding:.65rem 1.4rem;border-radius:50px;font-size:.88rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:9999;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+footer{background:var(--charcoal);color:var(--warm-grey);padding:1.25rem 2rem;font-size:.8rem;line-height:1.65;text-align:center}
+footer strong{color:var(--cream)}
+@media print{
+  #a11y-settings-btn,#a11y-panel,.btn-row,.btn-group,.btn,#finish-bar,#save-ind,footer,#view-landing,#view-setup,#view-tool,.tbo{display:none!important}
+  header{position:static!important;background:#fff!important;color:#000!important;box-shadow:none!important;padding:.5rem 1rem!important}
+  .hbadge,.hsub{display:none!important}.htitle{color:#000!important;font-size:.9rem!important}
+  body{background:#fff!important;color:#000!important}
+  .ss{box-shadow:none!important;border:1px solid #ccc!important;break-inside:avoid}
+  .vwrap{padding:0!important}.print-card{display:none!important}
+  #view-insession-summary,#view-personal-summary,#view-results{display:block!important}
+}
+@media(max-width:600px){.tbody,.vwrap{padding-left:.75rem;padding-right:.75rem}.card{padding:1.25rem 1.1rem}h1{font-size:1.45rem}.hbadge{display:none}#a11y-panel{width:calc(100vw - 2rem);right:1rem}}
+</style>
+</head>
+<body>
+
+<!-- A11Y PANEL -->
+<div id="a11y-panel" hidden role="dialog" aria-label="Accessibility settings" aria-modal="true">
+  <div class="a11y-close-row">
+    <h3>Accessibility Settings</h3>
+    <button id="a11y-close-btn" aria-label="Close accessibility settings">✕</button>
+  </div>
+  <div class="a11y-group">
+    <div class="a11y-group-label">Text Size</div>
+    <div class="a11y-fs-row">
+      <button class="a11y-fs-btn" id="fs-down-btn" aria-label="Decrease font size">A−</button>
+      <span id="fs-label" aria-live="polite">Normal</span>
+      <button class="a11y-fs-btn" id="fs-up-btn" aria-label="Increase font size">A+</button>
+    </div>
+  </div>
+  <div class="a11y-group">
+    <div class="a11y-group-label">Font Style</div>
+    <div class="a11y-font-row">
+      <button class="a11y-font-btn active" data-font="default" aria-pressed="true">Default</button>
+      <button class="a11y-font-btn" data-font="hyperlegible" aria-pressed="false">Accessible</button>
+      <button class="a11y-font-btn" data-font="dyslexic" aria-pressed="false">Dyslexia</button>
+    </div>
+  </div>
+  <div class="a11y-group">
+    <div class="a11y-group-label">Display</div>
+    <div class="a11y-row"><label for="t-hc">High Contrast</label><label class="a11y-toggle"><input type="checkbox" id="t-hc"><span class="a11y-slider"></span></label></div>
+    <div class="a11y-row"><label for="t-cb">Colorblind Safe</label><label class="a11y-toggle"><input type="checkbox" id="t-cb"><span class="a11y-slider"></span></label></div>
+    <div class="a11y-row"><label for="t-rm">Reduce Motion</label><label class="a11y-toggle"><input type="checkbox" id="t-rm"><span class="a11y-slider"></span></label></div>
+    <div class="a11y-row"><label for="t-lt">Large Tap Targets</label><label class="a11y-toggle"><input type="checkbox" id="t-lt"><span class="a11y-slider"></span></label></div>
+    <div class="a11y-row"><label for="t-sv">Simplified View</label><label class="a11y-toggle"><input type="checkbox" id="t-sv"><span class="a11y-slider"></span></label></div>
+  </div>
+  <button id="a11y-reset-btn">↺ Reset to defaults</button>
+</div>
+
+<!-- HEADER -->
+<header role="banner">
+  <span class="hbadge" aria-label="Neurocontextual Systems Design Suite">NSDS</span>
+  <div class="hdiv" aria-hidden="true"></div>
+  <div style="flex:1;min-width:0">
+    <div class="htitle">Sensory Sensitivity Assessment Tool</div>
+    <div class="hsub">Neurocontextual Systems Design Suite (NSDS) · Creative Solutions Coaching, PLLC</div>
+  </div>
+  <button id="a11y-settings-btn" aria-expanded="false" aria-controls="a11y-panel" aria-label="Open accessibility settings">⚙️ <span aria-hidden="true">Accessibility</span></button>
+</header>
+
+<!-- LANDING -->
+<div id="view-landing" role="region" aria-label="Choose how to use this tool">
+  <div class="vwrap">
+    <div style="text-align:center;margin-bottom:2rem;padding-top:.5rem">
+      <h2 style="color:var(--navy);font-size:1.4rem;margin-bottom:.5rem">How would you like to use this today?</h2>
+      <p style="color:var(--warm-grey);font-size:.93rem">Choose the mode that fits your situation.</p>
+    </div>
+    <div class="mc-grid" role="group" aria-label="Usage mode selection">
+      <button class="mode-card mc-ind" id="choose-ind-btn" aria-describedby="ind-desc" type="button">
+        <span class="mc-icon" aria-hidden="true">🌱</span>
+        <span class="mc-title">Individual Use</span>
+        <span id="ind-desc" class="mc-desc">Complete on your own, at your own pace. Progress saves automatically to this device only.</span>
+        <span class="mc-tag mt-a">Auto-saved to this device</span>
+      </button>
+      <button class="mode-card mc-ins" id="choose-ins-btn" aria-describedby="ins-desc" type="button">
+        <span class="mc-icon" aria-hidden="true">🤝</span>
+        <span class="mc-title">In-Session</span>
+        <span id="ins-desc" class="mc-desc">Complete together in session. A full clinical interpretation summary is generated when done.</span>
+        <span class="mc-tag mt-g">No setup needed</span>
+      </button>
+      <button class="mode-card mc-rem" id="choose-rem-btn" aria-describedby="rem-desc" type="button">
+        <span class="mc-icon" aria-hidden="true">🔐</span>
+        <span class="mc-title">Send to Client</span>
+        <span id="rem-desc" class="mc-desc">Generate a secure PIN link. Client completes independently and returns an encrypted result. Nothing stored anywhere.</span>
+        <span class="mc-tag mt-p">PIN-encrypted round-trip</span>
+      </button>
+    </div>
+    <!-- Session code entry for clients -->
+    <div style="background:var(--white);border:2px solid var(--plum-pale);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-top:.25rem">
+      <p style="font-weight:700;color:var(--plum);margin-bottom:.6rem;font-size:.95rem">🔐 Received a session code from your clinician?</p>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:flex-end">
+        <div class="form-group" style="flex:1;min-width:200px;margin-bottom:0">
+          <label for="session-code-input" style="font-size:.85rem;color:var(--warm-grey);font-weight:600">Paste your session code here</label>
+          <input type="text" id="session-code-input" placeholder="Paste session code from your clinician" autocomplete="off" style="font-size:.88rem;font-family:monospace">
+        </div>
+        <button class="btn btn-primary" id="session-code-btn" type="button" style="flex-shrink:0;margin-bottom:0">Start Assessment →</button>
+      </div>
+      <div id="session-code-error" hidden class="alert alert-rose" style="margin-top:.6rem;margin-bottom:0"><span class="alert-icon">⚠️</span><span>Invalid session code. Please double-check what your clinician sent you.</span></div>
+    </div>
+    <p style="text-align:center;font-size:.82rem;color:var(--warm-grey);margin-top:1rem">
+      Clinician with a result code to decrypt? &nbsp;
+      <button class="btn btn-ghost" id="landing-decrypt-btn" type="button" style="font-size:.82rem;padding:.3rem .9rem;vertical-align:middle">🔓 Decrypt Results</button>
+    </p>
+  </div>
+</div>
+
+<!-- SETUP VIEW -->
+<div id="view-setup" hidden role="region" aria-label="Clinician Setup" style="max-width:820px;margin:0 auto;padding:2rem 1rem 4rem">
+  <div style="text-align:center;margin-bottom:2rem">
+    <h2 style="color:var(--navy);font-size:1.4rem">Send to Client · Clinician Setup</h2>
+    <p style="color:var(--warm-grey);font-size:.93rem">No server, no hosting. You email the client two things — the file and a session code. Their results come back as a code you paste here to decrypt.</p>
+  </div>
+  <div class="card setup-teal">
+    <h3 style="color:var(--teal);margin-top:0">Step 1 · Create a Secure PIN</h3>
+    <p style="color:var(--warm-grey);font-size:.9rem;margin-bottom:1rem">Enter a 4–6 digit PIN you will remember. It encrypts your client's responses. Keep it — you will need it to read their results.</p>
+    <div class="form-group">
+      <label for="setup-pin">Your PIN <span class="hint">(4–6 digits)</span></label>
+      <input type="password" id="setup-pin" maxlength="6" pattern="[0-9]{4,6}" inputmode="numeric" placeholder="e.g. 4829" autocomplete="off" style="max-width:220px;letter-spacing:.2em;font-size:1.2rem">
+      <p style="font-size:.82rem;color:var(--warm-grey);margin-top:.4rem">Your PIN never leaves this device. It is never transmitted anywhere.</p>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary btn-lg" id="generate-link-btn" type="button">🔐 Generate Session Code</button>
+      <button class="btn btn-ghost" id="setup-back-btn" type="button">← Back</button>
+    </div>
+  </div>
+  <div id="link-result" hidden>
+    <div class="card setup-green" style="margin-top:1.1rem">
+      <h3 style="color:var(--green-mid);margin-top:0">Step 2 · Send These Two Things to Your Client</h3>
+      <div class="alert alert-teal"><span class="alert-icon">ℹ️</span><div><strong>Email your client:</strong><br>① This HTML file as an attachment<br>② The session code below — they'll paste it when they open the file<br><br>Client opens the file in any browser, pastes the code, completes the assessment, then emails you their result code.</div></div>
+      <p style="font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:.4rem">Session Code <span class="hint">(copy and paste into your email)</span></p>
+      <div id="client-link-url" class="url-box" role="textbox" aria-label="Session code" aria-readonly="true" tabindex="0" style="font-family:monospace;font-size:.82rem;word-break:break-all"></div>
+      <div class="btn-group"><button class="btn btn-green" id="copy-client-link-btn" type="button">📋 Copy Session Code</button></div>
+    </div>
+    <div class="card setup-amber" style="margin-top:1.1rem">
+      <h3 style="color:var(--amber);margin-top:0">Step 3 · Decrypt Your Client's Result Code</h3>
+      <p style="color:var(--warm-grey);font-size:.9rem;margin-bottom:1rem">When your client emails you their result code, paste it here with your PIN to view the full clinical summary.</p>
+      <div class="form-group"><label for="result-url-setup">Result Code from Client</label><input type="text" id="result-url-setup" placeholder="Paste result code from client here" autocomplete="off"></div>
+      <div class="form-group"><label for="decrypt-pin-setup">Your PIN</label><input type="password" id="decrypt-pin-setup" maxlength="6" pattern="[0-9]{4,6}" inputmode="numeric" placeholder="Your PIN" autocomplete="off" style="max-width:180px;letter-spacing:.2em"></div>
+      <div class="btn-group"><button class="btn btn-amber" id="decrypt-btn-setup" type="button">🔓 Decrypt Results</button></div>
+      <div id="decrypt-error-setup" hidden class="alert alert-rose" style="margin-top:.75rem"><span class="alert-icon">⚠️</span><span>Incorrect PIN or invalid result code. Please check both and try again.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOL VIEW -->
+<div id="view-tool" hidden role="region" aria-label="Sensory Sensitivity Assessment">
+  <div class="tbo">
+    <nav class="tab-bar" id="tab-bar" role="tablist" aria-label="Assessment sections">
+      <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-about" id="tb-about" data-tab="about" type="button">About</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-radar" id="tb-radar" data-tab="radar" type="button">📊 Profile</button>
+    </nav>
+  </div>
+  <div id="tab-panels">
+    <!-- ABOUT TAB -->
+    <div id="tab-about" class="tab-panel active" role="tabpanel" aria-labelledby="tb-about">
+      <div class="tbody">
+        <div class="card">
+          <h1>Sensory Sensitivity Assessment Tool</h1>
+          <p style="color:var(--warm-grey);font-size:.93rem;margin-bottom:.9rem">A self-report sensory profile inventory · Creative Solutions Coaching, PLLC</p>
+          <div class="info-box" role="note"><p><strong>How to use:</strong> For each statement, select the number that best describes how often you experience it — from 0 (Never) to 5 (Always). Work through all 12 domains at your own pace. Your radar chart updates in real time as you rate items.</p></div>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem">
+            <div class="form-group" style="flex:1;min-width:160px;margin-bottom:0">
+              <label for="client-name">Name <span class="hint">(optional)</span></label>
+              <input type="text" id="client-name" placeholder="Your name or initials" autocomplete="off">
+            </div>
+            <div class="form-group" style="flex:1;min-width:140px;margin-bottom:0">
+              <label for="client-date">Date</label>
+              <input type="date" id="client-date">
+            </div>
+          </div>
+        </div>
+        <div class="card about-detail" style="margin-top:1.1rem">
+          <h2>Rating Scale</h2>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem">
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.6rem .3rem;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:var(--navy)">0</div><div style="font-size:.7rem;font-weight:700;color:var(--warm-grey)">Never</div></div>
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.6rem .3rem;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:var(--navy)">1</div><div style="font-size:.7rem;font-weight:700;color:var(--warm-grey)">Rarely</div></div>
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.6rem .3rem;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:var(--navy)">2</div><div style="font-size:.7rem;font-weight:700;color:var(--warm-grey)">Sometimes</div></div>
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.6rem .3rem;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:var(--navy)">3</div><div style="font-size:.7rem;font-weight:700;color:var(--warm-grey)">Often</div></div>
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.6rem .3rem;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:var(--navy)">4</div><div style="font-size:.7rem;font-weight:700;color:var(--warm-grey)">Very Often</div></div>
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.6rem .3rem;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:var(--navy)">5</div><div style="font-size:.7rem;font-weight:700;color:var(--warm-grey)">Always</div></div>
+          </div>
+        </div>
+        <div class="card about-detail" style="margin-top:1.1rem">
+          <h2>Understanding Your Results</h2>
+          <p style="font-size:.9rem">This assessment is not about "good" or "bad" scores. It's about understanding how your senses affect your everyday life. Everyone has a unique sensory profile, and knowing yours can help you make life easier, reduce stress, and feel more comfortable.</p>
+          <ul style="font-size:.9rem;padding-left:1.2rem;margin-top:.75rem;display:flex;flex-direction:column;gap:.45rem">
+            <li><strong>Notice your patterns:</strong> High scores may mean you're more sensitive in that area. Lower scores may mean you notice less or respond less.</li>
+            <li><strong>Focus on what matters most:</strong> Pay attention to the senses that cause the most stress or make daily life harder.</li>
+            <li><strong>Plan supports:</strong> If sound, light, textures, or other sensations overwhelm you, tools like headphones, sunglasses, weighted blankets, or breaks can help.</li>
+            <li><strong>Build coping strategies:</strong> Simple steps like scheduling sensory breaks, adjusting environments, or asking for accommodations can make a big difference.</li>
+            <li><strong>Celebrate your strengths:</strong> Sometimes sensory differences bring gifts — creativity, noticing details, or unique ways of experiencing the world.</li>
+          </ul>
+          <p style="font-size:.85rem;color:var(--warm-grey);margin-top:.9rem;font-style:italic">This tool is meant to guide self-awareness and conversations with your providers. It can help you explain your experiences, advocate for your needs, and find strategies that work for you.</p>
+        </div>
+        <div class="btn-row" style="justify-content:flex-end">
+          <button class="btn btn-primary btn-lg" id="start-btn" type="button">Begin Assessment →</button>
+        </div>
+      </div>
+    </div>
+    <!-- RADAR TAB -->
+    <div id="tab-radar" class="tab-panel" role="tabpanel" aria-labelledby="tb-radar" aria-hidden="true">
+      <div class="tbody">
+        <div class="card">
+          <h2>Your Sensory Profile</h2>
+          <p style="font-size:.88rem;color:var(--warm-grey);margin-bottom:1.25rem">Updates in real time as you rate items. Points farther from the center indicate higher sensitivity in that domain.</p>
+          <div class="radar-wrap">
+            <div class="radar-outer">
+              <svg id="radar-svg" viewBox="0 0 500 500" width="100%" role="img" aria-label="Sensory sensitivity radar chart — 12 domains scored 0 to 50">
+                <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1D8A9A" stop-opacity="0.35"/><stop offset="100%" stop-color="#2BBCCE" stop-opacity="0.2"/></linearGradient></defs>
+                <g id="r-grid"></g><g id="r-axes"></g><g id="r-labels"></g>
+                <polygon id="r-fill" points="" fill="url(#rg)"/>
+                <polygon id="r-stroke" points="" fill="none" stroke="#1D8A9A" stroke-width="2"/>
+                <g id="r-dots"></g>
+              </svg>
+            </div>
+            <div id="sgrid" class="sgrid" role="list" aria-label="Domain scores"></div>
+          </div>
+        </div>
+        <div class="card about-detail" style="margin-top:1.1rem">
+          <h3>Score Interpretation</h3>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;margin-top:.5rem">
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.65rem .85rem;border-left:3px solid var(--warm-grey)"><div style="font-weight:800;font-size:.88rem;color:var(--warm-grey)">0–10 · Low</div><div style="font-size:.82rem;color:var(--warm-grey);margin-top:.2rem">Lower sensitivity or awareness in this domain</div></div>
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.65rem .85rem;border-left:3px solid var(--teal)"><div style="font-weight:800;font-size:.88rem;color:var(--teal)">11–25 · Mild</div><div style="font-size:.82rem;color:var(--warm-grey);margin-top:.2rem">Some sensitivity; occasional functional impact</div></div>
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.65rem .85rem;border-left:3px solid var(--amber)"><div style="font-weight:800;font-size:.88rem;color:var(--amber)">26–40 · Moderate</div><div style="font-size:.82rem;color:var(--warm-grey);margin-top:.2rem">Meaningful sensitivity with regular impact</div></div>
+            <div style="background:var(--cream);border-radius:var(--radius-sm);padding:.65rem .85rem;border-left:3px solid var(--rose)"><div style="font-weight:800;font-size:.88rem;color:var(--rose)">41–50 · High</div><div style="font-size:.82rem;color:var(--warm-grey);margin-top:.2rem">Significant sensitivity; substantial daily impact</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- FINISH BAR -->
+  <div id="finish-bar">
+    <div id="fin-ind" hidden>
+      <p>View your personal sensory profile summary.</p>
+      <div class="btn-group" style="justify-content:center">
+        <button class="btn btn-primary btn-lg" id="fin-ind-btn" type="button">🌱 View My Summary</button>
+        <button class="btn btn-ghost" id="save-ind-btn" type="button">💾 Save Progress</button>
+        <button class="btn btn-ghost" id="back-ind-btn" type="button">← Back to Start</button>
+        <button class="btn btn-danger" id="clear-ind-btn" type="button">🗑 Clear All</button>
+      </div>
+      <div id="save-ind" role="status" aria-live="polite">✅ Progress saved</div>
+    </div>
+    <div id="fin-ins" hidden>
+      <p id="ins-progress-msg">Complete all <strong>120 items</strong> to unlock the clinical summary — <span id="ins-rated-count">0</span>/120 rated.</p>
+      <div class="btn-group" style="justify-content:center">
+        <button class="btn btn-green btn-lg" id="fin-ins-btn" type="button" disabled aria-disabled="true" style="opacity:.45;cursor:not-allowed">📋 View Clinical Summary</button>
+        <button class="btn btn-ghost" id="save-ins-btn" type="button">💾 Save Progress</button>
+        <button class="btn btn-ghost" id="back-ins-btn" type="button">← Back to Start</button>
+      </div>
+      <div id="save-ins" role="status" aria-live="polite" style="text-align:center;font-size:.82rem;color:var(--green-mid);padding:.4rem;opacity:0;transition:opacity .4s">✅ Progress saved</div>
+    </div>
+    <div id="fin-rem" hidden>
+      <p>Finished? Generate your result code and email it to your clinician.</p>
+      <div class="btn-group" style="justify-content:center">
+        <button class="btn btn-primary btn-lg" id="gen-results-btn" type="button">🔐 Generate My Result Code</button>
+        <button class="btn btn-ghost" id="back-rem-btn" type="button">← Back to Start</button>
+      </div>
+      <div id="result-url-box" class="url-box" hidden style="max-width:680px;margin:1rem auto 0;text-align:left;font-size:.78rem;font-family:monospace;word-break:break-all"></div>
+      <div id="copy-result-row" hidden style="margin-top:.5rem;display:flex;justify-content:center;gap:.5rem;flex-direction:column;align-items:center">
+        <button class="btn btn-green" id="copy-result-btn" type="button">📋 Copy Result Code</button>
+        <p style="font-size:.82rem;color:var(--warm-grey);margin:0">Copy this code and paste it into an email to your clinician. Do not modify it.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IN-SESSION SUMMARY -->
+<div id="view-insession-summary" hidden role="region" aria-label="Clinical Summary">
+  <div class="vwrap">
+    <div id="ins-summary-content" aria-live="polite"></div>
+    <div class="print-card">
+      <h3>Ready to print?</h3>
+      <p style="color:var(--warm-grey);font-size:.9rem;margin-bottom:1rem">Nothing has been saved or transmitted. Print for your records or close when done.</p>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-lg" id="print-ins-btn" type="button">🖨️ Print Clinical Summary</button>
+        <button class="btn btn-ghost" id="back-from-ins-btn" type="button" data-dest="tool">← Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PERSONAL SUMMARY -->
+<div id="view-personal-summary" hidden role="region" aria-label="Personal Summary">
+  <div class="vwrap">
+    <div id="ind-summary-content" aria-live="polite"></div>
+    <div class="print-card" style="background:var(--aqua-pale);border-color:var(--aqua)">
+      <h3 style="color:var(--teal)">Ready to print?</h3>
+      <p style="color:var(--warm-grey);font-size:.9rem;margin-bottom:1rem">Your responses are saved to this device only. Print for your own records whenever you're ready.</p>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-lg" id="print-ind-btn" type="button">🖨️ Print My Summary</button>
+        <button class="btn btn-ghost" id="back-from-ind-btn" type="button">← Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS / DECRYPT -->
+<div id="view-results" hidden role="region" aria-label="Decrypt Results">
+  <div class="vwrap">
+    <div class="card" style="margin-bottom:1.1rem">
+      <h2 style="color:var(--navy);margin-top:0">🔓 Decrypt Client Results</h2>
+      <p style="color:var(--warm-grey);font-size:.9rem;margin-bottom:1rem">Paste the result code your client sent you, enter your PIN, and view the full clinical summary.</p>
+      <div class="form-group"><label for="result-url-decrypt">Result Code from Client</label><input type="text" id="result-url-decrypt" placeholder="Paste result code from client here" autocomplete="off"></div>
+      <div class="form-group"><label for="result-pin-decrypt">Your PIN</label><input type="password" id="result-pin-decrypt" maxlength="6" pattern="[0-9]{4,6}" inputmode="numeric" placeholder="Your PIN" autocomplete="off" style="max-width:180px;letter-spacing:.2em"></div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-lg" id="do-decrypt-btn" type="button">🔓 Decrypt</button>
+        <button class="btn btn-ghost" id="results-back-btn" type="button">← Back</button>
+      </div>
+      <div id="decrypt-error-results" hidden class="alert alert-rose" style="margin-top:.75rem"><span class="alert-icon">⚠️</span><span>Incorrect PIN or invalid result code. Please check both and try again.</span></div>
+    </div>
+    <div id="results-content" aria-live="polite"></div>
+    <div id="results-print-row" hidden class="btn-group" style="margin-top:1.1rem;margin-bottom:1.5rem">
+      <button class="btn btn-primary" id="print-results-btn" type="button">🖨️ Print Clinical Summary</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<footer role="contentinfo">
+  <p><strong>Sensory Sensitivity Assessment Tool</strong> · Neurocontextual Systems Design Suite (NSDS)</p>
+  <p style="margin-top:.3rem">© 2026 Creative Solutions Coaching, PLLC · Licensed for individual clinical use · Not for redistribution</p>
+</footer>
+<script>
+'use strict';
+const DOMAINS=[
+{key:'vision',label:'Vision (Sight)',short:'Vision',icon:'👁️',color:'#1D8A9A',desc:'How you notice and react to light, color, brightness, and movement.',
+items:['Bright lights make me uncomfortable or anxious.','I notice flickering lights more than others do.','I enjoy very bright or intense colors.','I avoid environments with too much visual stimulation.','I sometimes miss visual details that others notice easily.','I seek out visually interesting or colorful environments.','I find cluttered spaces overwhelming.','I have difficulty focusing on tasks in visually busy areas.','I need extra light to read or see details clearly.','I notice visual changes in my environment that others often miss.']},
+{key:'hearing',label:'Hearing (Audition)',short:'Hearing',icon:'👂',color:'#2BBCCE',desc:'How you respond to sounds, background noise, or certain pitches.',
+items:['Loud sounds feel physically painful or overwhelming.','Background noise makes it difficult for me to focus.','I enjoy very loud music or sounds.','I often need people to repeat what they said.','Certain frequencies or tones are unpleasant to me.','I can detect subtle sounds that others ignore.','I avoid noisy places because they cause stress.','I have difficulty tuning out background noise when concentrating.','I notice patterns or changes in sound that others may not.','Sudden noises startle me more than most people.']},
+{key:'touch',label:'Touch (Tactition)',short:'Touch',icon:'✋',color:'#62D48A',desc:'How you feel textures, pressure, pain, and temperature on your skin.',
+items:['Certain fabrics or clothing textures bother me intensely.','I enjoy strong pressure, such as hugs or weighted blankets.','Light touch can feel irritating or painful.','I sometimes don\'t notice injuries or bruises.','I avoid certain textures in food or objects.','I seek tactile stimulation, like squeezing or fidgeting.','Temperature changes on my skin affect me strongly.','I have sensitive or painful reactions to tags, seams, or jewelry.','I enjoy touching soft or textured surfaces.','I notice small changes in the texture of objects or surfaces.']},
+{key:'smell',label:'Smell (Olfaction)',short:'Smell',icon:'👃',color:'#7EC86A',desc:'How strongly you react to scents, both pleasant and unpleasant.',
+items:['Strong smells overwhelm me.','I rarely notice odors that others comment on.','Certain smells trigger strong emotional responses.','I actively seek pleasant smells.','Unpleasant odors make me anxious or uncomfortable.','I can detect subtle scents that others miss.','Smells influence my enjoyment of places or foods.','I avoid environments because of odor sensitivity.','I enjoy smelling strong fragrances or aromatics.','I notice changes in smells more than most people.']},
+{key:'taste',label:'Taste (Gustation)',short:'Taste',icon:'👅',color:'#F4A261',desc:'How you experience flavors, spices, and food textures.',
+items:['I avoid foods with strong or unusual tastes.','I enjoy very spicy, salty, or sour foods.','Certain textures in food are unbearable.','I can detect subtle flavors that others miss.','I have a limited range of foods I can tolerate.','I enjoy foods that others consider too strong or unusual.','I often notice flavor inconsistencies in food.','I avoid eating foods because of taste sensitivity.','I seek intense flavor experiences.','Eating new foods is stressful or uncomfortable.']},
+{key:'balance',label:'Balance (Equilibrioception)',short:'Balance',icon:'⚖️',color:'#D4845A',desc:'How steady and secure you feel when moving or standing still.',
+items:['I feel dizzy or off-balance easily.','I avoid activities requiring precise balance.','I notice subtle movements or shifts in my environment.','I enjoy activities that challenge my balance.','I have trouble coordinating my body in space.','I am confident in physically unstable situations.','I often feel unsteady when walking or standing.','I can sense motion in ways others do not.','I avoid rides or sports that require balance.','I enjoy spinning, swinging, or rocking movements.']},
+{key:'proprioception',label:'Proprioception (Body Awareness)',short:'Body',icon:'🧍',color:'#9678D8',desc:'How well you sense your body\'s position, movement, and coordination.',
+items:['I bump into objects or people frequently.','I struggle to know the position of my limbs without looking.','I enjoy activities that give strong bodily feedback (lifting, pushing, etc.).','I have difficulty judging my movements or distance.','I notice small changes in how my body moves.','I feel disconnected from my body at times.','I seek movement to understand my body\'s position.','I avoid activities where precise body positioning is needed.','I am aware of my posture and adjust it regularly.','I sometimes overcompensate movements because I misjudge space.']},
+{key:'thermoception',label:'Thermoception (Heat / Temperature)',short:'Heat',icon:'🌡️',color:'#E05878',desc:'How you sense and tolerate hot or cold environments.',
+items:['I am highly sensitive to heat or cold.','I often fail to notice when I am too hot or cold.','Temperature changes affect my mood or comfort.','I seek temperature extremes (hot showers, cold drinks).','I avoid certain weather conditions because of temperature sensitivity.','I can detect subtle temperature changes in my environment.','I enjoy heating or cooling objects to feel comfortable.','I notice when others feel too hot or cold before they do.','I struggle with temperature regulation during activity.','Temperature discomfort interferes with my daily functioning.']},
+{key:'nociception',label:'Pain (Nociception)',short:'Pain',icon:'⚡',color:'#CC4444',desc:'How strongly or weakly you notice pain or discomfort.',
+items:['I feel pain more intensely than others.','I often fail to notice pain until it becomes severe.','Minor injuries can feel overwhelming.','I tolerate pain others might find unbearable.','I notice subtle bodily discomforts that others ignore.','I avoid certain activities due to anticipated pain.','Pain affects my mood or focus significantly.','I sometimes seek strong pressure or pain sensations.','I can detect early signs of injury or strain.','I struggle to gauge how much pain I am in compared to others.']},
+{key:'interoception',label:'Interoception (Internal Awareness)',short:'Internal',icon:'🫀',color:'#4A78E8',desc:'How well you notice hunger, thirst, fullness, or bathroom needs.',
+items:['I struggle to recognize when I am hungry, thirsty, or tired.','I can easily identify my body\'s internal states.','I sometimes confuse physical and emotional sensations.','I notice subtle changes in heart rate, breathing, or digestion.','I avoid activities that require internal bodily awareness.','I actively monitor my internal state to prevent discomfort.','I miss cues that I need to rest or eat.','I feel anxious or stressed because I misinterpret bodily signals.','I often rely on external cues rather than internal ones.','I can anticipate internal needs before they become urgent.']},
+{key:'kinaesthesia',label:'Kinaesthesia (Movement Awareness)',short:'Movement',icon:'🏃',color:'#3ABCD8',desc:'How comfortable you feel with movement, exercise, or repetitive actions.',
+items:['I enjoy moving or fidgeting to feel comfortable.','I sometimes feel uncomfortable if I cannot move freely.','I am aware of the motion of my limbs without looking.','I avoid activities requiring precise movement.','I notice subtle differences in my movement patterns.','I sometimes misjudge how my body is moving in space.','I seek active movement for comfort or focus.','I struggle with smooth coordination of body parts.','I can perform complex movements without thinking about them.','I feel frustrated when forced to stay still for long periods.']},
+{key:'chronoception',label:'Chronoception (Time Awareness)',short:'Time',icon:'⏱️',color:'#8A5DC8',desc:'How you sense the passing of time and keep track of it.',
+items:['I lose track of time easily.','Waiting feels longer than it actually is.','I can estimate time accurately without a clock.','I feel stressed when schedules change suddenly.','I often misjudge how long tasks will take.','I enjoy time-based games or challenges.','I feel rushed even when I have enough time.','I can sense time passing without external cues.','I struggle with planning or pacing tasks effectively.','Time perception affects my daily routine or mood.']}
+];
+
+const DKEYS=DOMAINS.map(d=>d.key);
+const RLABELS=['Never','Rarely','Sometimes','Often','Very Often','Always'];
+
+/* CLINICAL INTERPRETATION DATA */
+const CN={
+vision:{
+  mild:'Mild visual sensitivity may cause occasional discomfort in very bright or visually complex spaces. Worth exploring whether fluorescent lighting, busy visual environments, or prolonged screen time are consistent irritants.',
+  moderate:'Moderate visual sensitivity has clear functional impact. Bright lights, visually complex environments, and screen glare likely create real physiological discomfort — not preference. This client may be spending adaptive energy on visual regulation throughout every day. Tier-one accommodations: strategic seating, screen filters, dimmer lighting, and reduced visual clutter. Environmental modification before coping skill development.',
+  high:'High visual sensitivity represents a significant barrier in most indoor environments. Fluorescent offices, grocery stores, busy classrooms, and waiting rooms are genuinely overwhelming, not just unpleasant. This client has likely developed workarounds others interpret as avoidance. The nervous system cannot habituate to a constant activating input. Accommodation is the intervention, not tolerance-building. Consider referral for formal sensory assessment.'
+},
+hearing:{
+  mild:'Mild auditory sensitivity may cause some difficulty in noisy environments. Explore whether background noise at work, home, or school is affecting focus or mood in ways the client has normalized.',
+  moderate:'Moderate auditory sensitivity has clear functional impact. Background noise, overlapping conversations, and sudden sounds are disruptive rather than merely annoying. Open offices, shared spaces, and busy family environments cost this client more attentional and regulatory energy than they cost most people. Noise-canceling headphones are a tier-one support — not a last resort. Frame this as a reasonable neurological accommodation.',
+  high:'High auditory sensitivity is among the most frequently disabling sensory profiles because sound is pervasive and largely outside the individual\'s control. Sounds that are background to others may feel physically painful to this client. The sustained effort of auditory filtering in normal environments creates a significant daily load. Advocate strongly for acoustic accommodations and validate that this is not exaggeration or sensitivity as character trait.'
+},
+touch:{
+  mild:'Mild tactile sensitivity may cause occasional discomfort with certain textures, tags, or light touch. Worth exploring clothing texture preferences, grooming routines, and physical contact comfort.',
+  moderate:'Moderate tactile sensitivity affects daily life in intimate, often private ways — clothing, grooming, medical procedures, physical affection. Clients rarely volunteer this. The cognitive and emotional cost of managing tactile discomfort daily is real. A client who cannot tolerate certain textures is spending energy on sensory navigation every single day. Ask directly about clothing, tag sensitivity, and touch preferences; normalizing this opens the clinical conversation.',
+  high:'High tactile sensitivity significantly affects quality of life in ways rarely visible to others. Clothing, grooming, physical contact, and medical care all carry heightened load. Clients frequently carry shame here — they have been told they are "too sensitive." Reframing this as neurological rather than psychological is itself often a meaningful clinical intervention. Occupational therapy referral for sensory integration strategies is warranted.'
+},
+smell:{
+  mild:'Mild olfactory sensitivity may cause occasional irritation from strong smells. Explore whether scented products, food odors, or specific environments are consistent triggers.',
+  moderate:'Moderate olfactory sensitivity affects social participation, eating, and environmental navigation in ways that are frequently minimized because others cannot perceive the same stimulus. Perfume, cleaning products, food smells, and medical environments carry high olfactory load that is genuinely distressing. Naming it as neurological rather than preference changes the clinical frame.',
+  high:'High olfactory sensitivity is frequently misunderstood because the sensory stimulus is invisible to others. This client may avoid social situations, workplaces, and healthcare settings because of olfactory overwhelm — a pattern that looks like avoidance but is neurological accommodation. Fragrance-free policies and scent-controlled environments are meaningful, practical interventions. Direct advocacy may be needed on the client\'s behalf.'
+},
+taste:{
+  mild:'Mild gustatory sensitivity may result in some food preferences or texture sensitivities. Worth exploring whether this affects eating variety, social eating, or food-related stress.',
+  moderate:'Moderate gustatory sensitivity meaningfully affects nutrition, social participation, and quality of life. Limited food tolerance is frequently dismissed as picky eating — a framing that minimizes real neurological difference and generates shame. Clients may have restricted diets, avoid social eating, or experience food-related anxiety that has never been validated as sensory in origin. Naming this directly is therapeutic before any dietary work.',
+  high:'High gustatory sensitivity significantly impacts eating behavior and carries substantial emotional and social weight. Food lists may be very limited. Social eating — restaurants, family meals, work events — is consistently stressful. Destigmatization is foundational before any dietary or behavioral intervention. Food aversion rooted in sensory processing is neurological, not behavioral, and does not respond to pressure, exposure without preparation, or shame.'
+},
+balance:{
+  mild:'Mild vestibular sensitivity may cause occasional dizziness or discomfort with certain movements. Explore whether motion, heights, or physical instability are consistent challenges.',
+  moderate:'Moderate vestibular sensitivity affects physical activity choices, transportation comfort, and navigation of busy environments. Crowds, escalators, elevators, and moving vehicles may be more challenging than they appear. Clients often don\'t recognize this as a sensory difference — they\'ve internalized it as anxiety, motion sickness, or "being bad at" physical activities. Reframing is useful.',
+  high:'High vestibular sensitivity significantly limits physical activity and environmental navigation. The physiological experience of vestibular dysregulation is genuinely distressing and frequently misread as anxiety or panic. Occupational therapy referral for vestibular processing work may be beneficial. Validate that avoidance is reasonable self-protection, not weakness or agoraphobia.'
+},
+proprioception:{
+  mild:'Mild proprioceptive differences may manifest as occasional clumsiness, a preference for physical feedback, or some variability in body positioning.',
+  moderate:'Moderate proprioceptive differences affect body coordination, spatial awareness, and self-regulation. The system may be under-providing position information (leading to seeking behaviors — pressure, heavy work, deep touch) or misinterpreting it (leading to clumsiness, over- and under-reaching). Movement, pressure, and resistance activities are regulatory tools for this profile, not simply preferences — this distinction matters for treatment planning.',
+  high:'High proprioceptive scoring indicates significant body awareness differences that affect coordination, movement confidence, and self-regulation. Heavy resistance activities (lifting, pushing, weighted vests, compression clothing) provide the deep pressure input this client\'s system is seeking. The restlessness, fidgeting, and movement-seeking common in this profile are regulatory strategies — not defiance, hyperactivity, or inattention. Reframe and accommodate.'
+},
+thermoception:{
+  mild:'Mild temperature sensitivity may cause some discomfort with temperature variation or temperature extremes.',
+  moderate:'Moderate thermoceptive sensitivity creates meaningful daily discomfort. Temperature regulation during exercise, adapting to changing environments, and maintaining comfort in shared spaces all require active management. Environmental control and layering strategies are practical first-line accommodations before behavioral or regulation strategies.',
+  high:'High thermoceptive sensitivity significantly affects comfort, mood, and functioning across daily environments. Temperature discomfort is not background noise for this client — it competes with attention, regulation, and functioning in a way others in the same space do not experience. Occupational accommodations (personal fans, temperature control access, scheduling adjustments) should be prioritized.'
+},
+nociception:{
+  mild:'Mild pain sensitivity differences are worth noting. This client may experience some pain more or less intensely than average. Explore how pain influences activity choices and daily functioning.',
+  moderate:'Moderate nociceptive sensitivity has real functional impact. This client\'s pain experience may be more intense or more frequent than physical findings alone suggest — which is neurologically coherent (central sensitization is established physiology) and is frequently undertreated. If items suggest hyposensitivity, explore safety implications including missed injury signals.',
+  high:'High nociceptive sensitivity indicates significant pain processing amplification. Clients at this level often carry a painful history of disbelief, diagnostic dismissal, or being told their pain is "only psychological." The clinical priority is validation: their pain is real, neurologically consistent, and deserving of treatment. Central sensitization patterns respond to pacing, load reduction, and nervous system regulation — not minimization or exposure-only approaches.'
+},
+interoception:{
+  mild:'Mild interoceptive differences may cause occasional difficulty reading internal signals — hunger, fatigue, emotion cues. Worth exploring whether external reminders are regularly needed to manage basic self-care.',
+  moderate:'Moderate interoceptive differences are clinically significant across multiple domains simultaneously. When the body\'s internal signal system is unreliable, clients cannot use body-based cues to guide eating, resting, emotional regulation, or self-care. This shows up as forgetting to eat, not recognizing fatigue until crashing, emotion dysregulation that appears to come from nowhere, and difficulty articulating internal states. These are neurological, not motivational.',
+  high:'High interoceptive difficulty is often foundational to presenting problems labeled as emotional dysregulation, anxiety, eating disorder, or self-neglect. When the internal signal system consistently provides inaccurate or absent information, the client has no reliable way to use body-based feedback. Interoceptive awareness work is often prerequisite to other emotion regulation interventions. This is among the highest-impact domains to address in a treatment plan.'
+},
+kinaesthesia:{
+  mild:'Mild kinaesthetic differences may manifest as some movement preference, minor coordination variation, or awareness of movement inconsistencies.',
+  moderate:'Moderate kinaesthetic sensitivity means this client\'s movement regulation system is working harder than baseline. Movement-seeking (fidgeting, frequent position changes, need for physical activity) is a regulatory strategy — the nervous system is requesting movement input to stay calibrated. Sedentary demands consistently deplete this client faster than active ones. Movement accommodations are regulatory tools, not behavioral privileges.',
+  high:'High kinaesthetic scoring indicates significant movement regulation needs and potential coordination differences. This client experiences genuine distress in settings that enforce stillness — long meetings, waiting rooms, classrooms, commutes. The frustration and difficulty concentrating in sedentary conditions reflect an unmet regulatory need, not a motivational failure. Scheduled movement, standing desks, fidget tools, and movement breaks are high-priority clinical accommodations.'
+},
+chronoception:{
+  mild:'Mild time perception differences may cause occasional difficulty with time estimation, scheduling, or transitions.',
+  moderate:'Moderate chronoceptive differences have real functional impact on planning, punctuality, and schedule adherence — which carries social and occupational consequences often interpreted as irresponsibility. This client is not choosing to lose track of time; they are experiencing time differently. Visual timers, time-stamped schedules, and transition warnings are regulatory supports, not behavioral corrections.',
+  high:'High chronoceptive differences significantly affect daily functioning, relationships, and self-concept. Clients often carry years of being labeled unreliable, inconsiderate, or disorganized. The clinical priority is reframing: this is a neurological difference in how time is experienced. Externalizing time through environmental supports is the intervention — the goal is not to make the client feel time more accurately but to give them accurate information from outside their internal system.'
+}
+};
+
+const PN={
+vision:{low:'Your visual system tends toward lower sensitivity. Bright lights and busy environments are less likely to cause you significant discomfort.',mild:'You have some visual sensitivity. Very bright or visually busy spaces may occasionally cause discomfort.',moderate:'Visual sensitivity is meaningful for you. Bright lights, cluttered spaces, and complex visual environments likely cause real discomfort. Dimmer lighting, screen adjustments, and strategic seating can make a significant difference.',high:'Visual sensitivity is a significant part of your sensory experience. Bright or visually busy environments likely feel genuinely overwhelming. Sunglasses, screen filters, dimmer lighting, and quieter visual spaces are not preferences — they are accommodations you have every right to use.'},
+hearing:{low:'Your auditory system tends toward lower sensitivity. Background noise and loud environments are less likely to impact your functioning.',mild:'You have some noise sensitivity that may make loud or busy environments more tiring than average.',moderate:'Sound is a significant factor in your comfort and focus. Noisy environments likely cost you more than they cost others. Noise-canceling headphones and access to quiet spaces are valid needs, not indulgences.',high:'Auditory sensitivity is a major part of your sensory experience. Many ordinary environments may feel overwhelming. Protecting your hearing environment is an important and legitimate form of self-care and accommodation.'},
+touch:{low:'Your tactile system tends toward lower sensitivity. Textures, clothing, and physical contact are less likely to cause you significant discomfort.',mild:'You have some tactile sensitivity. Certain textures or types of physical contact may occasionally feel uncomfortable.',moderate:'Touch and texture matter significantly to your comfort. Clothing tags, certain fabrics, and light touch may cause real irritation. Choosing clothes and environments that match your tactile needs is a valid and practical strategy.',high:'Tactile sensitivity is a significant part of your daily experience. Managing clothing, physical contact, and textures takes real energy. Your preferences around touch are not quirks — they are a genuine part of how your nervous system is wired, and they deserve to be respected.'},
+smell:{low:'Your olfactory system tends toward lower sensitivity. Strong or subtle odors are less likely to significantly impact your comfort.',mild:'You have some olfactory sensitivity that may occasionally be triggered by strong or unusual smells.',moderate:'Smell meaningfully affects your comfort and enjoyment of spaces. Seeking low-fragrance environments is a reasonable accommodation.',high:'Olfactory sensitivity is a major factor in your daily experience. Advocating for fragrance-free policies in your environments is a valid and important form of self-advocacy.'},
+taste:{low:'Your gustatory system tends toward lower sensitivity. You may enjoy a wide range of flavors and textures without much difficulty.',mild:'You have some taste or texture sensitivity that may influence food preferences.',moderate:'Taste and food texture significantly shape your eating experience. A limited food range is a real part of your sensory profile — not a character trait. Finding foods that work for your system is self-care, not avoidance.',high:'Gustatory sensitivity is a major part of your relationship with food. Your food preferences and restrictions are sensory, not behavioral. Building a diet around what your system can tolerate is entirely valid and appropriate.'},
+balance:{low:'Your vestibular system tends toward lower sensitivity. You are generally stable and comfortable with a wide range of movement.',mild:'You have some vestibular sensitivity. Certain movements or physically unstable situations may occasionally cause discomfort.',moderate:'Balance and movement affect your comfort in meaningful ways. Planning environments and activity choices around your vestibular needs makes practical sense.',high:'Vestibular sensitivity is a significant factor in your physical comfort. Avoiding certain movement types or environments is a reasonable response to genuine vestibular discomfort — not weakness.'},
+proprioception:{low:'Your proprioceptive system tends toward lower awareness differences. Body position feedback likely comes with relative ease.',mild:'You have some proprioceptive sensitivity. Coordination or body awareness may occasionally vary.',moderate:'Body awareness is an area worth attending to. Activities that provide physical feedback — resistance exercise, heavy work, deep pressure — may be regulating and calming for you, not just enjoyable.',high:'Body awareness significantly shapes how you move through space. Activities that provide strong physical feedback are likely regulating and stabilizing for your nervous system. This is a real sensory need, and honoring it is productive, not indulgent.'},
+thermoception:{low:'Your temperature sensitivity tends to be lower. You may adapt relatively easily to temperature changes in your environment.',mild:'You have some temperature sensitivity that may occasionally cause discomfort with temperature extremes.',moderate:'Temperature meaningfully affects your comfort and mood. Having some control over your temperature environment is a real and valid need.',high:'Temperature is a significant factor in your daily comfort and functioning. Having control over your temperature environment is a priority accommodation, and advocating for it is reasonable.'},
+nociception:{low:'Your pain sensitivity tends to be lower. You may tolerate discomfort others find significant, or may take longer to notice pain signals. Being mindful of this for injury awareness is worthwhile.',mild:'Your pain sensitivity shows some variation that may occasionally cause heightened or reduced awareness of physical sensations.',moderate:'Pain and physical discomfort have a meaningful impact on your daily life. Your pain experience is real and valid, and deserves appropriate attention and care.',high:'Pain sensitivity is a significant part of your experience. Your pain is real, neurologically coherent, and deserving of appropriate care. Finding providers who understand sensory and pain processing differences is a worthwhile pursuit.'},
+interoception:{low:'Your interoceptive awareness tends to be lower. You may find it relatively easy to tune out internal signals or to function without much internal monitoring.',mild:'You have some variation in how reliably you receive internal body signals. External cues like scheduled meals and reminders may help when needed.',moderate:'Reading your body\'s internal signals is genuinely challenging. Structured external supports — scheduled meals, hydration reminders, regular body-check-ins — can compensate meaningfully and are a valid strategy.',high:'Interoception is a significant challenge. Missing hunger, thirst, fatigue, and emotion signals until they become urgent is exhausting. Building external systems that remind you of your body\'s needs is a valid, effective, and evidence-informed strategy.'},
+kinaesthesia:{low:'Your movement awareness tends toward lower differences. You may find stillness comfortable and be at ease in sedentary situations.',mild:'You have some movement sensitivity that may occasionally affect your comfort in still or highly active situations.',moderate:'Movement significantly affects your comfort and ability to focus. Environments that allow you to move will generally work better for you than those that enforce prolonged stillness.',high:'Movement is a major regulatory need for you. Being forced to stay still is genuinely difficult, not a willpower issue. Advocating for movement-friendly environments and regular physical activity is self-care, not special treatment.'},
+chronoception:{low:'Your time perception tends toward greater accuracy. You may naturally have a reliable internal sense of time passing.',mild:'You have some time perception variation that may occasionally affect scheduling or planning.',moderate:'Time perception is an area where external support helps consistently. Visual timers and structured routines can compensate effectively for an internal clock that doesn\'t always match external time.',high:'Time perception is significantly different for you. Losing track of time and misjudging duration are rooted in how your brain processes time — not in irresponsibility. External time tools are neurological accommodations that work, and using them is smart, not avoidant.'}
+};
+
+/* STATE */
+let currentMode=null,remoteSalt=null,remotePIN=null;
+const appState={name:'',date:new Date().toISOString().split('T')[0],ratings:{}};
+DKEYS.forEach(k=>appState.ratings[k]=new Array(10).fill(null));
+const PKEY='nsds_sensory_v1',A11YKEY='nsds_a11y_v1';
+
+/* SCORING */
+function score(key,state){return((state||appState).ratings[key]||[]).reduce((s,v)=>s+(v!=null?v:0),0);}
+function comp(key,state){return((state||appState).ratings[key]||[]).filter(v=>v!=null).length;}
+function band(s){if(s<=10)return'low';if(s<=25)return'mild';if(s<=40)return'moderate';return'high';}
+function bandLabel(s){if(s<=10)return'Low';if(s<=25)return'Mild';if(s<=40)return'Moderate';return'High';}
+function bandColor(s){if(s<=10)return'var(--warm-grey)';if(s<=25)return'var(--teal)';if(s<=40)return'var(--amber)';return'var(--rose)';}
+
+/* VIEWS */
+const VIEWS=['landing','setup','tool','insession-summary','personal-summary','results'];
+function showView(id){VIEWS.forEach(v=>{const el=document.getElementById('view-'+v);if(el)el.hidden=v!==id;});window.scrollTo({top:0,behavior:'smooth'});}
+function showTab(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.toggle('active',b.dataset.tab===id);b.setAttribute('aria-selected',String(b.dataset.tab===id));});
+  document.querySelectorAll('.tab-panel').forEach(p=>{const a=p.id==='tab-'+id;p.classList.toggle('active',a);p.setAttribute('aria-hidden',String(!a));});
+  const ab=document.getElementById('tb-'+id);if(ab)ab.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+/* BUILD DOMAIN TABS */
+function buildDomainTabs(){
+  const tabBar=document.getElementById('tab-bar'),radarBtn=document.getElementById('tb-radar');
+  const tabPanels=document.getElementById('tab-panels'),radarPanel=document.getElementById('tab-radar');
+  DOMAINS.forEach((d,idx)=>{
+    const btn=document.createElement('button');
+    btn.type='button';btn.className='tab-btn';btn.dataset.tab=d.key;btn.id='tb-'+d.key;
+    btn.setAttribute('role','tab');btn.setAttribute('aria-selected','false');btn.setAttribute('aria-controls','tab-'+d.key);
+    btn.innerHTML=`<span style="font-size:.7rem;color:var(--warm-grey)">${idx+1}</span>${d.short} <span class="tbadge" id="badge-${d.key}" aria-hidden="true">0</span>`;
+    tabBar.insertBefore(btn,radarBtn);
+    const panel=document.createElement('div');
+    panel.id='tab-'+d.key;panel.className='tab-panel';panel.setAttribute('role','tabpanel');
+    panel.setAttribute('aria-labelledby','tb-'+d.key);panel.setAttribute('aria-hidden','true');
+    const prev=idx>0?`<button class="btn btn-ghost" type="button" onclick="showTab('${DOMAINS[idx-1].key}')">← ${DOMAINS[idx-1].short}</button>`:'';
+    const next=idx<11?`<button class="btn btn-primary" type="button" onclick="showTab('${DOMAINS[idx+1].key}')">Next: ${DOMAINS[idx+1].short} →</button>`:`<button class="btn btn-primary" type="button" onclick="showTab('radar')">View Profile →</button>`;
+    const items=d.items.map((item,i)=>`<div class="item-block" role="radiogroup" aria-labelledby="il-${d.key}-${i}">
+      <div class="item-text" id="il-${d.key}-${i}"><span class="inum">${i+1}.</span>${item}</div>
+      <div class="likert-wrap"><span class="likert-end" aria-hidden="true">Never</span><div class="rate-row">${[0,1,2,3,4,5].map(v=>`<button type="button" class="rate-btn" data-domain="${d.key}" data-item="${i}" data-val="${v}" aria-pressed="false" aria-label="${RLABELS[v]} — ${item.substring(0,45)}"><span class="rn" aria-hidden="true">${v}</span></button>`).join('')}</div><span class="likert-end" aria-hidden="true">Always</span></div>
+    </div>`).join('');
+    panel.innerHTML=`<div class="tbody"><div class="card domain-card" style="--dc:${d.color}">
+      <div class="domain-hdr"><span class="dicon" aria-hidden="true">${d.icon}</span>
+      <div style="flex:1"><div class="dtitle">${idx+1}. ${d.label}</div>
+      <div class="dmeta">Score: <strong id="ds-${d.key}">0</strong>&nbsp;/&nbsp;50 &nbsp;·&nbsp; <span id="db-${d.key}" class="sband">—</span> &nbsp;·&nbsp; <span id="dc-${d.key}">0</span>/10 rated</div></div></div>
+      <p class="ddesc">${d.desc}</p>
+      <div class="dpbar"><div class="dpfill" id="dp-${d.key}" style="width:0%"></div></div>
+      <div class="items-list">${items}</div></div>
+      <div class="btn-row" style="justify-content:flex-end;padding:0 0 .5rem">${prev}${next}</div></div>`;
+    tabPanels.insertBefore(panel,radarPanel);
+  });
+  document.querySelectorAll('.rate-btn').forEach(btn=>{
+    btn.addEventListener('click',handleRate);
+    btn.addEventListener('keydown',handleRateKey);
+  });
+  buildScoreTiles();
+}
+function handleRate(e){
+  const btn=e.currentTarget,key=btn.dataset.domain,item=parseInt(btn.dataset.item),val=parseInt(btn.dataset.val);
+  document.querySelectorAll(`.rate-btn[data-domain="${key}"][data-item="${item}"]`).forEach(b=>b.setAttribute('aria-pressed','false'));
+  btn.setAttribute('aria-pressed','true');
+  appState.ratings[key][item]=val;
+  updateDomain(key);updateRadar();
+  if(currentMode==='individual')personalSave();
+  updateFinishBar();
+}
+function handleRateKey(e){
+  const btn=e.currentTarget,key=btn.dataset.domain,item=parseInt(btn.dataset.item),val=parseInt(btn.dataset.val);
+  if(e.key==='ArrowRight'||e.key==='ArrowUp'){e.preventDefault();const n=document.querySelector(`.rate-btn[data-domain="${key}"][data-item="${item}"][data-val="${Math.min(5,val+1)}"]`);if(n){n.focus();n.click();}}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowDown'){e.preventDefault();const p=document.querySelector(`.rate-btn[data-domain="${key}"][data-item="${item}"][data-val="${Math.max(0,val-1)}"]`);if(p){p.focus();p.click();}}
+}
+function updateDomain(key){
+  const s=score(key),c=comp(key),bl=bandLabel(s),bc=bandColor(s);
+  const ds=document.getElementById('ds-'+key),db=document.getElementById('db-'+key),dc=document.getElementById('dc-'+key),dp=document.getElementById('dp-'+key),badge=document.getElementById('badge-'+key);
+  if(ds)ds.textContent=s;
+  if(db){db.textContent=bl;db.style.background=s>10?bc:'';db.style.color=s>10?'#fff':bc;}
+  if(dc)dc.textContent=c;
+  if(dp)dp.style.width=(c/10*100)+'%';
+  if(badge){badge.textContent=c===10?'✓':String(c);badge.className='tbadge '+(c===10?'complete':c>0?'partial':'');}
+  const tile=document.getElementById('st-'+key),tnum=document.getElementById('stn-'+key),tband=document.getElementById('stb-'+key);
+  if(tile)tile.style.borderTopColor=s>0?DOMAINS.find(d=>d.key===key).color:'var(--cream-dark)';
+  if(tnum)tnum.textContent=s;
+  if(tband){tband.textContent=bl;tband.style.color=bc;}
+}
+
+/* RADAR */
+const RCX=250,RCY=250,RMR=175;
+const RAXES=[
+  {key:'chronoception',label:['Time'],angle:-90},{key:'vision',label:['Sight'],angle:-60},
+  {key:'hearing',label:['Hearing'],angle:-30},{key:'touch',label:['Touch'],angle:0},
+  {key:'smell',label:['Smell'],angle:30},{key:'taste',label:['Taste'],angle:60},
+  {key:'balance',label:['Balance'],angle:90},{key:'proprioception',label:['Body','Aware.'],angle:120},
+  {key:'thermoception',label:['Heat'],angle:150},{key:'nociception',label:['Pain'],angle:180},
+  {key:'interoception',label:['Internal','Aware.'],angle:210},{key:'kinaesthesia',label:['Movement'],angle:240}
+];
+function polar(deg,r){const rad=deg*Math.PI/180;return{x:RCX+r*Math.cos(rad),y:RCY+r*Math.sin(rad)};}
+function svgEl(tag){return document.createElementNS('http://www.w3.org/2000/svg',tag);}
+function initRadar(){
+  const gG=document.getElementById('r-grid'),aG=document.getElementById('r-axes'),lG=document.getElementById('r-labels');
+  [10,20,30,40,50].forEach(s=>{
+    const r=(s/50)*RMR,pts=RAXES.map(a=>polar(a.angle,r));
+    const poly=svgEl('polygon');poly.setAttribute('points',pts.map(p=>p.x+','+p.y).join(' '));
+    poly.setAttribute('fill','none');poly.setAttribute('stroke',s===50?'#C4B8A8':'#DDD5C4');poly.setAttribute('stroke-width',s===50?'1.5':'1');gG.appendChild(poly);
+    const lp=polar(RAXES[1].angle,r),txt=svgEl('text');
+    txt.setAttribute('x',lp.x+5);txt.setAttribute('y',lp.y+4);txt.setAttribute('font-size','9');txt.setAttribute('fill','#B0A898');txt.textContent=s;gG.appendChild(txt);
+  });
+  RAXES.forEach(a=>{
+    const tip=polar(a.angle,RMR),ln=svgEl('line');
+    ln.setAttribute('x1',RCX);ln.setAttribute('y1',RCY);ln.setAttribute('x2',tip.x);ln.setAttribute('y2',tip.y);
+    ln.setAttribute('stroke','#DDD5C4');ln.setAttribute('stroke-width','1');aG.appendChild(ln);
+    const lp=polar(a.angle,RMR+24),anchor=lp.x<RCX-5?'end':lp.x>RCX+5?'start':'middle';
+    a.label.forEach((lt,i)=>{
+      const t=svgEl('text');t.setAttribute('x',lp.x);t.setAttribute('y',lp.y+i*13);t.setAttribute('text-anchor',anchor);
+      t.setAttribute('font-size','11');t.setAttribute('font-weight','700');t.setAttribute('fill','#5A6575');t.setAttribute('font-family','Nunito,sans-serif');t.textContent=lt;lG.appendChild(t);
+    });
+  });
+  updateRadar();
+}
+function updateRadar(){
+  const fp=document.getElementById('r-fill'),sp=document.getElementById('r-stroke'),dG=document.getElementById('r-dots');
+  if(!fp)return;
+  dG.innerHTML='';
+  const pts=RAXES.map(a=>polar(a.angle,(score(a.key)/50)*RMR));
+  fp.setAttribute('points',pts.map(p=>p.x+','+p.y).join(' '));
+  sp.setAttribute('points',pts.map(p=>p.x+','+p.y).join(' '));
+  RAXES.forEach((a,i)=>{
+    const s=score(a.key);if(s===0)return;
+    const dot=svgEl('circle');dot.setAttribute('cx',pts[i].x);dot.setAttribute('cy',pts[i].y);
+    dot.setAttribute('r','5');dot.setAttribute('fill',DOMAINS.find(d=>d.key===a.key).color);dot.setAttribute('stroke','#fff');dot.setAttribute('stroke-width','1.5');dG.appendChild(dot);
+  });
+}
+function buildScoreTiles(){
+  const el=document.getElementById('sgrid');if(!el)return;
+  el.innerHTML=DOMAINS.map(d=>`<div class="stile" id="st-${d.key}" role="listitem" aria-label="${d.short} score">
+    <div class="stile-l">${d.short}</div>
+    <div class="stile-n" id="stn-${d.key}">0</div>
+    <div class="stile-b" id="stb-${d.key}" style="color:var(--warm-grey)">—</div>
+  </div>`).join('');
+}
+
+/* FINISH BAR STATE */
+function updateFinishBar(){
+  const totalRated=DKEYS.reduce((sum,k)=>sum+comp(k),0);
+  const isComplete=totalRated===120;
+  const btn=document.getElementById('fin-ins-btn');
+  const cnt=document.getElementById('ins-rated-count');
+  const msg=document.getElementById('ins-progress-msg');
+  if(cnt)cnt.textContent=totalRated;
+  if(btn){
+    btn.disabled=!isComplete;
+    btn.setAttribute('aria-disabled',String(!isComplete));
+    btn.style.opacity=isComplete?'1':'.45';
+    btn.style.cursor=isComplete?'pointer':'not-allowed';
+  }
+  if(msg)msg.style.display=isComplete?'none':'';
+}
+
+
+function collectState(){
+  return{name:document.getElementById('client-name').value||'',date:document.getElementById('client-date').value||'',ratings:JSON.parse(JSON.stringify(appState.ratings)),savedAt:new Date().toISOString()};
+}
+function applyState(s){
+  if(!s)return;
+  const n=document.getElementById('client-name'),d=document.getElementById('client-date');
+  if(n&&s.name)n.value=s.name;if(d&&s.date)d.value=s.date;
+  if(s.ratings){
+    DKEYS.forEach(k=>{
+      const r=s.ratings[k];if(!r)return;
+      appState.ratings[k]=r.slice();
+      r.forEach((val,i)=>{
+        if(val===null)return;
+        const btn=document.querySelector(`.rate-btn[data-domain="${k}"][data-item="${i}"][data-val="${val}"]`);
+        if(btn){btn.setAttribute('aria-pressed','true');}
+        document.querySelectorAll(`.rate-btn[data-domain="${k}"][data-item="${i}"]`).forEach(b=>{if(parseInt(b.dataset.val)!==val)b.setAttribute('aria-pressed','false');});
+      });
+      updateDomain(k);
+    });
+    updateRadar();
+  }
+}
+function clearTool(){
+  document.getElementById('client-name').value='';
+  document.getElementById('client-date').value=new Date().toISOString().split('T')[0];
+  DKEYS.forEach(k=>{
+    appState.ratings[k]=new Array(10).fill(null);
+    document.querySelectorAll(`.rate-btn[data-domain="${k}"]`).forEach(b=>b.setAttribute('aria-pressed','false'));
+    updateDomain(k);
+  });
+  updateRadar();
+  const rb=document.getElementById('result-url-box'),cr=document.getElementById('copy-result-row');
+  if(rb)rb.hidden=true;if(cr)cr.hidden=true;
+}
+function personalSave(){
+  if(currentMode!=='individual')return;
+  try{const s=collectState();s.mode='individual';localStorage.setItem(PKEY,JSON.stringify(s));flashSave();}catch(e){}
+}
+function inSessionSave(){
+  if(currentMode!=='insession')return;
+  try{const s=collectState();s.mode='insession';localStorage.setItem(PKEY,JSON.stringify(s));flashSaveIns();}catch(e){}
+}
+function personalLoad(){try{const s=localStorage.getItem(PKEY);return s?JSON.parse(s):null;}catch{return null;}}
+function personalClear(){try{localStorage.removeItem(PKEY);}catch{}}
+function flashSave(){const el=document.getElementById('save-ind');if(!el)return;el.style.opacity='1';setTimeout(()=>el.style.opacity='0',2200);}
+function flashSaveIns(){const el=document.getElementById('save-ins');if(!el)return;el.style.opacity='1';setTimeout(()=>el.style.opacity='0',2200);}
+
+/* ENCRYPTION */
+async function deriveKey(pin,salt){
+  const enc=new TextEncoder(),bk=await crypto.subtle.importKey('raw',enc.encode(String(pin)),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:120000,hash:'SHA-256'},bk,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function encryptPayload(pt,pin,salt){
+  const iv=crypto.getRandomValues(new Uint8Array(12)),key=await deriveKey(pin,salt);
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(pt));
+  const out=new Uint8Array(16+12+ct.byteLength);out.set(salt,0);out.set(iv,16);out.set(new Uint8Array(ct),28);
+  return btoa(String.fromCharCode(...out));
+}
+async function decryptPayload(b64,pin){
+  const raw=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+  const salt=raw.slice(0,16),iv=raw.slice(16,28),ct=raw.slice(28);
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},await deriveKey(pin,salt),ct));
+}
+
+/* SUMMARY BUILDER */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function buildClinicalNarrative(scores,name){
+  const client=name&&name!=='—'?name:'This client';
+  const sorted=DKEYS.map(k=>({k,s:scores[k]})).sort((a,b)=>b.s-a.s);
+  const total=sorted.reduce((s,c)=>s+c.s,0);
+  const high=sorted.filter(c=>c.s>=41);
+  const mod=sorted.filter(c=>c.s>=26&&c.s<41);
+  const top=sorted[0];
+  const dname=k=>DOMAINS.find(d=>d.key===k).label;
+  if(total===0)return client+' completed the assessment with all items rated at zero or not yet rated. This may reflect a genuinely lower-sensitivity profile, normalization of sensory experiences, or an assessment completed before full reflection. It is worth exploring whether any domains resonated during completion.';
+  let n='';
+  if(high.length>=4){n+=client+' presents with a high-sensitivity profile across multiple sensory domains simultaneously. When four or more domains score in the high range, the cumulative effect is greater than any single score suggests — each domain compounds the others. This is not simply heightened awareness in one area; it reflects a nervous system that is consistently working harder than average across most sensory channels. This kind of profile can explain persistent fatigue, emotional dysregulation, and difficulty functioning in ordinary environments even when no single presenting stressor seems adequate to justify the level of distress. ';}
+  else if(high.length>=2){const hn=high.map(c=>dname(c.k)).join(' and ');n+=client+'\'s profile shows high sensitivity concentrated in '+hn+', with moderate elevation in several additional domains. When multiple domains score in the high range simultaneously, the regulatory cost is compounding — each domain draws from the same finite pool of adaptive energy. Neither area alone would explain the full picture; together, they help account for the fatigue, overwhelm, or dysregulation this client may present with. ';}
+  else if(high.length===1){n+=client+'\'s profile has one clearly elevated domain: '+dname(top.k)+' ('+top.s+'/50). '+(mod.length>0?'Several other domains score in the moderate range, suggesting a profile with one primary driver and meaningful background load across other channels. ':'The remaining domains are at mild or lower levels, suggesting a more specific profile that may respond well to targeted intervention in this domain. ');}
+  else if(total>=100){n+=client+'\'s profile shows broadly distributed moderate sensitivity across multiple domains. No single area is in the high range, but the cumulative spread means the overall sensory load is substantial. This kind of flat-moderate profile can be harder to recognize than a spiked one — there is no obvious culprit, but the background cost is real. ';}
+  else{n+=client+'\'s profile shows mild to moderate sensitivity in several domains, with '+dname(top.k)+' as the highest-scoring area ('+top.s+'/50). The overall profile is in a lower range, though the areas that are elevated may still be worth targeted attention. ';}
+  if(scores.interoception>=26)n+='The elevated interoception score is particularly notable: when the body\'s internal signal system is unreliable, it affects the client\'s ability to use emotion regulation strategies that depend on body-based feedback — this should be factored into treatment planning. ';
+  if(scores.hearing>=26&&scores.vision>=26)n+='The combination of elevated auditory and visual sensitivity suggests that most typical indoor environments are likely activating for this client simultaneously across multiple channels, which compounds the overall regulatory load. ';
+  if(scores.proprioception>=26&&scores.kinaesthesia>=26)n+='Elevated scores in both proprioception and kinaesthesia indicate that movement regulation is a significant theme — this client\'s nervous system is seeking physical input as a calibration strategy. Movement accommodations should be treated as clinical supports, not behavioral choices. ';
+  if(total>=200){n+='Coping skill development alone is unlikely to be sufficient at this overall load level. The most productive clinical direction is reducing environmental demand and increasing accommodation before building tolerance.';}
+  else if(total>=100){n+='The clinical goal is to identify which domains cause the most functional impact and start there — not to address all domains simultaneously.';}
+  else{n+='Even at this load level, naming and validating sensory experience can be meaningful, particularly for clients who have spent years dismissing or minimizing their sensory differences.';}
+  return n;
+}
+
+function buildPatternAnalysis(scores){
+  const sorted=DKEYS.map(k=>({k,s:scores[k]})).sort((a,b)=>b.s-a.s);
+  const total=sorted.reduce((s,c)=>s+c.s,0);
+  const patterns=[];
+  const dname=k=>DOMAINS.find(d=>d.key===k).label;
+  const high=sorted.filter(c=>c.s>=41);
+  const mod=sorted.filter(c=>c.s>=26);
+  if(high.length>=4)patterns.push('<strong>Pervasive high-sensitivity profile.</strong> When four or more domains score in the high range simultaneously, the impact is multiplicative rather than additive. This client is navigating a consistently activating sensory environment in most settings. Environmental modification, accommodation planning, and load reduction are likely to be more productive than coping skill development alone.');
+  if(total>=200)patterns.push('<strong>High total sensory load ('+total+' cumulative points).</strong> The total across all 12 domains reflects an overall demand on this client\'s regulatory system. High totals are associated with faster fatigue, lower distress tolerance, and difficulty recovering between demands. This provides useful context for other presenting concerns.');
+  else if(total>=100)patterns.push('<strong>Moderate-to-high total sensory load ('+total+' cumulative points).</strong> Meaningful sensory demand is present across domains. Even if individual scores are not all high, the spread creates background regulatory cost that may not be immediately visible but is contributing to overall capacity.');
+  if(sorted[0].s-sorted[sorted.length-1].s>=30&&total>=80)patterns.push('<strong>Spiked profile: '+dname(sorted[0].k)+' stands out above other domains.</strong> A strong spike in one domain while others are lower often points to a specific sensory channel driving a disproportionate share of distress. Targeted intervention in this domain is likely to produce the most noticeable relief.');
+  if(scores.interoception>=26)patterns.push('<strong>Elevated interoception: body signal awareness differences are present.</strong> Interoception underpins many emotion regulation strategies. Clients with elevated interoception scores may struggle with body-based coping techniques, medication awareness, and recognizing internal states. This is often a high-impact area to address early in treatment.');
+  if(scores.hearing>=26&&scores.vision>=26)patterns.push('<strong>Dual-channel activation: auditory and visual sensitivity both elevated.</strong> Most indoor environments activate both channels simultaneously. This pattern helps explain why this client may find ordinary spaces — offices, schools, stores — consistently more demanding than others find them.');
+  if(scores.proprioception>=26||scores.kinaesthesia>=26)patterns.push('<strong>Movement regulation is a clinical theme.</strong> One or both movement-related domains (proprioception, kinaesthesia) are elevated. This client\'s system is seeking physical input for regulation. Movement accommodations are neurological supports, not behavioral rewards.');
+  if(scores.nociception>=26)patterns.push('<strong>Pain sensitivity is clinically elevated.</strong> Score of '+scores.nociception+'/50 in the pain domain suggests the client\'s nociceptive system may be amplifying signals. This has implications for medical care, physical discomfort tolerance, and daily functioning. History of underdiagnosed or dismissed pain is common in this profile.');
+  if(high.length===0&&total>=80)patterns.push('<strong>Distributed moderate profile — no obvious single driver.</strong> When sensitivity is spread across many domains without a clear spike, the overall load can be hard to explain or advocate for. Validating that the distributed pattern has real cumulative cost can be therapeutically important.');
+  return patterns;
+}
+
+function buildSessionFocus(scores){
+  const sorted=DKEYS.map(k=>({k,s:scores[k]})).sort((a,b)=>b.s-a.s);
+  const dname=k=>DOMAINS.find(d=>d.key===k).label;
+  const top=sorted.filter(c=>c.s>=11);
+  if(!top.length)return[];
+  const f=[];
+  f.push(`<strong>Start with ${dname(top[0].k)} (${top[0].s}/50 — ${bandLabel(top[0].s)}).</strong> Rather than addressing everything simultaneously, begin where the score is highest and ask: "If we could make this one area even slightly more manageable, what would that make possible?" Small reductions in the highest-demand domain often free more capacity than they appear to, because that domain is competing with everything else. Frame any change as recovering energy, not fixing a problem.`);
+  if(top.length>=2)f.push(`<strong>Secondary area to hold: ${dname(top[1].k)} (${top[1].s}/50).</strong> Note whether these two domains share a common environmental trigger or context. When two high-scoring areas are both activated in the same setting, the compounding effect may be what's driving the most distress — and changing that setting may address both simultaneously.`);
+  f.push('Walk the client through a few specific items they rated highly — not to assess severity, but to understand context. "Tell me more about that one" frequently opens more clinical material than a structured probe.');
+  f.push('Ask gently about items rated lower that the client may have normalized. Clients frequently undercount sensory experiences they have adapted around for years and no longer register as remarkable. "Was there anything you hesitated on, or almost rated higher?" is a useful prompt.');
+  if(sorted.filter(c=>c.s>=26).length>=3)f.push('With multiple domains elevated, resist the impulse to address everything at once. Identify the one or two domains causing the most functional disruption and start there. Progress in the highest-demand area often produces noticeable improvements across others because the overall regulatory load decreases.');
+  return f;
+}
+
+function buildSummaryHTML(state,clinician){
+  const name=state.name||'—';
+  const dateStr=state.date?new Date(state.date+'T12:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'—';
+  const scores={};DKEYS.forEach(k=>scores[k]=((state.ratings||{})[k]||[]).reduce((s,v)=>s+(v!=null?v:0),0));
+  const comps={};DKEYS.forEach(k=>comps[k]=((state.ratings||{})[k]||[]).filter(v=>v!=null).length);
+  const total=DKEYS.reduce((s,k)=>s+scores[k],0);
+  let h='';
+  if(clinician){
+    const narrative=buildClinicalNarrative(scores,state.name);
+    h+=`<div class="ss" style="background:var(--teal-pale);border-left:4px solid var(--teal)">
+      <h3 style="color:var(--teal)">Clinician Interpretation Summary</h3>
+      <p style="font-size:.82rem;color:var(--warm-grey);font-style:italic;margin-bottom:.9rem">For clinician use. Interpret in context of client history, functional impact, and clinical presentation. This is not a diagnostic instrument.</p>
+      <p style="font-size:.95rem;color:var(--ink);line-height:1.8;margin:0">${narrative}</p></div>`;
+  }
+  h+=`<div class="ss"><h3>Client Information</h3>
+    <div class="srow"><span class="srl">Name</span><span class="srv">${esc(name)}</span></div>
+    <div class="srow"><span class="srl">Date</span><span class="srv">${esc(dateStr)}</span></div>
+    <div class="srow"><span class="srl">Domains completed</span><span class="srv">${DKEYS.filter(k=>comps[k]===10).length} of 12</span></div></div>`;
+  h+=`<div class="ss"><h3>Domain Scores</h3>`;
+  DKEYS.forEach(k=>{
+    const d=DOMAINS.find(x=>x.key===k),s=scores[k],bl=bandLabel(s),bc=bandColor(s);
+    h+=`<div class="srow"><span class="srl">${d.icon} ${d.label}</span><span class="srv"><strong style="color:${bc}">${s}/50 — ${bl}</strong> &nbsp;(${comps[k]}/10 items rated)</span></div>`;
+  });
+  h+=`<div class="srow"><span class="srl">Total (all domains)</span><span class="srv"><strong>${total}/600</strong></span></div></div>`;
+  if(clinician){
+    const overallLabel=total>=300?'<strong style="color:var(--rose)">Very high cumulative load — sustained regulatory demand across most sensory channels</strong>':total>=200?'<strong style="color:var(--amber)">High cumulative load — meaningful demand across multiple domains</strong>':total>=100?'Moderate cumulative load — distributed sensory demand worth addressing':'Lower cumulative load at time of assessment — explore whether this reflects the full picture';
+    h+=`<div class="ss" style="border-left:4px solid var(--plum);background:var(--plum-pale)">
+      <h3 style="color:var(--plum)">Overall Sensory Load</h3>
+      <p style="font-size:.88rem;color:var(--ink);margin-bottom:.75rem">Sensory differences create a continuous, often invisible draw on regulatory capacity. High scores reflect domains where the nervous system is consistently doing more work than baseline — regardless of whether that work is visible to others or even recognized by the client. The total score below reflects the cumulative demand across all 12 domains.</p>
+      <div class="srow"><span class="srl">Total sensory load</span><span class="srv"><strong>${total}/600</strong></span></div>
+      <div class="srow"><span class="srl">Overall picture</span><span class="srv">${overallLabel}</span></div>
+      <div class="srow"><span class="srl">High domains (41–50)</span><span class="srv">${DKEYS.filter(k=>scores[k]>=41).map(k=>DOMAINS.find(d=>d.key===k).label).join(', ')||'None'}</span></div>
+      <div class="srow"><span class="srl">Moderate domains (26–40)</span><span class="srv">${DKEYS.filter(k=>scores[k]>=26&&scores[k]<41).map(k=>DOMAINS.find(d=>d.key===k).label).join(', ')||'None'}</span></div>
+      <p style="font-size:.83rem;color:var(--warm-grey);margin-top:.75rem;font-style:italic">Scores should be interpreted in context of functional impact, coping history, and the client's own account of their experience. The goal is not diagnostic classification but identification of areas for support, accommodation, and clinical focus.</p></div>`;
+    const patterns=buildPatternAnalysis(scores);
+    if(patterns.length){
+      h+=`<div class="ss" style="border-left:4px solid var(--amber);background:var(--amber-pale)"><h3 style="color:var(--amber)">Pattern Analysis</h3><div style="display:flex;flex-direction:column;gap:.6rem">`;
+      patterns.forEach(p=>h+=`<div class="pblock">${p}</div>`);
+      h+=`</div></div>`;
+    }
+    const focuses=buildSessionFocus(scores);
+    if(focuses.length){
+      h+=`<div class="ss" style="border-left:4px solid var(--green-mid);background:var(--green-pale)"><h3 style="color:var(--green-mid)">Suggested Session Focus</h3><ol style="display:flex;flex-direction:column;gap:.65rem;padding-left:1.4rem;margin:0">`;
+      focuses.forEach(f=>h+=`<li style="font-size:.88rem;color:var(--ink);line-height:1.65">${f}</li>`);
+      h+=`</ol></div>`;
+    }
+  }
+  DKEYS.forEach(k=>{
+    const d=DOMAINS.find(x=>x.key===k),s=scores[k],b=band(s),bl=bandLabel(s),bc=bandColor(s),r=(state.ratings||{})[k]||[];
+    if(comps[k]===0)return;
+    h+=`<div class="ss"><h3>${d.icon} ${d.label} — ${bl} (${s}/50)</h3>`;
+    h+=`<p style="font-size:.85rem;color:var(--warm-grey);margin-bottom:.75rem;font-style:italic">${d.desc}</p>`;
+    if(clinician&&s>=11){
+      const note=CN[k]?.[b]||CN[k]?.mild||'';
+      if(note)h+=`<div style="background:var(--teal-pale);border-left:3px solid var(--teal);border-radius:var(--radius-sm);padding:.85rem 1rem;font-size:.87rem;color:var(--ink);line-height:1.65;margin-bottom:.85rem"><strong style="font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--teal)">Clinical Note</strong><p style="margin-top:.4rem;margin-bottom:0">${note}</p></div>`;
+    }
+    if(!clinician&&s>=11){
+      const pnote=PN[k]?.[b]||PN[k]?.mild||'';
+      if(pnote)h+=`<div style="background:var(--teal-pale);border-left:3px solid var(--teal);border-radius:var(--radius-sm);padding:.85rem 1rem;font-size:.87rem;color:var(--ink);line-height:1.65;margin-bottom:.85rem"><p style="margin:0">${pnote}</p></div>`;
+    }
+    h+=`<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;margin-bottom:.75rem">`;
+    r.forEach((v,i)=>{
+      if(v===null)return;
+      const hi=v>=4,lo=v<=1;
+      h+=`<div style="background:${hi?`${d.color}22`:lo?'var(--cream-mid)':'var(--cream)'};border-radius:var(--radius-sm);padding:.4rem .3rem;text-align:center;border:1px solid ${hi?d.color:'var(--cream-dark)'}">
+        <div style="font-size:.9rem;font-weight:800;color:${hi?d.color:'var(--ink)'}">${v}</div>
+        <div style="font-size:.62rem;color:var(--warm-grey)">${i+1}</div></div>`;
+    });
+    h+=`</div></div>`;
+  });
+  h+=`<div class="ss"><h3>How to Use These Results</h3>`;
+  if(clinician){
+    h+=`<ul style="font-size:.9rem;padding-left:1.2rem;display:flex;flex-direction:column;gap:.45rem">
+      <li>Identify sensory strengths and challenges. Highlight both hypersensitivities (areas where the client may feel overstimulated) and hyposensitivities (areas where the client may be underresponsive or miss cues).</li>
+      <li>Prioritize domains with functional impact. Focus on the senses that most interfere with daily living, work, relationships, or emotional wellbeing.</li>
+      <li>Guide environmental modifications. For example, recommend noise-canceling headphones for auditory hypersensitivity, or visual organization strategies for clients sensitive to clutter.</li>
+      <li>Develop coping strategies. Teach grounding, pacing, sensory breaks, or mindfulness practices tailored to the client's profile.</li>
+      <li>Incorporate sensory supports. Weighted blankets, fidgets, movement breaks, temperature regulation tools, or aroma preferences can be integrated into treatment plans.</li>
+      <li>Inform therapy goals. Use sensory profiles to shape goals such as reducing distress, increasing participation in daily activities, or building resilience to sensory triggers.</li>
+      <li>Collaborate with other providers. Share results with occupational therapists, medical providers, or support staff to coordinate holistic care.</li></ul>
+    <p style="font-size:.85rem;color:var(--warm-grey);margin-top:.9rem;font-style:italic">Scores should be used not as diagnostic labels, but as conversation starters to validate client experiences, reduce shame, and create tailored, client-centered strategies for thriving in varied environments.</p>`;
+  }else{
+    h+=`<ul style="font-size:.9rem;padding-left:1.2rem;display:flex;flex-direction:column;gap:.45rem">
+      <li><strong>Notice your patterns.</strong> High scores may mean you're more sensitive in that area. Lower scores may mean you notice less or respond less.</li>
+      <li><strong>Focus on what matters most.</strong> Pay attention to the senses that cause the most stress or make daily life harder.</li>
+      <li><strong>Plan supports.</strong> If sound, light, textures, or other sensations overwhelm you, tools like headphones, sunglasses, weighted blankets, or breaks can help.</li>
+      <li><strong>Build coping strategies.</strong> Simple steps like scheduling sensory breaks, adjusting environments, or asking for accommodations can make a big difference.</li>
+      <li><strong>Celebrate your strengths.</strong> Sometimes sensory differences bring gifts — creativity, noticing details, or unique ways of experiencing the world.</li></ul>
+    <p style="font-size:.85rem;color:var(--warm-grey);margin-top:.9rem;font-style:italic">This tool is meant to guide self-awareness and conversations with your providers. It can help you explain your experiences, advocate for your needs, and find strategies that work for you.</p>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
+/* MODE STARTERS */
+function startIndividual(saved){
+  currentMode='individual';clearTool();if(saved)applyState(saved);
+  document.getElementById('fin-ind').hidden=false;document.getElementById('fin-ins').hidden=true;document.getElementById('fin-rem').hidden=true;
+  updateFinishBar();
+  showView('tool');
+}
+function startInSession(saved){
+  currentMode='insession';clearTool();if(saved)applyState(saved);
+  document.getElementById('fin-ind').hidden=true;document.getElementById('fin-ins').hidden=false;document.getElementById('fin-rem').hidden=true;
+  updateFinishBar();
+  showView('tool');
+}
+function startRemote(salt,pin){
+  currentMode='remote';remoteSalt=salt;remotePIN=pin;clearTool();
+  document.getElementById('fin-ind').hidden=true;document.getElementById('fin-ins').hidden=true;document.getElementById('fin-rem').hidden=false;
+  showView('tool');
+}
+function copyToClipboard(text,msg){
+  if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>showToast(msg)).catch(()=>prompt('Copy this:',text));
+  else prompt('Copy this:',text);
+}
+async function doDecrypt(input,pin,errId,contentId){
+  document.getElementById(errId).hidden=true;
+  if(!pin||!input){document.getElementById(errId).hidden=false;return false;}
+  try{
+    // Strip all whitespace — copy-paste can corrupt base64
+    const cleaned=input.replace(/\s+/g,'');
+    let b64=null;
+    // Try parsing as a URL with a hash (backward compat with hosted version)
+    try{const u=new URL(cleaned);const h=u.hash.slice(1);const p=new URLSearchParams(h);b64=p.get('data');}catch{}
+    // If not a URL or no data param, treat input as a plain result code
+    if(!b64){
+      let raw=cleaned;
+      if(raw.startsWith('#'))raw=raw.slice(1);
+      const tryP=new URLSearchParams(raw);
+      b64=tryP.get('data')||raw;
+    }
+    if(!b64)throw new Error('no data');
+    const state=JSON.parse(await decryptPayload(decodeURIComponent(b64),pin));
+    document.getElementById(contentId).innerHTML=buildSummaryHTML(state,true);
+    return true;
+  }catch{document.getElementById(errId).hidden=false;return false;}
+}
+
+/* INIT LANDING */
+function initLanding(){
+  document.getElementById('choose-ind-btn').addEventListener('click',()=>{
+    const saved=personalLoad();
+    if(saved&&saved.mode==='individual'){const when=saved.savedAt?new Date(saved.savedAt).toLocaleString():'a previous session';
+      if(confirm('You have saved progress from '+when+'.\n\nOK to continue — Cancel to start fresh.')){startIndividual(saved);}
+      else{personalClear();startIndividual(null);}
+    }else startIndividual(null);
+  });
+  document.getElementById('choose-ins-btn').addEventListener('click',()=>{
+    const saved=personalLoad();
+    if(saved&&saved.mode==='insession'){const when=saved.savedAt?new Date(saved.savedAt).toLocaleString():'a previous session';
+      if(confirm('You have saved in-session progress from '+when+'.\n\nOK to resume — Cancel to start fresh.')){startInSession(saved);}
+      else{personalClear();startInSession(null);}
+    }else startInSession(null);
+  });
+  document.getElementById('choose-rem-btn').addEventListener('click',()=>{document.getElementById('link-result').hidden=true;document.getElementById('setup-pin').value='';showView('setup');});
+  // Session code entry for clients
+  document.getElementById('session-code-btn').addEventListener('click',()=>{
+    // Strip ALL whitespace (newlines, spaces) — copy-paste can corrupt base64
+    const code=document.getElementById('session-code-input').value.replace(/\s+/g,'');
+    document.getElementById('session-code-error').hidden=true;
+    if(!code){document.getElementById('session-code-error').hidden=false;return;}
+    try{
+      const decoded=atob(code);
+      const parsed=JSON.parse(decoded);
+      const saltB64=parsed.s,pin=parsed.p;
+      if(!saltB64||!pin||typeof pin!=='string')throw new Error('invalid');
+      const salt=Uint8Array.from(atob(saltB64),c=>c.charCodeAt(0));
+      startRemote(salt,pin);
+    }catch(e){document.getElementById('session-code-error').hidden=false;}
+  });
+  document.getElementById('session-code-input').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('session-code-btn').click();});
+  document.getElementById('landing-decrypt-btn').addEventListener('click',()=>{
+    document.getElementById('result-url-decrypt').value='';document.getElementById('result-pin-decrypt').value='';
+    document.getElementById('decrypt-error-results').hidden=true;document.getElementById('results-content').innerHTML='';
+    document.getElementById('results-print-row').hidden=true;showView('results');
+  });
+}
+/* INIT SETUP */
+function initSetup(){
+  document.getElementById('setup-back-btn').addEventListener('click',()=>showView('landing'));
+  document.getElementById('generate-link-btn').addEventListener('click',()=>{
+    const pin=document.getElementById('setup-pin').value.trim();
+    if(!/^\d{4,6}$/.test(pin)){alert('Please enter a 4–6 digit PIN.');return;}
+    const salt=crypto.getRandomValues(new Uint8Array(16));
+    const saltB64=btoa(String.fromCharCode(...salt));
+    const code=btoa(JSON.stringify({s:saltB64,p:pin}));
+    document.getElementById('client-link-url').textContent=code;
+    document.getElementById('link-result').hidden=false;
+  });
+  document.getElementById('copy-client-link-btn').addEventListener('click',()=>copyToClipboard(document.getElementById('client-link-url').textContent,'Session code copied!'));
+  document.getElementById('decrypt-btn-setup').addEventListener('click',async()=>{
+    const code=document.getElementById('result-url-setup').value.trim(),pin=document.getElementById('decrypt-pin-setup').value.trim();
+    const ok=await doDecrypt(code,pin,'decrypt-error-setup','ins-summary-content');
+    if(ok){document.getElementById('back-from-ins-btn').dataset.dest='setup';showView('insession-summary');}
+  });
+}
+/* INIT FINISH BAR */
+function initFinishBar(){
+  document.getElementById('fin-ins-btn').addEventListener('click',()=>{document.getElementById('ins-summary-content').innerHTML=buildSummaryHTML(collectState(),true);document.getElementById('back-from-ins-btn').dataset.dest='tool';showView('insession-summary');});
+  document.getElementById('save-ins-btn').addEventListener('click',()=>inSessionSave());
+  document.getElementById('back-ins-btn').addEventListener('click',()=>{
+    if(confirm('Go back to start? Any unsaved progress will be lost.'))showView('landing');
+  });
+  document.getElementById('fin-ind-btn').addEventListener('click',()=>{personalSave();document.getElementById('ind-summary-content').innerHTML=buildSummaryHTML(collectState(),false);showView('personal-summary');});
+  document.getElementById('save-ind-btn').addEventListener('click',()=>{personalSave();showToast('Progress saved.');});
+  document.getElementById('back-ind-btn').addEventListener('click',()=>{
+    if(confirm('Go back to start? Your saved progress will be cleared from this device.'))
+    {personalClear();clearTool();showView('landing');}
+  });
+  document.getElementById('clear-ind-btn').addEventListener('click',()=>{if(!confirm('Clear all ratings and saved data? This cannot be undone.'))return;personalClear();clearTool();showToast('Cleared.');});
+  document.getElementById('gen-results-btn').addEventListener('click',async()=>{
+    try{
+      const b64=await encryptPayload(JSON.stringify(collectState()),remotePIN,remoteSalt);
+      const box=document.getElementById('result-url-box');box.textContent=b64;box.hidden=false;document.getElementById('copy-result-row').hidden=false;
+      box.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }catch{alert('Encryption failed. Please try again.');}
+  });
+  document.getElementById('copy-result-btn').addEventListener('click',()=>copyToClipboard(document.getElementById('result-url-box').textContent,'Result code copied!'));
+  document.getElementById('back-rem-btn').addEventListener('click',()=>showView('landing'));
+}
+/* INIT SUMMARY VIEWS */
+function initSummaryViews(){
+  document.getElementById('print-ins-btn').addEventListener('click',()=>window.print());
+  document.getElementById('back-from-ins-btn').addEventListener('click',function(){showView(this.dataset.dest||'tool');});
+  document.getElementById('print-ind-btn').addEventListener('click',()=>window.print());
+  document.getElementById('back-from-ind-btn').addEventListener('click',()=>showView('tool'));
+}
+/* INIT RESULTS */
+function initResults(){
+  document.getElementById('results-back-btn').addEventListener('click',()=>showView('landing'));
+  document.getElementById('do-decrypt-btn').addEventListener('click',async()=>{
+    const url=document.getElementById('result-url-decrypt').value.trim(),pin=document.getElementById('result-pin-decrypt').value.trim();
+    const ok=await doDecrypt(url,pin,'decrypt-error-results','results-content');
+    if(ok)document.getElementById('results-print-row').hidden=false;
+  });
+  document.getElementById('print-results-btn').addEventListener('click',()=>window.print());
+}
+/* INIT TOOL NAV */
+function initToolNav(){
+  document.getElementById('start-btn').addEventListener('click',()=>showTab(DOMAINS[0].key));
+  document.querySelectorAll('.tab-btn').forEach(btn=>{btn.addEventListener('click',()=>showTab(btn.dataset.tab));});
+}
+/* CHECK URL HASH */
+function checkHash(){
+  const hash=location.hash.slice(1);if(!hash)return false;
+  const params=new URLSearchParams(hash);
+  if(params.get('mode')==='remote'){
+    try{const salt=Uint8Array.from(atob(decodeURIComponent(params.get('salt')||'')),c=>c.charCodeAt(0));const pin=atob(decodeURIComponent(params.get('pin')||''));startRemote(salt,pin);return true;}catch{return false;}
+  }
+  if(params.get('data')){document.getElementById('result-url-decrypt').value=location.href;showView('results');return true;}
+  return false;
+}
+/* A11Y */
+const FSS=['fs-sm','fs-md','fs-lg','fs-xl','fs-xxl'],FSL=['Small','Normal','Large','X-Large','XX-Large'];
+let a11y={fs:1,font:'default',hc:false,cb:false,rm:false,lt:false,sv:false};
+function a11yLoad(){try{const s=localStorage.getItem(A11YKEY);if(s)Object.assign(a11y,JSON.parse(s));}catch{}}
+function a11ySave(){try{localStorage.setItem(A11YKEY,JSON.stringify(a11y));}catch{}}
+function a11yApply(){
+  const html=document.documentElement,body=document.body;
+  FSS.forEach(c=>html.classList.remove(c));html.classList.add(FSS[a11y.fs]);
+  const lbl=document.getElementById('fs-label');if(lbl)lbl.textContent=FSL[a11y.fs];
+  body.classList.remove('font-dyslexic','font-hyperlegible');
+  if(a11y.font==='dyslexic')body.classList.add('font-dyslexic');
+  if(a11y.font==='hyperlegible')body.classList.add('font-hyperlegible');
+  document.querySelectorAll('.a11y-font-btn').forEach(b=>{const act=b.dataset.font===a11y.font;b.classList.toggle('active',act);b.setAttribute('aria-pressed',String(act));});
+  body.classList.toggle('high-contrast',a11y.hc);body.classList.toggle('colorblind-safe',a11y.cb);
+  body.classList.toggle('reduce-motion',a11y.rm);body.classList.toggle('large-targets',a11y.lt);body.classList.toggle('simplified',a11y.sv);
+  const sync=(id,val)=>{const el=document.getElementById(id);if(el)el.checked=val;};
+  sync('t-hc',a11y.hc);sync('t-cb',a11y.cb);sync('t-rm',a11y.rm);sync('t-lt',a11y.lt);sync('t-sv',a11y.sv);
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)body.classList.add('reduce-motion');
+}
+function initA11y(){
+  a11yLoad();a11yApply();
+  const btn=document.getElementById('a11y-settings-btn'),panel=document.getElementById('a11y-panel'),close=document.getElementById('a11y-close-btn');
+  btn.addEventListener('click',()=>{const op=panel.hidden;panel.hidden=!op;btn.setAttribute('aria-expanded',String(op));if(op)close.focus();});
+  close.addEventListener('click',()=>{panel.hidden=true;btn.setAttribute('aria-expanded','false');btn.focus();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){panel.hidden=true;btn.setAttribute('aria-expanded','false');btn.focus();}});
+  document.addEventListener('click',e=>{if(!panel.hidden&&!panel.contains(e.target)&&e.target!==btn){panel.hidden=true;btn.setAttribute('aria-expanded','false');}});
+  document.getElementById('fs-up-btn').addEventListener('click',()=>{if(a11y.fs<4){a11y.fs++;a11yApply();a11ySave();}});
+  document.getElementById('fs-down-btn').addEventListener('click',()=>{if(a11y.fs>0){a11y.fs--;a11yApply();a11ySave();}});
+  document.querySelectorAll('.a11y-font-btn').forEach(b=>b.addEventListener('click',()=>{a11y.font=b.dataset.font;a11yApply();a11ySave();}));
+  const wire=(id,key)=>document.getElementById(id)?.addEventListener('change',e=>{a11y[key]=e.target.checked;a11yApply();a11ySave();});
+  wire('t-hc','hc');wire('t-cb','cb');wire('t-rm','rm');wire('t-lt','lt');wire('t-sv','sv');
+  document.getElementById('a11y-reset-btn').addEventListener('click',()=>{a11y={fs:1,font:'default',hc:false,cb:false,rm:false,lt:false,sv:false};a11yApply();a11ySave();});
+}
+/* MAIN INIT */
+document.addEventListener('DOMContentLoaded',()=>{
+  initA11y();
+  buildDomainTabs();
+  initRadar();
+  initLanding();
+  initSetup();
+  initFinishBar();
+  initSummaryViews();
+  initResults();
+  initToolNav();
+  const di=document.getElementById('client-date');if(di)di.value=new Date().toISOString().split('T')[0];
+  ['client-name','client-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',()=>{if(currentMode==='individual')personalSave();});});
+  if(!checkHash())showView('landing');
+});
+</script>
+</body>
+</html>
