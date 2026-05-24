@@ -181,9 +181,22 @@ p{margin-bottom:.7rem}p:last-child{margin-bottom:0}
 #save-ind{text-align:center;font-size:.82rem;color:var(--green-mid);padding:.4rem;opacity:0;transition:opacity .4s}
 #toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(8px);background:var(--charcoal);color:#fff;padding:.65rem 1.4rem;border-radius:50px;font-size:.88rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:9999;white-space:nowrap}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#clin-sticky-btn{position:fixed;bottom:1.5rem;right:1.25rem;z-index:8000;display:none;align-items:center;gap:.45rem;padding:.65rem 1.2rem;background:linear-gradient(135deg,var(--green-mid),var(--green));color:var(--charcoal);border:none;border-radius:50px;font-family:inherit;font-size:.88rem;font-weight:800;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.22);transition:all .2s}
+#clin-sticky-btn:hover{filter:brightness(1.07);transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.28)}
+#clin-sticky-btn.visible{display:flex}
+@media print{#clin-sticky-btn{display:none!important}}
+.print-radar-wrap{display:none;margin:1rem auto 0;max-width:420px;text-align:center}
+@media print{.print-radar-wrap{display:block!important}}
 footer{background:var(--charcoal);color:var(--warm-grey);padding:1.25rem 2rem;font-size:.8rem;line-height:1.65;text-align:center}
 footer strong{color:var(--cream)}
+#print-scale-bar{display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;border-bottom:1px solid #ccc;padding:.25rem .75rem;align-items:center;gap:.5rem;font-family:'Nunito',sans-serif;font-size:.68rem;color:#555}
+#print-scale-bar .psb-label{font-weight:800;color:#1A3150;margin-right:.2rem;white-space:nowrap}
+#print-scale-bar .psb-items{display:flex;gap:.35rem;flex-wrap:nowrap}
+#print-scale-bar .psb-item{display:flex;align-items:center;gap:.18rem;white-space:nowrap}
+#print-scale-bar .psb-num{font-weight:800;color:#1A3150;font-size:.75rem}
+#print-scale-bar .psb-sep{color:#ccc;margin:0 .1rem}
 @media print{
+  #print-scale-bar{display:flex!important}
   #a11y-settings-btn,#a11y-panel,.btn-row,.btn-group,.btn,#finish-bar,#save-ind,footer,#view-landing,#view-setup,#view-tool,.tbo{display:none!important}
   header{position:static!important;background:#fff!important;color:#000!important;box-shadow:none!important;padding:.5rem 1rem!important}
   .hbadge,.hsub{display:none!important}.htitle{color:#000!important;font-size:.9rem!important}
@@ -240,6 +253,24 @@ footer strong{color:var(--cream)}
   </div>
   <button id="a11y-settings-btn" aria-expanded="false" aria-controls="a11y-panel" aria-label="Open accessibility settings">⚙️ <span aria-hidden="true">Accessibility</span></button>
 </header>
+
+<!-- PRINT SCALE BAR (hidden on screen, appears at top of every printed page) -->
+<div id="print-scale-bar" aria-hidden="true">
+  <span class="psb-label">Rating Scale:</span>
+  <div class="psb-items">
+    <span class="psb-item"><span class="psb-num">0</span> Never</span>
+    <span class="psb-sep">·</span>
+    <span class="psb-item"><span class="psb-num">1</span> Rarely</span>
+    <span class="psb-sep">·</span>
+    <span class="psb-item"><span class="psb-num">2</span> Sometimes</span>
+    <span class="psb-sep">·</span>
+    <span class="psb-item"><span class="psb-num">3</span> Often</span>
+    <span class="psb-sep">·</span>
+    <span class="psb-item"><span class="psb-num">4</span> Very Often</span>
+    <span class="psb-sep">·</span>
+    <span class="psb-item"><span class="psb-num">5</span> Always</span>
+  </div>
+</div>
 
 <!-- LANDING -->
 <div id="view-landing" role="region" aria-label="Choose how to use this tool">
@@ -439,6 +470,7 @@ footer strong{color:var(--cream)}
 <div id="view-insession-summary" hidden role="region" aria-label="Clinical Summary">
   <div class="vwrap">
     <div id="ins-summary-content" aria-live="polite"></div>
+    <div class="print-radar-wrap" id="ins-print-radar" aria-hidden="true"></div>
     <div class="print-card">
       <h3>Ready to print?</h3>
       <p style="color:var(--warm-grey);font-size:.9rem;margin-bottom:1rem">Nothing has been saved or transmitted. Print for your records or close when done.</p>
@@ -482,12 +514,14 @@ footer strong{color:var(--cream)}
       <div id="decrypt-error-results" hidden class="alert alert-rose" style="margin-top:.75rem"><span class="alert-icon">⚠️</span><span>Incorrect PIN or invalid result code. Please check both and try again.</span></div>
     </div>
     <div id="results-content" aria-live="polite"></div>
+    <div class="print-radar-wrap" id="results-print-radar" aria-hidden="true"></div>
     <div id="results-print-row" hidden class="btn-group" style="margin-top:1.1rem;margin-bottom:1.5rem">
       <button class="btn btn-primary" id="print-results-btn" type="button">🖨️ Print Clinical Summary</button>
     </div>
   </div>
 </div>
 
+<button id="clin-sticky-btn" type="button" aria-label="View Clinical Summary">📋 View Clinical Summary</button>
 <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <footer role="contentinfo">
@@ -508,7 +542,7 @@ items:['Strong smells overwhelm me.','I rarely notice odors that others comment 
 {key:'taste',label:'Taste (Gustation)',short:'Taste',icon:'👅',color:'#F4A261',desc:'How you experience flavors, spices, and food textures.',
 items:['I avoid foods with strong or unusual tastes.','I enjoy very spicy, salty, or sour foods.','Certain textures in food are unbearable.','I can detect subtle flavors that others miss.','I have a limited range of foods I can tolerate.','I enjoy foods that others consider too strong or unusual.','I often notice flavor inconsistencies in food.','I avoid eating foods because of taste sensitivity.','I seek intense flavor experiences.','Eating new foods is stressful or uncomfortable.']},
 {key:'balance',label:'Balance (Equilibrioception)',short:'Balance',icon:'⚖️',color:'#D4845A',desc:'How steady and secure you feel when moving or standing still.',
-items:['I feel dizzy or off-balance easily.','I avoid activities requiring precise balance.','I notice subtle movements or shifts in my environment.','I enjoy activities that challenge my balance.','I have trouble coordinating my body in space.','I am confident in physically unstable situations.','I often feel unsteady when walking or standing.','I can sense motion in ways others do not.','I avoid rides or sports that require balance.','I enjoy spinning, swinging, or rocking movements.']},
+items:['I feel dizzy or off-balance easily.','I avoid activities requiring precise balance.','I notice subtle movements or shifts in my body.','I enjoy activities that challenge my balance.','I have trouble coordinating my body in space.','I am confident in physically unstable situations.','I often feel unsteady when walking or standing.','I can sense motion in ways others do not.','I avoid rides or sports that require balance.','I enjoy spinning, swinging, or rocking movements.']},
 {key:'proprioception',label:'Proprioception (Body Awareness)',short:'Body',icon:'🧍',color:'#9678D8',desc:'How well you sense your body\'s position, movement, and coordination.',
 items:['I bump into objects or people frequently.','I struggle to know the position of my limbs without looking.','I enjoy activities that give strong bodily feedback (lifting, pushing, etc.).','I have difficulty judging my movements or distance.','I notice small changes in how my body moves.','I feel disconnected from my body at times.','I seek movement to understand my body\'s position.','I avoid activities where precise body positioning is needed.','I am aware of my posture and adjust it regularly.','I sometimes overcompensate movements because I misjudge space.']},
 {key:'thermoception',label:'Thermoception (Heat / Temperature)',short:'Heat',icon:'🌡️',color:'#E05878',desc:'How you sense and tolerate hot or cold environments.',
@@ -620,7 +654,7 @@ function bandColor(s){if(s<=10)return'var(--warm-grey)';if(s<=25)return'var(--te
 
 /* VIEWS */
 const VIEWS=['landing','setup','tool','insession-summary','personal-summary','results'];
-function showView(id){VIEWS.forEach(v=>{const el=document.getElementById('view-'+v);if(el)el.hidden=v!==id;});window.scrollTo({top:0,behavior:'smooth'});}
+function showView(id){VIEWS.forEach(v=>{const el=document.getElementById('view-'+v);if(el)el.hidden=v!==id;});window.scrollTo({top:0,behavior:'smooth'});updateStickyBtn();}
 function showTab(id){
   document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.toggle('active',b.dataset.tab===id);b.setAttribute('aria-selected',String(b.dataset.tab===id));});
   document.querySelectorAll('.tab-panel').forEach(p=>{const a=p.id==='tab-'+id;p.classList.toggle('active',a);p.setAttribute('aria-hidden',String(!a));});
@@ -1097,12 +1131,12 @@ function initSetup(){
   document.getElementById('decrypt-btn-setup').addEventListener('click',async()=>{
     const code=document.getElementById('result-url-setup').value.trim(),pin=document.getElementById('decrypt-pin-setup').value.trim();
     const ok=await doDecrypt(code,pin,'decrypt-error-setup','ins-summary-content');
-    if(ok){document.getElementById('back-from-ins-btn').dataset.dest='setup';showView('insession-summary');}
+    if(ok){cloneRadarForPrint('ins-print-radar');document.getElementById('back-from-ins-btn').dataset.dest='setup';showView('insession-summary');}
   });
 }
 /* INIT FINISH BAR */
 function initFinishBar(){
-  document.getElementById('fin-ins-btn').addEventListener('click',()=>{document.getElementById('ins-summary-content').innerHTML=buildSummaryHTML(collectState(),true);document.getElementById('back-from-ins-btn').dataset.dest='tool';showView('insession-summary');});
+  document.getElementById('fin-ins-btn').addEventListener('click',()=>{document.getElementById('ins-summary-content').innerHTML=buildSummaryHTML(collectState(),true);cloneRadarForPrint('ins-print-radar');document.getElementById('back-from-ins-btn').dataset.dest='tool';showView('insession-summary');});
   document.getElementById('save-ins-btn').addEventListener('click',()=>inSessionSave());
   document.getElementById('back-ins-btn').addEventListener('click',()=>{
     if(confirm('Go back to start? Any unsaved progress will be lost.'))showView('landing');
@@ -1131,6 +1165,34 @@ function initFinishBar(){
   document.getElementById('copy-result-btn').addEventListener('click',()=>copyToClipboard(document.getElementById('result-url-box').textContent,'Result code copied!'));
   document.getElementById('back-rem-btn').addEventListener('click',()=>showView('landing'));
 }
+/* CLONE RADAR FOR PRINT */
+function cloneRadarForPrint(containerId){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  const src=document.getElementById('radar-svg');
+  if(!src)return;
+  // Build a fresh SVG clone with a caption
+  container.innerHTML='';
+  const wrap=document.createElement('div');
+  wrap.style.cssText='margin:0 auto;max-width:420px;text-align:center';
+  const title=document.createElement('p');
+  title.style.cssText='font-family:Lora,serif;font-size:.95rem;font-weight:700;color:#1A3150;margin-bottom:.5rem';
+  title.textContent='Sensory Profile — Radar Chart';
+  const clone=src.cloneNode(true);
+  clone.removeAttribute('id');
+  clone.setAttribute('width','100%');
+  clone.style.cssText='display:block;max-width:420px;height:auto';
+  wrap.appendChild(title);
+  wrap.appendChild(clone);
+  container.appendChild(wrap);
+}
+/* STICKY CLINICIAN BUTTON */
+function updateStickyBtn(){
+  const btn=document.getElementById('clin-sticky-btn');
+  if(!btn)return;
+  const isInsession=currentMode==='insession'&&!document.getElementById('view-tool').hidden;
+  btn.classList.toggle('visible',isInsession);
+}
 /* INIT SUMMARY VIEWS */
 function initSummaryViews(){
   document.getElementById('print-ins-btn').addEventListener('click',()=>window.print());
@@ -1145,6 +1207,15 @@ function initSummaryViews(){
     btn.dataset.mode=showClinician?'clinician':'patient';
     window.scrollTo({top:0,behavior:'smooth'});
   });
+  const stickyBtn=document.getElementById('clin-sticky-btn');
+  if(stickyBtn){
+    stickyBtn.addEventListener('click',()=>{
+      document.getElementById('ins-summary-content').innerHTML=buildSummaryHTML(collectState(),true);
+      cloneRadarForPrint('ins-print-radar');
+      document.getElementById('back-from-ins-btn').dataset.dest='tool';
+      showView('insession-summary');
+    });
+  }
 }
 /* INIT RESULTS */
 function initResults(){
@@ -1152,7 +1223,7 @@ function initResults(){
   document.getElementById('do-decrypt-btn').addEventListener('click',async()=>{
     const url=document.getElementById('result-url-decrypt').value.trim(),pin=document.getElementById('result-pin-decrypt').value.trim();
     const ok=await doDecrypt(url,pin,'decrypt-error-results','results-content');
-    if(ok)document.getElementById('results-print-row').hidden=false;
+    if(ok){cloneRadarForPrint('results-print-radar');document.getElementById('results-print-row').hidden=false;}
   });
   document.getElementById('print-results-btn').addEventListener('click',()=>window.print());
 }
