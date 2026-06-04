@@ -949,14 +949,7 @@
   </div>
   
   <div class="tool-section active" id="tool-td6" role="tabpanel">
-    <div class="export-banner">
-    <div class="export-icon">&#128190;</div>
-    <div class="export-text">
-      <div class="export-title">Back up your data</div>
-      <div class="export-desc">Your data is saved to your account. Print a session summary to share with a therapist.</div>
-    </div>
-    <button class="export-btn" onclick="exportData()">Export</button>
-  </div>
+    
   <div class="about-card"><strong>Your pinned tools.</strong> Pin up to 4 tools you use most often. Each tool has a pin button at the top. Pinned tools appear here for one-tap access.</div>
   
   <div id="onboard-wrap" style="margin-bottom:18px;display:none;">
@@ -4157,6 +4150,18 @@ window.renderHistory = function() {
   list.innerHTML = out;
 };
 
+</script>
+<script>
+  // ── IFRAME HEIGHT REPORTER ──
+  // Sends content height to parent window so the iframe resizes automatically
+  function reportHeight() {
+    var h = document.documentElement.scrollHeight;
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }
+  window.addEventListener('load', reportHeight);
+  window.addEventListener('resize', reportHeight);
+  var _heightObserver = new MutationObserver(reportHeight);
+  _heightObserver.observe(document.body, { childList: true, subtree: true, attributes: true });
 </script>
 </body>
 </html>
