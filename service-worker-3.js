@@ -1,8 +1,8 @@
 const CACHE_NAME = 'csc-wellness-v1';
 const ASSETS = [
-  './',
-  './csc-app.v303.html',
-  './manifest.json'
+  'https://neurocontextual-systems-design-suite.creativesolutionscoaching.com/',
+  'https://neurocontextual-systems-design-suite.creativesolutionscoaching.com/CSC-App.v303.html',
+  'https://neurocontextual-systems-design-suite.creativesolutionscoaching.com/manifest.json'
 ];
 
 // Install: cache core assets
